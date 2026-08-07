@@ -1,0 +1,141 @@
+/* Long-form article typography. Hand-rolled rather than pulling in the
+   typography plugin — this is the only place on the site that renders raw HTML,
+   and the ruleset is small enough to own. */
+
+.prose-article {
+  font-size: 1.0625rem;
+  line-height: 1.75;
+  color: var(--ink-muted);
+}
+
+.prose-article > * + * {
+  margin-top: 1.5em;
+}
+
+.prose-article h2 {
+  margin-top: 2.75em;
+  margin-bottom: -0.25em;
+  font-family: var(--font-display);
+  font-size: 1.6rem;
+  font-weight: 600;
+  letter-spacing: -0.025em;
+  color: var(--ink);
+  scroll-margin-top: 6rem;
+}
+
+.prose-article h3 {
+  margin-top: 2.25em;
+  margin-bottom: -0.4em;
+  font-family: var(--font-display);
+  font-size: 1.2rem;
+  font-weight: 600;
+  color: var(--ink);
+  scroll-margin-top: 6rem;
+}
+
+.prose-article strong {
+  color: var(--ink);
+  font-weight: 600;
+}
+
+.prose-article em {
+  color: var(--ink);
+}
+
+.prose-article a {
+  color: var(--accent);
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  text-decoration-thickness: 1px;
+}
+
+.prose-article ul,
+.prose-article ol {
+  padding-left: 1.35em;
+}
+
+.prose-article ul {
+  list-style: disc;
+}
+
+.prose-article ol {
+  list-style: decimal;
+}
+
+.prose-article li::marker {
+  color: var(--accent);
+}
+
+.prose-article li + li {
+  margin-top: 0.6em;
+}
+
+.prose-article blockquote {
+  border-left: 2px solid var(--accent);
+  padding: 0.25em 0 0.25em 1.25em;
+  font-size: 1.1rem;
+  color: var(--ink);
+  font-style: italic;
+}
+
+.prose-article code {
+  font-family: var(--font-mono);
+  font-size: 0.875em;
+  background: var(--surface-2);
+  border: 1px solid var(--line);
+  border-radius: 0.375rem;
+  padding: 0.15em 0.4em;
+  color: var(--ink);
+}
+
+.prose-article pre {
+  background: var(--surface-2);
+  border: 1px solid var(--line);
+  border-radius: 1rem;
+  padding: 1.25rem;
+  overflow-x: auto;
+  font-size: 0.875rem;
+  line-height: 1.6;
+}
+
+.prose-article pre code {
+  background: none;
+  border: none;
+  padding: 0;
+  font-size: inherit;
+}
+
+.prose-article hr {
+  border: none;
+  border-top: 1px solid var(--line);
+  margin-block: 3em;
+}
+
+.prose-article img {
+  border-radius: 1rem;
+  border: 1px solid var(--line);
+  max-width: 100%;
+  height: auto;
+}
+
+/* Tables can exceed the measure — let them scroll rather than break the page. */
+.prose-article table {
+  display: block;
+  width: 100%;
+  overflow-x: auto;
+  border-collapse: collapse;
+  font-size: 0.9375rem;
+}
+
+.prose-article th,
+.prose-article td {
+  border: 1px solid var(--line);
+  padding: 0.6em 0.9em;
+  text-align: left;
+}
+
+.prose-article th {
+  background: var(--surface-2);
+  color: var(--ink);
+  font-weight: 600;
+}
