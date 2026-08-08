@@ -29,10 +29,10 @@ export const SITE = {
   university: "Vellore Institute of Technology, Chennai",
   resumeUrl: "/resume.pdf",
   /**
-   * Local portrait. LinkedIn blocks automated reads, and both the GitHub and
-   * LeetCode avatars are default placeholders, so no real photo could be
-   * fetched. Save your LinkedIn photo as `public/profile.jpg` and it appears
-   * everywhere automatically — until then a designed monogram stands in.
+   * Local portrait — cropped from the provided circular photo.
+   * Both profile.jpg (JPEG, 95 % quality) and profile.png (lossless with
+   * transparency) exist in public/. The .jpg is used because Next.js image
+   * optimisation handles opaque photos more efficiently.
    */
   avatar: "/profile.jpg",
   tagline: "I build products where the interface and the intelligence are the same craft.",
