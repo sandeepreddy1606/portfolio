@@ -4,7 +4,7 @@ import { getGithubStats } from "@/lib/github";
 import { getLeetcodeStats } from "@/lib/leetcode";
 import { GithubFallback, GithubSkeleton, GithubView } from "./github-view";
 import { FitCheck } from "@/components/proof/fit-check";
-import { AchievementList } from "@/components/sections/achievements";
+import { AchievementList, CertificationCards } from "@/components/sections/achievements";
 import { LeetcodeFallback, LeetcodeSkeleton, LeetcodeView } from "./leetcode-view";
 
 /** Server components — neither fetch reaches the client bundle. */
@@ -50,7 +50,13 @@ export function ProofSection() {
           </Suspense>
         </div>
 
-        <h3 className="mt-20 text-4xl font-extrabold uppercase">Achievements and certifications</h3>
+        <h3 className="mt-20 text-4xl font-extrabold uppercase">Certifications</h3>
+        <p className="text-ink-muted mt-3 max-w-[60ch] text-[15px]">
+          Each one links to where it can be checked.
+        </p>
+        <CertificationCards className="mt-8" />
+
+        <h3 className="mt-20 text-4xl font-extrabold uppercase">Achievements</h3>
         <AchievementList className="mt-8" />
       </div>
     </Section>

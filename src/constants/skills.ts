@@ -1,5 +1,6 @@
 import { Blocks, Bot, Cloud, Code2, Database, Server, Smartphone, Wrench } from "lucide-react";
 import {
+  SiAnthropic,
   SiDart,
   SiDocker,
   SiDotnet,
@@ -121,7 +122,8 @@ export const SKILL_CATEGORIES: SkillCategory[] = [
   {
     id: "ai",
     title: "AI & Machine Learning",
-    description: "Classical ML, deep learning for vision and NLP, and LLM APIs in production.",
+    description:
+      "Classical ML, deep learning for vision and NLP, and Claude-powered features in production.",
     icon: Bot,
     skills: [
       { name: "PyTorch", icon: SiPytorch, color: "#EE4C2C" },
@@ -130,7 +132,8 @@ export const SKILL_CATEGORIES: SkillCategory[] = [
       { name: "OpenCV", icon: SiOpencv, color: "#5C3EE8" },
       { name: "InsightFace", icon: SiPython, color: "#FFFFFF" },
       { name: "BERT fine-tuning", icon: SiPython, color: "#FFFFFF" },
-      { name: "LLM APIs (Gemini)", icon: SiGooglegemini, color: "#8E75B2" },
+      { name: "Claude API", icon: SiAnthropic, color: "#D97757" },
+      { name: "Gemini API", icon: SiGooglegemini, color: "#8E75B2" },
       { name: "NumPy", icon: SiNumpy, color: "#4DABCF" },
       { name: "Pandas", icon: SiPandas, color: "#FFFFFF" },
     ],

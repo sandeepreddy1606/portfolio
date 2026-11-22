@@ -84,6 +84,10 @@ Colour carries meaning, the same everywhere:
   box, a tear line with notches, then role, organisation and summary. "Turn
   over" expands the highlights in place. The current role is a full-width
   season ticket and the first entry a full-width platform ticket; both open.
+- **Certificates of competency** (`achievements.tsx`): certifications as
+  cream plate cards with an issuer seal (monogram in ink, ring in the issuer's
+  colour), year, scope and a verify link (LinkedIn when there is no direct
+  credential URL). The seal sits rotated and settles on hover.
 - **Timetable rows**: other lists (archive, achievements) are ruled rows, not
   card grids.
 
