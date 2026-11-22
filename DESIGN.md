@@ -61,8 +61,8 @@ Colour carries meaning, the same everywhere:
   guards; on case studies it runs once. `holdAt` stops it at a guard until the
   visitor pulls the lever (Auto Apply in the Work section).
 - **Portrait as a signal lamp** (`hero-portrait.tsx`): `public/portrait-cutout.png`
-  is cut from `profile.png` with an OpenCV GrabCut matte and traced with a
-  6px white outline. It stands on a dark lamp disc with a brass rim; the body
+  is `profile.png` upscaled 2× with Real-ESRGAN (general x4v3), cut out
+  with an OpenCV GrabCut matte and traced with a white outline. It stands on a dark lamp disc with a brass rim; the body
   is clipped to the disc, the head breaks out above it. An amber ring draws
   itself once on load. No generated imagery.
 - **Register**: the Ask assistant as a ledger page — column heads, numbered

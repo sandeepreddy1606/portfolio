@@ -6,9 +6,11 @@ import { SITE } from "@/constants/site";
  * line, standing in front of a lamp disc. The shoulders sit inside the disc;
  * the head breaks out above its brass rim.
  *
- * Asset: public/portrait-cutout.png — derived from public/profile.png with an
- * OpenCV GrabCut matte (seeded by hand around the head and shoulders), then a
- * 6px white outline dilated from that matte. No generated imagery.
+ * Asset: public/portrait-cutout.png (1136px) — public/profile.png upscaled 2x
+ * with Real-ESRGAN realesr-general-x4v3 (4x, area-downsampled to 2x, blended
+ * 85/15 with bicubic to keep skin texture), cut out with an OpenCV GrabCut
+ * matte seeded by hand, then a 12px white outline dilated from that matte.
+ * No generated imagery: every pixel comes from the original photo.
  *
  * Geometry (fractions of the square box): disc diameter 0.8, centred at
  * (0.5, 0.6). The lower layer is clipped to the disc so it hides the original
@@ -60,6 +62,7 @@ export function HeroPortrait() {
           fill
           priority
           sizes="(max-width: 1024px) 23rem, 26rem"
+          quality={90}
           className="object-contain"
         />
       </div>
@@ -72,6 +75,7 @@ export function HeroPortrait() {
           fill
           priority
           sizes="(max-width: 1024px) 23rem, 26rem"
+          quality={90}
           className="object-contain"
         />
       </div>

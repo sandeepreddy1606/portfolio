@@ -6,6 +6,8 @@ const nextConfig: NextConfig = {
   // Every optimised image is local (public/), so no remote hosts are allowlisted.
   images: {
     formats: ["image/avif", "image/webp"],
+    // 90 is reserved for the hero portrait, where compression softness shows.
+    qualities: [75, 90],
   },
   async headers() {
     return [
