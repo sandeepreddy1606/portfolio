@@ -1,43 +1,72 @@
 "use client";
 
 import * as React from "react";
+import {
+  animate,
+  motion,
+  useMotionValue,
+  useMotionValueEvent,
+  useReducedMotion,
+  useScroll,
+  useTransform,
+  type MotionValue,
+} from "framer-motion";
 import type { FlowNode } from "@/constants/case-studies";
 import { cn } from "@/lib/utils";
 
 /**
  * A mimic diagram — the track drawing on a signal-box panel — of a system's
- * data flow. Stations are steps; guards are signals that sit at danger until
- * the train is allowed past; the action's stretch of track lights amber when
- * occupied. Lamps carry the meaning, so the legend is the same everywhere.
+ * data flow, with a train that runs it.
  *
- * `holdAt` stops the train at that guard until the visitor pulls the lever:
- * the hero uses it to make the visitor the human in the loop.
+ * Stations are steps; guards are signals that sit at danger until the train
+ * passes; the action's stretch of track lights amber. Two ways to drive it:
+ *
+ *   mode="run"   — the train runs once when the panel comes into view
+ *                  (case studies). `holdAt` stops it at a guard until the
+ *                  visitor pulls the lever.
+ *   mode="scrub" — the train's position follows the page scroll through the
+ *                  panel, forwards and backwards (the Work section). Signals
+ *                  clear as it passes and return to danger if it backs up.
+ *
+ * The train moves on a MotionValue (transform only); React re-renders only
+ * when it crosses a station. Reduced motion: no movement, final state shown.
  */
 
 type Props = {
   nodes: FlowNode[];
-  /** Node id of a guard the train must wait at for the visitor's approval. */
+  mode?: "run" | "scrub";
+  /** Node id of a guard the train must wait at for the visitor's approval (run mode). */
   holdAt?: string;
   caption?: string;
   className?: string;
 };
 
-const STEP_MS = 520;
+const STEP_S = 0.55;
 
-export function Mimic({ nodes, holdAt, caption, className }: Props) {
-  const rootRef = React.useRef<HTMLDivElement>(null);
-  // Index of the station the train has reached; -1 before it enters.
+export function Mimic({ nodes, mode = "run", holdAt, caption, className }: Props) {
+  const reduce = useReducedMotion();
+  const figureRef = React.useRef<HTMLElement>(null);
+  const slotRefs = React.useRef<(HTMLSpanElement | null)[]>([]);
+  const last = nodes.length - 1;
+
+  // Continuous position along the route: -1 = not yet arrived, 0..last = at a station.
+  const progress = useMotionValue(-1);
   const [pos, setPos] = React.useState(-1);
+  useMotionValueEvent(progress, "change", (v) => {
+    const at = Math.floor(v + 0.05);
+    setPos((p) => (p === at ? p : at));
+  });
+
+  /* ---------------- run mode ---------------- */
   const [approved, setApproved] = React.useState(!holdAt);
   const holdIndex = holdAt ? nodes.findIndex((n) => n.id === holdAt) : -1;
-  const stopAt = !approved && holdIndex > 0 ? holdIndex - 1 : nodes.length - 1;
+  const stopAt = !approved && holdIndex > 0 ? holdIndex - 1 : last;
   const [started, setStarted] = React.useState(false);
+  const [runKey, setRunKey] = React.useState(0);
 
-  // Start once, when the panel is on screen. Reduced motion: no run, every
-  // guard shown cleared — except an interactive hold, which stays the
-  // visitor's decision.
   React.useEffect(() => {
-    const el = rootRef.current;
+    if (mode !== "run") return;
+    const el = figureRef.current;
     if (!el) return;
     const io = new IntersectionObserver(
       ([entry]) => {
@@ -50,73 +79,102 @@ export function Mimic({ nodes, holdAt, caption, className }: Props) {
     );
     io.observe(el);
     return () => io.disconnect();
-  }, []);
+  }, [mode]);
 
   React.useEffect(() => {
-    if (!started) return;
-    const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
-    if (pos >= stopAt) return;
-    const t = window.setTimeout(
-      () => setPos(reduce ? stopAt : pos + 1),
-      reduce ? 0 : pos < 0 ? 300 : STEP_MS,
-    );
-    return () => window.clearTimeout(t);
-  }, [started, pos, stopAt]);
+    if (mode !== "run" || !started) return;
+    if (reduce) {
+      progress.set(stopAt);
+      return;
+    }
+    const from = Math.max(progress.get(), -1);
+    const controls = animate(progress, stopAt, {
+      duration: Math.max(0.4, (stopAt - from) * STEP_S),
+      ease: [0.45, 0, 0.25, 1],
+      delay: from < 0 ? 0.25 : 0,
+    });
+    return () => controls.stop();
+  }, [mode, started, stopAt, reduce, progress, runKey]);
 
-  const held = holdIndex > 0 && !approved && pos >= holdIndex - 1;
-  const done = pos >= nodes.length - 1;
+  /* ---------------- scrub mode ---------------- */
+  const { scrollYProgress } = useScroll({
+    target: figureRef,
+    offset: ["start 90%", "end 35%"],
+  });
+  useMotionValueEvent(scrollYProgress, "change", (v) => {
+    if (mode !== "scrub") return;
+    progress.set(reduce ? last : -1 + v * (last + 1));
+  });
+  React.useEffect(() => {
+    if (mode !== "scrub") return;
+    // Place the train for the current scroll position on mount, before any scroll event.
+    progress.set(reduce ? last : -1 + scrollYProgress.get() * (last + 1));
+  }, [mode, reduce, last, progress, scrollYProgress]);
+
+  /* ---------------- station geometry ---------------- */
+  const [centers, setCenters] = React.useState<{ x: number; y: number }[]>([]);
+  React.useLayoutEffect(() => {
+    const fig = figureRef.current;
+    if (!fig) return;
+    const measure = () => {
+      const box = fig.getBoundingClientRect();
+      setCenters(
+        slotRefs.current.map((el) => {
+          const r = el?.getBoundingClientRect();
+          return r
+            ? { x: r.left - box.left + r.width / 2, y: r.top - box.top + r.height / 2 }
+            : { x: 0, y: 0 };
+        }),
+      );
+    };
+    measure();
+    const ro = new ResizeObserver(measure);
+    ro.observe(fig);
+    return () => ro.disconnect();
+  }, [nodes.length]);
+
+  const held = mode === "run" && holdIndex > 0 && !approved && pos >= holdIndex - 1;
+  const done = pos >= last;
+  const vertical =
+    centers.length > 1 &&
+    Math.abs(centers[1].y - centers[0].y) > Math.abs(centers[1].x - centers[0].x);
 
   return (
-    <figure ref={rootRef} className={cn("min-w-0", className)}>
+    <figure ref={figureRef} className={cn("relative min-w-0", className)}>
       <ol
-        className="flex flex-col md:flex-row md:items-start"
+        className="relative flex flex-col md:flex-row md:items-start"
         aria-label={`Data flow: ${nodes.map((n) => n.label).join(", then ")}`}
       >
         {nodes.map((node, i) => {
           const reached = pos >= i;
-          // A guard clears when the train is allowed through it.
-          const cleared =
-            node.kind === "guard" && (pos >= i || (i === holdIndex && approved && pos >= i - 1));
-          const occupied = pos === i || (node.kind === "action" && reached);
+          const cleared = node.kind === "guard" && pos >= i;
           return (
             <li key={node.id} className="flex min-w-0 flex-1 md:flex-col">
-              {/* Track + marker row (column on phones). */}
               <div className="flex flex-col items-center md:w-full md:flex-row">
+                <Rail visible={i > 0} lit={reached} amber={node.kind === "action" && reached} />
                 <span
-                  aria-hidden
-                  className={cn(
-                    "min-h-[18px] w-1.5 flex-1 transition-colors duration-300 md:h-1.5 md:min-h-0 md:w-auto",
-                    i === 0
-                      ? "invisible"
-                      : reached
-                        ? node.kind === "action"
-                          ? "bg-accent"
-                          : "bg-ink"
-                        : "bg-ink/25",
-                  )}
-                />
-                {/* Fixed slot so a tall signal head and a small station dot
-                    keep the track on one line. */}
-                <span className="grid h-11 w-11 shrink-0 place-items-center">
+                  ref={(el) => {
+                    slotRefs.current[i] = el;
+                  }}
+                  className="relative z-10 grid h-11 w-11 shrink-0 place-items-center"
+                >
                   <Marker
                     kind={node.kind}
                     cleared={cleared}
-                    occupied={occupied}
+                    occupied={pos === i}
                     held={held && i === holdIndex}
                   />
                 </span>
-                <span
-                  aria-hidden
-                  className={cn(
-                    "min-h-[18px] w-1.5 flex-1 transition-colors duration-300 md:h-1.5 md:min-h-0 md:w-auto",
-                    i === nodes.length - 1 ? "invisible" : pos > i ? "bg-ink" : "bg-ink/25",
-                  )}
+                <Rail
+                  visible={i < last}
+                  lit={pos > i}
+                  amber={nodes[i + 1]?.kind === "action" && pos > i}
                 />
               </div>
               <div className="min-w-0 py-3 pl-4 md:px-2 md:text-center">
                 <p
                   className={cn(
-                    "text-[15px] leading-snug font-semibold",
+                    "text-[15px] leading-snug font-semibold transition-colors duration-300",
                     node.kind === "action" && "text-accent",
                   )}
                 >
@@ -131,7 +189,11 @@ export function Mimic({ nodes, holdAt, caption, className }: Props) {
         })}
       </ol>
 
-      {holdAt && (
+      {centers.length === nodes.length && (
+        <Train progress={progress} centers={centers} vertical={vertical} />
+      )}
+
+      {mode === "run" && holdAt && (
         <div className="border-line mt-4 flex flex-wrap items-center gap-3 border-t pt-4">
           <button
             type="button"
@@ -146,7 +208,8 @@ export function Mimic({ nodes, holdAt, caption, className }: Props) {
               type="button"
               onClick={() => {
                 setApproved(false);
-                setPos(-1);
+                progress.set(-1);
+                setRunKey((k) => k + 1);
               }}
               className="border-line-strong hover:border-ink rounded-md border px-4 py-2.5 text-sm font-semibold transition-colors"
             >
@@ -155,11 +218,6 @@ export function Mimic({ nodes, holdAt, caption, className }: Props) {
           )}
           <p className="text-ink-muted text-sm" aria-live="polite">
             {pos < 0 && "Waiting for a post."}
-            {pos >= 0 &&
-              !held &&
-              !done &&
-              !approved &&
-              "Parsing with rules — no model in the path."}
             {held && "Held at danger. Nothing is sent until a person approves."}
             {approved && !done && pos >= 0 && "Route set by a person. Sending."}
             {done && approved && "Sent, and logged as applied."}
@@ -171,6 +229,84 @@ export function Mimic({ nodes, holdAt, caption, className }: Props) {
         <figcaption className="text-ink-muted mt-4 max-w-[62ch] text-sm">{caption}</figcaption>
       )}
     </figure>
+  );
+}
+
+/** A stretch of rail on sleepers: the sleepers are always there, the rail lights up. */
+function Rail({ visible, lit, amber }: { visible: boolean; lit: boolean; amber: boolean }) {
+  return (
+    <span
+      aria-hidden
+      className={cn(
+        "relative min-h-[22px] w-3.5 flex-1 md:h-3.5 md:min-h-0 md:w-auto",
+        !visible && "invisible",
+        // Sleepers: short cross-ties at a regular pitch, from the real object.
+        "bg-[repeating-linear-gradient(0deg,rgb(236_231_214/0.16)_0_2px,transparent_2px_9px)] md:bg-[repeating-linear-gradient(90deg,rgb(236_231_214/0.16)_0_2px,transparent_2px_9px)]",
+      )}
+    >
+      <span
+        className={cn(
+          "absolute inset-y-0 left-1/2 w-1.5 -translate-x-1/2 transition-colors duration-300 md:inset-x-0 md:top-1/2 md:left-0 md:h-1.5 md:w-auto md:translate-x-0 md:-translate-y-1/2",
+          lit ? (amber ? "bg-lamp-amber" : "bg-ink") : "bg-ink/25",
+        )}
+      />
+    </span>
+  );
+}
+
+/** The train: an amber locomotive with a headlamp, interpolated between stations. */
+function Train({
+  progress,
+  centers,
+  vertical,
+}: {
+  progress: MotionValue<number>;
+  centers: { x: number; y: number }[];
+  vertical: boolean;
+}) {
+  const at = (v: number, axis: "x" | "y") => {
+    const last = centers.length - 1;
+    if (v <= 0) {
+      // Approaching the first station from off-panel.
+      const gap = centers.length > 1 ? centers[1][axis] - centers[0][axis] : 60;
+      return centers[0][axis] + Math.max(v, -1) * gap * 0.6;
+    }
+    if (v >= last) return centers[last][axis];
+    const i = Math.floor(v);
+    const t = v - i;
+    return centers[i][axis] + (centers[i + 1][axis] - centers[i][axis]) * t;
+  };
+  const x = useTransform(progress, (v) => at(v, "x"));
+  const y = useTransform(progress, (v) => at(v, "y"));
+  const opacity = useTransform(progress, [-1, -0.55, -0.2], [0, 0, 1]);
+
+  return (
+    <motion.span
+      aria-hidden
+      className="pointer-events-none absolute top-0 left-0 z-20"
+      style={{ x, y, opacity }}
+    >
+      <span
+        className={cn(
+          "bg-lamp-amber relative flex items-center justify-around rounded-[4px] shadow-[0_3px_8px_-2px_rgb(0_0_0/0.6)]",
+          vertical
+            ? "-mt-[17px] -ml-[7px] h-[34px] w-3.5 flex-col"
+            : "-mt-[7px] -ml-[17px] h-3.5 w-[34px]",
+        )}
+      >
+        <span className="size-1.5 rounded-[1px] bg-[#1b1405]/70" />
+        <span className="size-1.5 rounded-[1px] bg-[#1b1405]/70" />
+        {/* Headlamp, at the leading end. */}
+        <span
+          className={cn(
+            "absolute size-1.5 rounded-full bg-[#fff6d8] shadow-[0_0_8px_3px_rgb(255_240_190/0.7)]",
+            vertical
+              ? "-bottom-0.5 left-1/2 -translate-x-1/2"
+              : "top-1/2 -right-0.5 -translate-y-1/2",
+          )}
+        />
+      </span>
+    </motion.span>
   );
 }
 
@@ -194,15 +330,17 @@ function Marker({
       >
         <span
           className={cn(
-            "size-3.5 rounded-full transition-colors duration-200",
-            cleared ? "bg-lamp-red/15" : "bg-lamp-red",
-            held && "shadow-[0_0_0_4px_rgb(227_64_45/0.25)]",
+            "size-3.5 rounded-full transition-[background-color,box-shadow] duration-200",
+            cleared ? "bg-lamp-red/15" : "bg-lamp-red shadow-[0_0_10px_2px_rgb(227_64_45/0.45)]",
+            held && "animate-pulse",
           )}
         />
         <span
           className={cn(
-            "size-3.5 rounded-full transition-colors duration-200",
-            cleared ? "bg-lamp-green" : "bg-lamp-green/15",
+            "size-3.5 rounded-full transition-[background-color,box-shadow] duration-200",
+            cleared
+              ? "bg-lamp-green shadow-[0_0_10px_2px_rgb(76_194_122/0.5)]"
+              : "bg-lamp-green/15",
           )}
         />
       </span>
@@ -212,10 +350,14 @@ function Marker({
     <span
       aria-hidden
       className={cn(
-        "grid size-5 shrink-0 place-items-center border-2 transition-colors duration-300",
+        "grid size-5 shrink-0 place-items-center border-2 transition-[background-color,transform] duration-300",
         kind === "action" ? "border-accent" : "border-ink",
         kind === "store" ? "rounded-sm" : "rounded-full",
-        occupied ? (kind === "action" ? "bg-accent" : "bg-ink") : "bg-transparent",
+        occupied
+          ? kind === "action"
+            ? "bg-accent scale-110"
+            : "bg-ink scale-110"
+          : "bg-surface-2",
       )}
     />
   );
