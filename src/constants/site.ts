@@ -82,9 +82,13 @@ export const SOCIALS: SocialLink[] = [
 ];
 
 export const NAV_ITEMS: NavItem[] = [
+  { label: "About", href: "/#about", sectionId: "about" },
+  { label: "Skills", href: "/#skills", sectionId: "skills" },
   { label: "Ask", href: "/#register", sectionId: "register" },
   { label: "Work", href: "/#work", sectionId: "work" },
   { label: "Rules", href: "/#principles", sectionId: "principles" },
+  { label: "AI", href: "/#ai", sectionId: "ai" },
+  { label: "Venture", href: "/#venture", sectionId: "venture" },
   { label: "Experience", href: "/#experience", sectionId: "experience" },
   { label: "Proof", href: "/#proof", sectionId: "proof" },
   { label: "Writing", href: "/blog" },
@@ -94,8 +98,14 @@ export const NAV_ITEMS: NavItem[] = [
 /** Ids observed by the scroll-spy, in document order. */
 export const SECTION_IDS = [
   "hero",
+  "about",
+  "skills",
+  "stack",
+  "register",
   "work",
   "principles",
+  "ai",
+  "venture",
   "experience",
   "proof",
   "contact",

@@ -49,6 +49,8 @@
   --animate-marquee-reverse: marquee-reverse 40s linear infinite;
   --animate-shimmer: shimmer 2.5s linear infinite;
   --animate-spin-slow: spin 6s linear infinite;
+  --animate-aurora: aurora 18s ease-in-out infinite;
+  --animate-float: float 7s ease-in-out infinite;
 }
 
 /* The panel: painted signal-box green. The site's ground. One material, no
@@ -71,6 +73,13 @@
   --verify-soft: rgb(76 194 122 / 0.14);
   --danger: #ff7a63;
   --brass: #c9a66b;
+
+  /* Read by the grid, noise overlay and aurora glows. */
+  --grid-line: rgb(236 231 214 / 0.05);
+  --noise-opacity: 0.05;
+  --glow-a: rgb(244 183 49 / 0.12);
+  --glow-b: rgb(76 194 122 / 0.1);
+  --glow-c: rgb(201 166 107 / 0.1);
 
   color-scheme: dark;
 }
@@ -95,9 +104,41 @@
   --danger: #a8321f;
   --brass: #7d5f2c;
 
+  --grid-line: rgb(31 42 37 / 0.06);
+  --noise-opacity: 0.03;
+  --glow-a: rgb(138 90 0 / 0.1);
+  --glow-b: rgb(29 107 64 / 0.08);
+  --glow-c: rgb(125 95 44 / 0.08);
+
   color-scheme: light;
   background-color: var(--canvas);
   color: var(--ink);
+}
+
+/* Light theme (the theme toggle): the whole page takes the enamel face. */
+:root[data-theme="light"] {
+  --canvas: #ece7d6;
+  --surface: #e4dec9;
+  --surface-2: #d9d2bb;
+  --elevated: #f5f1e4;
+  --line: rgb(31 42 37 / 0.16);
+  --line-strong: rgb(31 42 37 / 0.36);
+  --ink: #1f2a25;
+  --ink-muted: #4a5550;
+  --ink-subtle: #56605a;
+  --accent: #8a5a00;
+  --accent-soft: rgb(138 90 0 / 0.1);
+  --accent-ink: #fffaf0;
+  --verify: #1d6b40;
+  --verify-soft: rgb(29 107 64 / 0.1);
+  --danger: #a8321f;
+  --brass: #7d5f2c;
+  --grid-line: rgb(31 42 37 / 0.06);
+  --noise-opacity: 0.03;
+  --glow-a: rgb(138 90 0 / 0.1);
+  --glow-b: rgb(29 107 64 / 0.08);
+  --glow-c: rgb(125 95 44 / 0.08);
+  color-scheme: light;
 }
 
 /* ------------------------------------------------------------------ */
@@ -426,4 +467,27 @@
   stroke-dasharray: 1;
   stroke-dashoffset: 1;
   animation: ring-draw 1400ms 450ms cubic-bezier(0.65, 0, 0.35, 1) forwards;
+}
+
+/* Restored ambient effects: drifting glows and floating chips. */
+@keyframes aurora {
+  0%,
+  100% {
+    transform: translate3d(0, 0, 0) scale(1);
+  }
+  33% {
+    transform: translate3d(4%, -6%, 0) scale(1.12);
+  }
+  66% {
+    transform: translate3d(-5%, 4%, 0) scale(0.94);
+  }
+}
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
 }

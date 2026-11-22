@@ -2,15 +2,19 @@
 
 import * as React from "react";
 import { useRouter } from "next/navigation";
+import { useTheme } from "next-themes";
 import { Command } from "cmdk";
 import {
   ArrowUpRight,
   Copy,
   FileText,
   Home,
+  Laptop,
   Mail,
+  Moon,
   MessageSquare,
   PenLine,
+  Sun,
   type LucideIcon,
 } from "lucide-react";
 import { toast } from "sonner";
@@ -95,6 +99,7 @@ function CommandPalette() {
   const { open, setOpen } = useCommandPalette();
   const router = useRouter();
   const [search, setSearch] = React.useState("");
+  const { setTheme } = useTheme();
 
   const run = React.useCallback(
     (action: () => void) => {
@@ -203,6 +208,15 @@ function CommandPalette() {
                 onSelect={() => run(() => window.open(social.href, "_blank", "noopener"))}
               />
             ))}
+          </Command.Group>
+          <Command.Group heading="Theme" className={GROUP}>
+            <Item icon={Moon} label="Dark theme" onSelect={() => run(() => setTheme("dark"))} />
+            <Item icon={Sun} label="Light theme" onSelect={() => run(() => setTheme("light"))} />
+            <Item
+              icon={Laptop}
+              label="System theme"
+              onSelect={() => run(() => setTheme("system"))}
+            />
           </Command.Group>
         </Command.List>
 

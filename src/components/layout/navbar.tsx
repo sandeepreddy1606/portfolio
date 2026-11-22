@@ -11,6 +11,7 @@ import { NAV_ITEMS, SECTION_IDS, SITE, SOCIALS } from "@/constants/site";
 import { useScrollSpy } from "@/hooks/use-scroll-spy";
 import { useCommandPalette } from "@/components/providers/command-palette";
 import { Button } from "@/components/ui/button";
+import { ThemeToggle } from "./theme-toggle";
 
 export function Navbar() {
   const [scrolled, setScrolled] = React.useState(false);
@@ -76,7 +77,7 @@ export function Navbar() {
               <span className="border-brass text-brass font-display group-hover:text-accent group-hover:border-accent grid size-9 place-items-center rounded-sm border-2 text-base font-extrabold transition-colors duration-300">
                 {SITE.initials}
               </span>
-              <span className="hidden text-sm font-semibold tracking-tight sm:block">
+              <span className="hidden text-sm font-semibold tracking-tight sm:block xl:hidden 2xl:block">
                 {SITE.shortName}
               </span>
             </Link>
@@ -91,7 +92,7 @@ export function Navbar() {
                     <Link
                       href={item.href}
                       aria-current={active ? "page" : undefined}
-                      className="group flex flex-col items-center gap-1.5 px-3 py-1"
+                      className="group flex flex-col items-center gap-1.5 px-2 py-1"
                     >
                       <span
                         aria-hidden
@@ -124,11 +125,13 @@ export function Navbar() {
                 aria-label="Open command palette"
                 className="border-line-strong text-ink-muted hover:text-ink hover:border-ink hidden items-center gap-2 rounded-md border py-1.5 pr-2 pl-3 text-xs transition-colors duration-300 sm:flex"
               >
-                <span>Search or ask</span>
+                <span className="xl:hidden 2xl:inline">Search or ask</span>
                 <kbd className="border-line bg-surface-2 flex items-center gap-0.5 rounded border px-1.5 py-0.5 font-mono text-[10px]">
                   <CommandIcon className="size-2.5" />K
                 </kbd>
               </button>
+
+              <ThemeToggle />
 
               <Button asChild size="sm" variant="accent" className="hidden sm:inline-flex">
                 <Link href="/#contact">Get in touch</Link>

@@ -30,14 +30,16 @@ export const scaleIn: Variants = {
   visible: { opacity: 1, scale: 1, transition: { duration: 0.6, ease: EASE } },
 };
 
+/* Slide-ins settle vertically and stay visible: a sideways offset pushes
+   content past the edge of a phone screen before the reveal fires. */
 export const slideInLeft: Variants = {
-  hidden: { opacity: 0, x: -32 },
-  visible: { opacity: 1, x: 0, transition: { duration: 0.7, ease: EASE } },
+  hidden: { opacity: 1, y: 10 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: EASE } },
 };
 
 export const slideInRight: Variants = {
-  hidden: { opacity: 0, x: 32 },
-  visible: { opacity: 1, x: 0, transition: { duration: 0.7, ease: EASE } },
+  hidden: { opacity: 1, y: 10 },
+  visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: EASE } },
 };
 
 export const stagger = (staggerChildren = 0.08, delayChildren = 0): Variants => ({

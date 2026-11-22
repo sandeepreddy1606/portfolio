@@ -1,4 +1,4 @@
-import type { Project } from "@/types";
+import type { AiProject, Project } from "@/types";
 import { SITE } from "./site";
 
 const repo = (name: string) => `https://github.com/${SITE.githubUsername}/${name}`;
@@ -367,3 +367,124 @@ export const PROJECT_FILTERS = (() => {
     .sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]))
     .map(([tech]) => tech);
 })();
+
+export const AI_PROJECTS: AiProject[] = [
+  {
+    slug: "auto-apply",
+    title: "Auto Apply",
+    discipline: "Agents",
+    summary:
+      "A closed-loop agent with a deliberate constraint: the decision layer is deterministic. Anything that sends an email or submits a form on someone's behalf is too consequential to leave to a probabilistic parser.",
+    architecture: [
+      "Telegram channels",
+      "MTProto ingest",
+      "Rule-based parser",
+      "Human review queue",
+      "SMTP / Form action",
+      "State tracker",
+    ],
+    stack: ["Next.js", "TypeScript", "MTProto", "PostgreSQL", "SQLite"],
+    repo: repo("auto_apply"),
+  },
+  {
+    slug: "ai-course-builder",
+    title: "AI Mini-Course Generator",
+    discipline: "LLM",
+    summary:
+      "Structured generation with a fixed output contract. The model fills a course schema — lessons, code, quiz — instead of free-forming prose, which is what makes the result renderable and gradeable.",
+    architecture: [
+      "Topic prompt",
+      "Gemini structured gen",
+      "Lesson + code schema",
+      "YouTube enrichment",
+      "Quiz builder",
+      "MongoDB persistence",
+    ],
+    stack: ["Gemini API", "FastAPI", "MongoDB", "React"],
+    repo: repo("ai_course_builder"),
+  },
+  {
+    slug: "ai-document-assistant",
+    title: "AI Document Assistant",
+    discipline: "LLM",
+    summary:
+      "Iterative refinement rather than one-shot generation. Each section is a separately addressable unit the model can revise, and every revision is retained so a bad pass is always recoverable.",
+    architecture: [
+      "Firebase auth",
+      "Section planner",
+      "Gemini drafting",
+      "Per-section refine",
+      "Firestore history",
+      "docx / pptx export",
+    ],
+    stack: ["Gemini API", "FastAPI", "Firebase", "React"],
+    repo: repo("ai_document_assistance"),
+  },
+  {
+    slug: "yt-summarizer",
+    title: "YouTube Summarizer Bot",
+    discipline: "NLP",
+    summary:
+      "Transcript-grounded reasoning. Answers are constrained to what was actually said in the video, then translated at the output boundary so the grounding never degrades across languages.",
+    architecture: [
+      "YouTube URL",
+      "Transcript fetch",
+      "Chunk + summarise",
+      "Contextual Q&A",
+      "Translation layer",
+      "Telegram delivery",
+    ],
+    stack: ["Python", "Node.js", "Telegram Bot API"],
+    repo: repo("yt_summariser_bot"),
+  },
+  {
+    slug: "face-recognition",
+    title: "Face Recognition System",
+    discipline: "Computer Vision",
+    summary:
+      "A classical embedding pipeline held to a real benchmark. Faces become vectors, vectors go in a persisted store, and the whole thing is scored on LFW verification pairs rather than on a demo video.",
+    architecture: [
+      "Camera / image",
+      "Face detection",
+      "Embedding model",
+      "Face DB (pickle)",
+      "Distance match",
+      "LFW evaluation",
+    ],
+    stack: ["Python", "OpenCV", "NumPy", "Tkinter"],
+    repo: repo("face-detection"),
+  },
+  {
+    slug: "transcriber",
+    title: "Local Whisper Transcriber",
+    discipline: "Speech",
+    summary:
+      "On-device speech-to-text for audio that cannot legally or ethically be uploaded. Detects GPU availability at startup and degrades to CPU without changing the interface.",
+    architecture: [
+      "Audio input",
+      "GPU capability check",
+      "Whisper inference",
+      "Segment assembly",
+      "Transcript file",
+    ],
+    stack: ["Python", "Whisper", "PyTorch", "CUDA"],
+    repo: repo("Transcriber"),
+  },
+  {
+    slug: "toxic-classifier",
+    title: "Toxic Message Classifier",
+    discipline: "NLP",
+    summary:
+      "The supervised half of a moderation stack — a trained classifier that scores text so a policy layer above it can decide what to do with the score.",
+    architecture: [
+      "Raw message",
+      "Preprocess",
+      "Vectorise",
+      "Classifier",
+      "Toxicity score",
+      "Policy hook",
+    ],
+    stack: ["Python", "scikit-learn", "Pandas"],
+    repo: repo("toxic_message_classifier"),
+  },
+];

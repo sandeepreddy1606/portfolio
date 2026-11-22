@@ -2,10 +2,15 @@ import type { Metadata, Viewport } from "next";
 import { Big_Shoulders, Geist_Mono, Public_Sans } from "next/font/google";
 import { Toaster } from "sonner";
 import { SITE } from "@/constants/site";
+import { ThemeProvider } from "@/components/providers/theme-provider";
 import { LenisProvider } from "@/components/providers/lenis-provider";
 import { CommandPaletteProvider } from "@/components/providers/command-palette";
+import { CustomCursor } from "@/components/providers/cursor";
 import { Navbar } from "@/components/layout/navbar";
 import { Footer } from "@/components/layout/footer";
+import { ScrollProgress } from "@/components/layout/scroll-progress";
+import { PageLoader } from "@/components/layout/page-loader";
+import { NoiseOverlay } from "@/components/ui/backgrounds";
 import { JsonLd } from "@/components/seo/json-ld";
 import "./globals.css";
 
@@ -75,27 +80,39 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html
       lang="en"
+      suppressHydrationWarning
       className={`${shoulders.variable} ${publicSans.variable} ${geistMono.variable}`}
     >
       <body className="antialiased">
-        <CommandPaletteProvider>
-          <LenisProvider>
-            <JsonLd />
-            <Navbar />
-            <main id="main">{children}</main>
-            <Footer />
-            <Toaster
-              position="bottom-right"
-              toastOptions={{
-                classNames: {
-                  toast:
-                    "!bg-surface !border-line !text-ink !rounded-2xl !backdrop-blur-xl !shadow-[0_20px_60px_-30px_rgba(0,0,0,0.7)]",
-                  description: "!text-ink-muted",
-                },
-              }}
-            />
-          </LenisProvider>
-        </CommandPaletteProvider>
+        <ThemeProvider
+          attribute="data-theme"
+          defaultTheme="dark"
+          enableSystem
+          disableTransitionOnChange
+        >
+          <CommandPaletteProvider>
+            <LenisProvider>
+              <JsonLd />
+              <PageLoader />
+              <NoiseOverlay />
+              <CustomCursor />
+              <ScrollProgress />
+              <Navbar />
+              <main id="main">{children}</main>
+              <Footer />
+              <Toaster
+                position="bottom-right"
+                toastOptions={{
+                  classNames: {
+                    toast:
+                      "!bg-surface !border-line !text-ink !rounded-2xl !backdrop-blur-xl !shadow-[0_20px_60px_-30px_rgba(0,0,0,0.7)]",
+                    description: "!text-ink-muted",
+                  },
+                }}
+              />
+            </LenisProvider>
+          </CommandPaletteProvider>
+        </ThemeProvider>
       </body>
     </html>
   );

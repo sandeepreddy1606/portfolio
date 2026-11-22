@@ -109,3 +109,11 @@ export const VENTURE: Venture = {
     },
   ],
 };
+
+/** Headline numbers for the section's stat strip. */
+export const VENTURE_STATS = [
+  { value: 8, label: "Services in the org" },
+  { value: 4, label: "Product surfaces" },
+  { value: 10, label: "Auth endpoints" },
+  { value: 2, label: "Engineers" },
+];

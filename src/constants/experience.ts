@@ -66,6 +66,36 @@ export const TIMELINE: TimelineEntry[] = [
     ],
   },
   {
+    id: "agents-2026",
+    period: "Jul 2026 — Present",
+    title: "Autonomous agents & applied automation",
+    organisation: "Independent",
+    kind: "milestone",
+    summary:
+      "Building agents that take real actions in the world rather than just producing text, with a hard rule that anything irreversible runs on deterministic logic.",
+    highlights: [
+      "Shipped Auto Apply: a Telegram-sourced job-application agent that parses posts with pure regex and keyword heuristics, then sends templated SMTP applications or programmatically fills and submits Google Forms.",
+      "Designed a human-in-the-loop review dashboard with five terminal states — review, applied, failed, manual, skipped — so no application leaves without an audit trail.",
+      "Packaged the whole system as one Next.js process that serves the dashboard and API and runs the Telegram listener and career-page scan.",
+    ],
+    stack: ["Next.js", "TypeScript", "MTProto", "PostgreSQL", "SQLite"],
+  },
+  {
+    id: "platform-2026",
+    period: "Feb 2026 — Jun 2026",
+    title: "Full-stack platform engineering",
+    organisation: "Independent",
+    kind: "milestone",
+    summary:
+      "Moving from feature builds to platform concerns: authentication, authorisation, rate limiting and observability as first-class requirements.",
+    highlights: [
+      "Built BlogX end to end — Next.js 15 frontend on Vercel, NestJS API on Railway, Prisma against serverless Postgres on Neon.",
+      "Implemented JWT access plus refresh-token rotation with role-based access control separating the public feed from the private dashboard.",
+      "Added request rate limiting and structured logging so production failures are diagnosable rather than guessable.",
+    ],
+    stack: ["Next.js 15", "NestJS", "Prisma", "PostgreSQL", "TypeScript", "Docker"],
+  },
+  {
     id: "beetloop-intern",
     period: "Mar 2026 — Apr 2026",
     title: "Full Stack & AI/ML Developer Intern",
@@ -80,6 +110,36 @@ export const TIMELINE: TimelineEntry[] = [
       "Wrote unit tests for new service methods and reproduced reported defects locally, contributing fixes that shipped in the production release.",
     ],
     stack: ["React", "Spring Boot", "LLM APIs", "Git", "Unit testing"],
+  },
+  {
+    id: "genai-2025",
+    period: "Oct 2025 — Jan 2026",
+    title: "Generative AI application development",
+    organisation: "Independent",
+    kind: "milestone",
+    summary:
+      "A run of four LLM products, each testing a different integration pattern — structured generation, document synthesis, transcript reasoning and multilingual output.",
+    highlights: [
+      "AI Mini-Course Generator: turns any topic into structured lessons, runnable code examples, curated video suggestions and a scored quiz.",
+      "AI Document Assistant: section-level generation and refinement that exports real .docx and .pptx files, with Firestore keeping the full refinement history.",
+      "YouTube Summarizer Bot: transcript extraction with contextual follow-up questions and answers in English, Hindi, Kannada and Tamil.",
+    ],
+    stack: ["Gemini API", "FastAPI", "React", "MongoDB", "Firebase", "Telegram Bot API"],
+  },
+  {
+    id: "mobile-2025",
+    period: "Jul 2025 — Sep 2025",
+    title: "Cross-platform product suite",
+    organisation: "Independent",
+    kind: "milestone",
+    summary:
+      "Three Flutter applications sharing one Firebase backend, covering every side of a food-delivery marketplace.",
+    highlights: [
+      "Built the customer ordering app, the delivery-partner app and the admin panel as separate clients on a shared data model.",
+      "Handled the realtime coordination problem — order state has to stay consistent across three apps watching the same documents.",
+      "Roughly 890 KB of Dart across the suite, with shared auth and messaging built on Firebase.",
+    ],
+    stack: ["Flutter", "Dart", "Firebase", "Cloud Firestore", "FCM"],
   },
   {
     id: "hirola-2025",
@@ -97,6 +157,21 @@ export const TIMELINE: TimelineEntry[] = [
       "Translated requirements into technical designs with product managers and data engineers.",
     ],
     stack: ["Python", "scikit-learn", "Pandas", "NumPy", "SVM", "K-Means"],
+  },
+  {
+    id: "ml-2025",
+    period: "Feb 2025 — Jul 2025",
+    title: "Applied ML, computer vision & NLP",
+    organisation: "Independent",
+    kind: "milestone",
+    summary:
+      "Foundational work on the model side — recognition, classification and speech — evaluated properly rather than demoed on happy paths.",
+    highlights: [
+      "Built a face recognition system with a registration flow, an embedding store and evaluation against LFW verification pairs.",
+      "Trained a toxic-message classifier and shipped a local Whisper transcription pipeline with GPU detection and fallback.",
+      "Developed a symptom-driven diagnosis engine in PHP/MySQL spanning ten body regions with full admin CRUD and user feedback.",
+    ],
+    stack: ["Python", "OpenCV", "PyTorch", "Whisper", "scikit-learn", "PHP", "MySQL"],
   },
   {
     id: "jpmc-2024",
