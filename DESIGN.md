@@ -60,8 +60,14 @@ Colour carries meaning, the same everywhere:
   lever is pulled over and lit amber. The footer repeats the numbers.
 - **Register**: the Ask assistant as numbered ledger entries.
 - **Interlocking table**: decisions as a table, guard and why it holds.
-- **Timetable rows**: lists (archive, experience, achievements) are ruled
-  rows, not card grids.
+- **Edmondson tickets** (experience): one cream card ticket per role or
+  phase on the green panel. Class band across the top (amber role, green
+  independent, brass program), serial number, the period in a dating-press
+  box, a tear line with notches, then role, organisation and summary. "Turn
+  over" expands the highlights in place. The current role is a full-width
+  season ticket and the first entry a full-width platform ticket; both open.
+- **Timetable rows**: other lists (archive, achievements) are ruled rows, not
+  card grids.
 
 ## Rules
 
