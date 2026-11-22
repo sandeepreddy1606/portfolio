@@ -8,7 +8,6 @@ import { SITE } from "@/constants/site";
 import { SpotlightCard } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { CountUp } from "@/components/ui/animated-text";
 import { fadeUp, stagger, viewportOnce } from "@/lib/motion";
 import { formatDate } from "@/lib/utils";
 
@@ -28,13 +27,6 @@ const LANGUAGE_COLORS: Record<string, string> = {
 const colorFor = (name: string) => LANGUAGE_COLORS[name] ?? "var(--accent)";
 
 export function GithubView({ stats }: { stats: GithubStats }) {
-  const cards = [
-    { label: "Public repos", value: stats.publicRepos },
-    { label: "Stars earned", value: stats.totalStars },
-    { label: "Followers", value: stats.followers },
-    { label: "Languages", value: stats.languages.length },
-  ];
-
   return (
     <motion.div
       variants={stagger(0.08)}
@@ -43,16 +35,10 @@ export function GithubView({ stats }: { stats: GithubStats }) {
       viewport={viewportOnce}
       className="flex flex-col gap-6"
     >
-      <motion.div variants={fadeUp} className="grid grid-cols-2 gap-4 lg:grid-cols-4">
-        {cards.map((card) => (
-          <SpotlightCard key={card.label} glow={false} className="flex flex-col gap-1 p-5 sm:p-6">
-            <span className="font-display from-ink to-ink-subtle bg-gradient-to-br bg-clip-text text-3xl font-bold text-transparent sm:text-4xl">
-              <CountUp value={card.value} />
-            </span>
-            <span className="text-ink-subtle text-xs">{card.label}</span>
-          </SpotlightCard>
-        ))}
-      </motion.div>
+      <motion.p variants={fadeUp} className="prose-lead max-w-[62ch]">
+        <strong>{stats.publicRepos} public repositories</strong> across {stats.languages.length}{" "}
+        languages, all built in the open.
+      </motion.p>
 
       <div className="grid gap-6 lg:grid-cols-[1fr_1.3fr]">
         <motion.div variants={fadeUp}>
@@ -63,14 +49,10 @@ export function GithubView({ stats }: { stats: GithubStats }) {
             </p>
 
             <div className="bg-surface-2 mt-6 flex h-2.5 overflow-hidden rounded-full">
-              {stats.languages.map((language, index) => (
-                <motion.span
+              {stats.languages.map((language) => (
+                <span
                   key={language.name}
-                  initial={{ width: 0 }}
-                  whileInView={{ width: `${language.percentage}%` }}
-                  viewport={viewportOnce}
-                  transition={{ duration: 0.9, delay: index * 0.08, ease: [0.16, 1, 0.3, 1] }}
-                  style={{ background: colorFor(language.name) }}
+                  style={{ width: `${language.percentage}%`, background: colorFor(language.name) }}
                   title={`${language.name} — ${language.percentage}%`}
                 />
               ))}
@@ -159,12 +141,12 @@ export function GithubSkeleton() {
     <div className="flex animate-pulse flex-col gap-6">
       <div className="grid grid-cols-2 gap-4 lg:grid-cols-4">
         {Array.from({ length: 4 }).map((_, i) => (
-          <div key={i} className="border-line bg-surface/40 h-28 rounded-3xl border" />
+          <div key={i} className="border-line bg-surface/40 h-28 rounded-[14px] border" />
         ))}
       </div>
       <div className="grid gap-6 lg:grid-cols-[1fr_1.3fr]">
-        <div className="border-line bg-surface/40 h-80 rounded-3xl border" />
-        <div className="border-line bg-surface/40 h-80 rounded-3xl border" />
+        <div className="border-line bg-surface/40 h-80 rounded-[14px] border" />
+        <div className="border-line bg-surface/40 h-80 rounded-[14px] border" />
       </div>
     </div>
   );
@@ -173,7 +155,7 @@ export function GithubSkeleton() {
 /** Rendered when the API is unreachable or rate limited. */
 export function GithubFallback() {
   return (
-    <div className="border-line flex flex-col items-center gap-5 rounded-3xl border border-dashed px-6 py-16 text-center">
+    <div className="border-line flex flex-col items-center gap-5 rounded-[14px] border border-dashed px-6 py-16 text-center">
       <Github className="text-ink-subtle size-8" />
       <p className="text-ink-muted max-w-sm text-sm">
         Live GitHub stats are unavailable right now — the public API rate limit is shared and

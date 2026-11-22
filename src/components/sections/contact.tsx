@@ -61,7 +61,6 @@ export function Contact() {
     <Section id="contact">
       <div className="container-page">
         <SectionHeading
-          eyebrow="Contact"
           title="Let's build something worth shipping."
           description="Open to full-time roles and freelance work. Tell me what you're building and I'll reply with something more useful than a thank-you note."
         />
@@ -92,13 +91,11 @@ export function Contact() {
                 <button
                   type="button"
                   onClick={() => copy(SITE.email)}
-                  className="border-line bg-surface-2/50 hover:border-accent/50 group mt-6 flex w-full items-center gap-3 rounded-2xl border px-4 py-3.5 text-left transition-colors duration-300"
+                  className="border-line bg-surface-2/50 hover:border-accent/50 group mt-6 flex w-full items-center gap-3 rounded-md border px-4 py-3.5 text-left transition-colors duration-300"
                   aria-label={`Copy email address ${SITE.email}`}
                 >
                   <span className="min-w-0 flex-1">
-                    <span className="text-ink-subtle block font-mono text-[10px] tracking-[0.18em] uppercase">
-                      Email
-                    </span>
+                    <span className="text-ink-subtle block text-sm font-semibold">Email</span>
                     <span className="block truncate font-mono text-sm">{SITE.email}</span>
                   </span>
                   {copied ? (
@@ -110,12 +107,10 @@ export function Contact() {
 
                 <a
                   href={`tel:${SITE.phoneHref}`}
-                  className="border-line bg-surface-2/50 hover:border-accent/50 group mt-3 flex w-full items-center gap-3 rounded-2xl border px-4 py-3.5 transition-colors duration-300"
+                  className="border-line bg-surface-2/50 hover:border-accent/50 group mt-3 flex w-full items-center gap-3 rounded-md border px-4 py-3.5 transition-colors duration-300"
                 >
                   <span className="min-w-0 flex-1">
-                    <span className="text-ink-subtle block font-mono text-[10px] tracking-[0.18em] uppercase">
-                      Phone
-                    </span>
+                    <span className="text-ink-subtle block text-sm font-semibold">Phone</span>
                     <span className="block truncate font-mono text-sm">{SITE.phone}</span>
                   </span>
                   <Phone className="text-ink-subtle group-hover:text-ink size-4 shrink-0 transition-colors" />
@@ -130,9 +125,7 @@ export function Contact() {
 
             <motion.div variants={slideInLeft}>
               <SpotlightCard glow={false} className="p-6">
-                <h3 className="text-ink-subtle font-mono text-[11px] tracking-[0.2em] uppercase">
-                  Elsewhere
-                </h3>
+                <h3 className="text-ink-subtle text-sm font-semibold">Elsewhere</h3>
                 <ul className="mt-4 flex flex-col gap-1">
                   {SOCIALS.map((social) => (
                     <li key={social.label}>
@@ -270,9 +263,7 @@ function Field({
 }) {
   return (
     <label className="flex flex-col gap-2">
-      <span className="text-ink-subtle font-mono text-[11px] tracking-[0.16em] uppercase">
-        {label}
-      </span>
+      <span className="text-ink-subtle text-sm font-semibold">{label}</span>
       {children}
       <AnimatePresence>
         {error && (

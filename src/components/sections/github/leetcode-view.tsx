@@ -8,9 +8,7 @@ import { SITE } from "@/constants/site";
 import { SpotlightCard } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import { CountUp } from "@/components/ui/animated-text";
 import { fadeUp, stagger, viewportOnce } from "@/lib/motion";
-import { formatCompact } from "@/lib/utils";
 
 const DIFFICULTY = [
   { key: "easy", label: "Easy", color: "#22C55E" },
@@ -36,14 +34,11 @@ export function LeetcodeView({ stats }: { stats: LeetcodeStats }) {
               <SiLeetcode className="text-accent size-4" />
               <h3 className="text-sm font-semibold tracking-tight">Problem solving</h3>
             </div>
-            <Badge variant="mono">Global rank {formatCompact(stats.ranking)}</Badge>
           </div>
 
           <div className="mt-7 flex flex-wrap items-end gap-8">
             <div className="flex flex-col">
-              <span className="font-display from-ink to-ink-subtle bg-gradient-to-br bg-clip-text text-5xl font-bold text-transparent">
-                <CountUp value={total} />
-              </span>
+              <span className="font-display text-5xl font-extrabold tabular-nums">{total}</span>
               <span className="text-ink-subtle mt-1 text-xs">Problems solved</span>
             </div>
 
@@ -55,14 +50,13 @@ export function LeetcodeView({ stats }: { stats: LeetcodeStats }) {
 
           {/* Difficulty split — proportional bar plus an explicit legend. */}
           <div className="bg-surface-2 mt-7 flex h-2.5 overflow-hidden rounded-full">
-            {DIFFICULTY.map((tier, index) => (
-              <motion.span
+            {DIFFICULTY.map((tier) => (
+              <span
                 key={tier.key}
-                initial={{ width: 0 }}
-                whileInView={{ width: `${(stats.solved[tier.key] / total) * 100}%` }}
-                viewport={viewportOnce}
-                transition={{ duration: 0.9, delay: index * 0.1, ease: [0.16, 1, 0.3, 1] }}
-                style={{ background: tier.color }}
+                style={{
+                  width: `${(stats.solved[tier.key] / total) * 100}%`,
+                  background: tier.color,
+                }}
                 title={`${tier.label} — ${stats.solved[tier.key]}`}
               />
             ))}
@@ -82,9 +76,7 @@ export function LeetcodeView({ stats }: { stats: LeetcodeStats }) {
             ))}
           </ul>
 
-          <h4 className="text-ink-subtle mt-8 font-mono text-[10px] tracking-[0.2em] uppercase">
-            Strongest topics
-          </h4>
+          <h4 className="text-ink-subtle mt-8 text-sm font-semibold">Strongest topics</h4>
           <ul className="mt-4 flex flex-1 flex-wrap content-start gap-1.5">
             {stats.topics.map((topic) => (
               <li key={topic.name}>
@@ -110,21 +102,16 @@ export function LeetcodeView({ stats }: { stats: LeetcodeStats }) {
           <p className="text-ink-subtle mt-1 text-xs">Where the algorithm work actually happens.</p>
 
           <ul className="mt-6 flex flex-col gap-4">
-            {stats.languages.map((language, index) => (
+            {stats.languages.map((language) => (
               <li key={language.name} className="flex flex-col gap-1.5">
                 <div className="flex items-baseline justify-between gap-3 text-sm">
                   <span className="text-ink-muted">{language.name}</span>
                   <span className="font-mono text-xs font-semibold">{language.solved}</span>
                 </div>
                 <div className="bg-surface-2 h-1.5 overflow-hidden rounded-full">
-                  <motion.div
-                    initial={{ width: 0 }}
-                    whileInView={{
-                      width: `${(language.solved / stats.languages[0].solved) * 100}%`,
-                    }}
-                    viewport={viewportOnce}
-                    transition={{ duration: 0.9, delay: index * 0.08, ease: [0.16, 1, 0.3, 1] }}
-                    className="from-accent to-cyan h-full rounded-full bg-gradient-to-r"
+                  <div
+                    style={{ width: `${(language.solved / stats.languages[0].solved) * 100}%` }}
+                    className="bg-accent h-full rounded-full"
                   />
                 </div>
               </li>
@@ -133,9 +120,7 @@ export function LeetcodeView({ stats }: { stats: LeetcodeStats }) {
 
           {stats.badges.length > 0 && (
             <>
-              <h4 className="text-ink-subtle mt-8 font-mono text-[10px] tracking-[0.2em] uppercase">
-                Badges
-              </h4>
+              <h4 className="text-ink-subtle mt-8 text-sm font-semibold">Badges</h4>
               <ul className="mt-4 flex flex-1 flex-col gap-2.5">
                 {stats.badges.map((badge) => (
                   <li
@@ -167,9 +152,7 @@ function Stat({ icon: Icon, value, label }: { icon: typeof Flame; value: number;
     <div className="flex flex-col gap-1">
       <span className="flex items-center gap-1.5">
         <Icon className="text-accent size-4" />
-        <span className="font-display text-2xl font-bold">
-          <CountUp value={value} />
-        </span>
+        <span className="font-display text-2xl font-bold">{value}</span>
       </span>
       <span className="text-ink-subtle text-xs">{label}</span>
     </div>
@@ -179,15 +162,15 @@ function Stat({ icon: Icon, value, label }: { icon: typeof Flame; value: number;
 export function LeetcodeSkeleton() {
   return (
     <div className="grid animate-pulse gap-6 lg:grid-cols-[1.3fr_1fr]">
-      <div className="border-line bg-surface/40 h-96 rounded-3xl border" />
-      <div className="border-line bg-surface/40 h-96 rounded-3xl border" />
+      <div className="border-line bg-surface/40 h-96 rounded-[14px] border" />
+      <div className="border-line bg-surface/40 h-96 rounded-[14px] border" />
     </div>
   );
 }
 
 export function LeetcodeFallback() {
   return (
-    <div className="border-line flex flex-col items-center gap-5 rounded-3xl border border-dashed px-6 py-14 text-center">
+    <div className="border-line flex flex-col items-center gap-5 rounded-[14px] border border-dashed px-6 py-14 text-center">
       <SiLeetcode className="text-ink-subtle size-7" />
       <p className="text-ink-muted max-w-sm text-sm">
         Live LeetCode stats could not be loaded right now.

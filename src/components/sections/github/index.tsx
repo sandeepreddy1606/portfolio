@@ -27,11 +27,10 @@ async function LeetcodeData() {
  */
 export function ProofSection() {
   return (
-    <Section id="proof" className="bg-surface/40 border-line border-y">
+    <Section id="proof" className="enamel">
       <div className="container-page">
         <SectionHeading
-          eyebrow="Proof"
-          title="Check the claims."
+          title="Check the claims"
           description="Paste a job description to see which requirements have evidence here. Below it: GitHub and LeetCode, pulled live and refreshed hourly, and the achievements behind them."
         />
 
@@ -51,7 +50,7 @@ export function ProofSection() {
           </Suspense>
         </div>
 
-        <h3 className="mt-20 text-2xl font-semibold">Achievements</h3>
+        <h3 className="mt-20 text-4xl font-extrabold uppercase">Achievements</h3>
         <AchievementList className="mt-8" />
       </div>
     </Section>

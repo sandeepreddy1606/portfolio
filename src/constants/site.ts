@@ -82,8 +82,9 @@ export const SOCIALS: SocialLink[] = [
 ];
 
 export const NAV_ITEMS: NavItem[] = [
+  { label: "Ask", href: "/#register", sectionId: "register" },
   { label: "Work", href: "/#work", sectionId: "work" },
-  { label: "How I build", href: "/#principles", sectionId: "principles" },
+  { label: "Rules", href: "/#principles", sectionId: "principles" },
   { label: "Experience", href: "/#experience", sectionId: "experience" },
   { label: "Proof", href: "/#proof", sectionId: "proof" },
   { label: "Writing", href: "/blog" },

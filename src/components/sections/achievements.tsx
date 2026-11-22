@@ -1,68 +1,44 @@
-"use client";
-
-import { motion } from "framer-motion";
-import { Award, BookOpen, ExternalLink, GitPullRequest, ScrollText, Trophy } from "lucide-react";
-import { cn } from "@/lib/utils";
-import { SpotlightCard } from "@/components/ui/card";
-import { Badge } from "@/components/ui/badge";
+import { ArrowUpRight } from "lucide-react";
 import { ACHIEVEMENTS } from "@/constants/achievements";
-import type { Achievement } from "@/types";
-import { fadeUp, stagger, viewportOnce } from "@/lib/motion";
+import { cn } from "@/lib/utils";
 
-const KIND_ICON: Record<Achievement["kind"], typeof Award> = {
-  certification: ScrollText,
-  program: Award,
-  "open-source": GitPullRequest,
-  award: Trophy,
-  research: BookOpen,
-};
-
-/** The achievement grid, rendered inside the Proof section. */
+/**
+ * Achievements as a register: one ruled line each, dated, with the issuer and
+ * a link to the evidence where one exists. A table, not a card grid — these
+ * are records to scan, not tiles to admire.
+ */
 export function AchievementList({ className }: { className?: string }) {
   if (ACHIEVEMENTS.length === 0) return null;
 
   return (
-    <motion.ul
-      variants={stagger(0.07)}
-      initial="hidden"
-      whileInView="visible"
-      viewport={viewportOnce}
-      className={cn("grid gap-5 sm:grid-cols-2 lg:grid-cols-3", className)}
-    >
-      {ACHIEVEMENTS.map((item) => {
-        const Icon = KIND_ICON[item.kind];
-        return (
-          <motion.li key={item.id} variants={fadeUp}>
-            <SpotlightCard className="flex h-full flex-col p-6">
-              <div className="flex items-start justify-between gap-3">
-                <span className="border-line bg-surface-2 text-accent grid size-10 place-items-center rounded-xl border">
-                  <Icon className="size-4.5" />
-                </span>
-                <Badge variant="mono">{item.date}</Badge>
-              </div>
-
-              <h3 className="mt-5 text-base leading-snug font-semibold tracking-tight">
-                {item.title}
-              </h3>
-              <p className="text-accent mt-1 text-xs font-medium">{item.issuer}</p>
-              <p className="text-ink-muted mt-3 flex-1 text-sm leading-relaxed">
-                {item.description}
-              </p>
-
-              {item.href && (
+    <ul className={cn("border-line-strong border-t", className)}>
+      {ACHIEVEMENTS.map((item) => (
+        <li
+          key={item.id}
+          className="border-line grid gap-2 border-b py-6 md:grid-cols-[9rem_minmax(0,4fr)_minmax(0,6fr)] md:gap-8"
+        >
+          <p className="text-ink-subtle font-mono text-sm tabular-nums">{item.date}</p>
+          <div>
+            <h4 className="font-sans text-lg leading-snug font-bold tracking-normal normal-case">
+              {item.href ? (
                 <a
                   href={item.href}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="text-ink-muted hover:text-ink mt-5 inline-flex items-center gap-1.5 text-xs transition-colors"
+                  className="hover:text-accent inline-flex items-start gap-1 transition-colors"
                 >
-                  <ExternalLink className="size-3.5" /> View
+                  {item.title}
+                  <ArrowUpRight className="mt-1 size-4 shrink-0 opacity-60" aria-hidden />
                 </a>
+              ) : (
+                item.title
               )}
-            </SpotlightCard>
-          </motion.li>
-        );
-      })}
-    </motion.ul>
+            </h4>
+            <p className="text-brass mt-1 text-sm font-semibold">{item.issuer}</p>
+          </div>
+          <p className="text-ink-muted text-[15px] leading-relaxed">{item.description}</p>
+        </li>
+      ))}
+    </ul>
   );
 }

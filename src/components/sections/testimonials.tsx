@@ -28,7 +28,6 @@ export function Testimonials() {
     <Section id="testimonials" className="bg-surface/20 border-line border-y">
       <div className="container-page">
         <SectionHeading
-          eyebrow="Testimonials"
           title="What people I've worked with say."
           align="center"
           className="mx-auto items-center"

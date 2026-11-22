@@ -2,19 +2,15 @@
 
 import * as React from "react";
 import { useRouter } from "next/navigation";
-import { useTheme } from "next-themes";
 import { Command } from "cmdk";
 import {
   ArrowUpRight,
   Copy,
   FileText,
   Home,
-  Laptop,
   Mail,
-  Moon,
   MessageSquare,
   PenLine,
-  Sun,
   type LucideIcon,
 } from "lucide-react";
 import { toast } from "sonner";
@@ -81,7 +77,7 @@ function Item({
     <Command.Item
       value={label}
       onSelect={onSelect}
-      className="text-ink-muted data-[selected=true]:bg-surface-2 data-[selected=true]:text-ink flex cursor-pointer items-center gap-3 rounded-xl px-3 py-2.5 text-sm transition-colors select-none"
+      className="text-ink-muted data-[selected=true]:bg-surface-2 data-[selected=true]:text-ink flex cursor-pointer items-center gap-3 rounded-md px-3 py-2.5 text-sm transition-colors select-none"
     >
       <Icon className="size-4 opacity-70" />
       <span className="flex-1">{label}</span>
@@ -98,7 +94,6 @@ function Item({
 function CommandPalette() {
   const { open, setOpen } = useCommandPalette();
   const router = useRouter();
-  const { setTheme } = useTheme();
   const [search, setSearch] = React.useState("");
 
   const run = React.useCallback(
@@ -120,7 +115,7 @@ function CommandPalette() {
       overlayClassName="fixed inset-0 z-[90] bg-canvas/60 backdrop-blur-sm"
       contentClassName="fixed top-[18%] left-1/2 z-[91] w-[min(92vw,34rem)] -translate-x-1/2"
     >
-      <div className="glass border-line-strong overflow-hidden rounded-2xl shadow-[0_32px_90px_-30px_rgba(0,0,0,0.65)]">
+      <div className="bg-surface-2 border-brass/50 overflow-hidden rounded-[14px] border shadow-[0_32px_90px_-30px_rgba(0,0,0,0.65)]">
         <Command.Input
           value={search}
           onValueChange={setSearch}
@@ -143,7 +138,7 @@ function CommandPalette() {
                     setSearch("");
                   })
                 }
-                className="text-ink-muted data-[selected=true]:bg-surface-2 data-[selected=true]:text-ink flex cursor-pointer items-center gap-3 rounded-xl px-3 py-2.5 text-sm transition-colors select-none"
+                className="text-ink-muted data-[selected=true]:bg-surface-2 data-[selected=true]:text-ink flex cursor-pointer items-center gap-3 rounded-md px-3 py-2.5 text-sm transition-colors select-none"
               >
                 <MessageSquare className="text-accent size-4" />
                 <span className="flex-1 truncate">Ask: {search.trim()}</span>
@@ -208,16 +203,6 @@ function CommandPalette() {
                 onSelect={() => run(() => window.open(social.href, "_blank", "noopener"))}
               />
             ))}
-          </Command.Group>
-
-          <Command.Group heading="Theme" className={GROUP}>
-            <Item icon={Moon} label="Dark theme" onSelect={() => run(() => setTheme("dark"))} />
-            <Item icon={Sun} label="Light theme" onSelect={() => run(() => setTheme("light"))} />
-            <Item
-              icon={Laptop}
-              label="System theme"
-              onSelect={() => run(() => setTheme("system"))}
-            />
           </Command.Group>
         </Command.List>
 

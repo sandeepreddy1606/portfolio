@@ -1,8 +1,7 @@
 import type { Metadata, Viewport } from "next";
-import { Bricolage_Grotesque, Geist_Mono, Newsreader } from "next/font/google";
+import { Big_Shoulders, Geist_Mono, Public_Sans } from "next/font/google";
 import { Toaster } from "sonner";
 import { SITE } from "@/constants/site";
-import { ThemeProvider } from "@/components/providers/theme-provider";
 import { LenisProvider } from "@/components/providers/lenis-provider";
 import { CommandPaletteProvider } from "@/components/providers/command-palette";
 import { Navbar } from "@/components/layout/navbar";
@@ -10,17 +9,16 @@ import { Footer } from "@/components/layout/footer";
 import { JsonLd } from "@/components/seo/json-ld";
 import "./globals.css";
 
-const bricolage = Bricolage_Grotesque({
-  variable: "--font-bricolage",
+const shoulders = Big_Shoulders({
+  variable: "--font-shoulders",
   subsets: ["latin"],
   display: "swap",
-  axes: ["opsz", "wdth"],
+  weight: ["600", "700", "800"],
 });
-const newsreader = Newsreader({
-  variable: "--font-newsreader",
+const publicSans = Public_Sans({
+  variable: "--font-public",
   subsets: ["latin"],
   display: "swap",
-  style: ["normal", "italic"],
 });
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
@@ -62,8 +60,8 @@ export const metadata: Metadata = {
 
 export const viewport: Viewport = {
   themeColor: [
-    { media: "(prefers-color-scheme: light)", color: "#edf1f3" },
-    { media: "(prefers-color-scheme: dark)", color: "#0f1b26" },
+    { media: "(prefers-color-scheme: light)", color: "#2c3b35" },
+    { media: "(prefers-color-scheme: dark)", color: "#2c3b35" },
   ],
   width: "device-width",
   initialScale: 1,
@@ -73,35 +71,27 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   return (
     <html
       lang="en"
-      suppressHydrationWarning
-      className={`${bricolage.variable} ${newsreader.variable} ${geistMono.variable}`}
+      className={`${shoulders.variable} ${publicSans.variable} ${geistMono.variable}`}
     >
       <body className="antialiased">
-        <ThemeProvider
-          attribute="data-theme"
-          defaultTheme="dark"
-          enableSystem
-          disableTransitionOnChange
-        >
-          <CommandPaletteProvider>
-            <LenisProvider>
-              <JsonLd />
-              <Navbar />
-              <main id="main">{children}</main>
-              <Footer />
-              <Toaster
-                position="bottom-right"
-                toastOptions={{
-                  classNames: {
-                    toast:
-                      "!bg-surface !border-line !text-ink !rounded-2xl !backdrop-blur-xl !shadow-[0_20px_60px_-30px_rgba(0,0,0,0.7)]",
-                    description: "!text-ink-muted",
-                  },
-                }}
-              />
-            </LenisProvider>
-          </CommandPaletteProvider>
-        </ThemeProvider>
+        <CommandPaletteProvider>
+          <LenisProvider>
+            <JsonLd />
+            <Navbar />
+            <main id="main">{children}</main>
+            <Footer />
+            <Toaster
+              position="bottom-right"
+              toastOptions={{
+                classNames: {
+                  toast:
+                    "!bg-surface !border-line !text-ink !rounded-2xl !backdrop-blur-xl !shadow-[0_20px_60px_-30px_rgba(0,0,0,0.7)]",
+                  description: "!text-ink-muted",
+                },
+              }}
+            />
+          </LenisProvider>
+        </CommandPaletteProvider>
       </body>
     </html>
   );

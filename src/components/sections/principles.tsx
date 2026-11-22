@@ -2,10 +2,10 @@ import Link from "next/link";
 import { Section, SectionHeading } from "@/components/ui/section";
 
 /**
- * Three working principles, each tied to the place it can be checked. Not a
- * sequence, so no numbering — the proof link is the structure.
+ * The rule book. Signal boxes run on numbered rules, so these are numbered —
+ * the number is how a rule gets cited, not decoration.
  */
-const PRINCIPLES = [
+const RULES = [
   {
     title: "Rules where actions are irreversible, models where approximation is fine.",
     body: "Auto Apply sends real email in my name, so its parser is regex and keyword heuristics — traceable to the characters that produced every decision. The course generator writes lessons, where approximately right is still useful, so a model does the work inside a fixed schema.",
@@ -13,7 +13,7 @@ const PRINCIPLES = [
   },
   {
     title: "Design the failure path before the happy path.",
-    body: "In Velobite's auth service a failed login rolls back its transaction, which would also roll back the attempt counter — so the counter commits on its own. Password reset returns the same response for real and unknown accounts. These are the details that decide whether a system is safe, and they're decided first.",
+    body: "In Velobite's auth service a failed login rolls back its transaction, which would also roll back the attempt counter — so the counter commits on its own. Password reset returns the same response for real and unknown accounts. These details decide whether a system is safe, so they're decided first.",
     proof: { label: "Read the Velobite decisions", href: "/work/velobite" },
   },
   {
@@ -25,25 +25,39 @@ const PRINCIPLES = [
 
 export function Principles() {
   return (
-    <Section id="principles" className="bg-surface/40 border-line border-y">
+    <Section id="principles" className="enamel">
       <div className="container-page">
-        <SectionHeading eyebrow="How I build" title="Three habits that show up in every project." />
+        <SectionHeading
+          title="The rule book"
+          description="Three rules every project on this site follows."
+        />
 
-        <div className="mt-14 grid gap-12 lg:grid-cols-3 lg:gap-10">
-          {PRINCIPLES.map((p) => (
-            <article key={p.title} className="flex flex-col">
-              <h3 className="text-xl leading-snug font-semibold sm:text-2xl">{p.title}</h3>
-              <p className="prose-serif mt-4 flex-1 text-[1.0625rem]">{p.body}</p>
-              <Link
-                href={p.proof.href}
-                transitionTypes={["nav-forward"]}
-                className="text-verify mt-6 w-fit text-sm font-medium underline-offset-4 hover:underline"
-              >
-                {p.proof.label}
-              </Link>
-            </article>
+        <ol className="mt-14">
+          {RULES.map((rule, i) => (
+            <li
+              key={rule.title}
+              className="border-line-strong grid gap-4 border-t py-10 md:grid-cols-[7rem_minmax(0,5fr)_minmax(0,6fr)] md:gap-10"
+            >
+              <p className="font-display text-5xl font-extrabold">
+                <span className="sr-only">Rule </span>
+                {i + 1}
+              </p>
+              <h3 className="font-sans text-xl leading-snug font-bold tracking-normal normal-case sm:text-2xl">
+                {rule.title}
+              </h3>
+              <div>
+                <p className="prose-lead text-ink-muted">{rule.body}</p>
+                <Link
+                  href={rule.proof.href}
+                  transitionTypes={["nav-forward"]}
+                  className="text-verify mt-4 inline-block text-sm font-bold underline-offset-4 hover:underline"
+                >
+                  {rule.proof.label}
+                </Link>
+              </div>
+            </li>
           ))}
-        </div>
+        </ol>
       </div>
     </Section>
   );

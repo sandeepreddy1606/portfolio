@@ -5,13 +5,10 @@ import { AnimatePresence, motion } from "framer-motion";
 import { ExternalLink, Search, SlidersHorizontal, X } from "lucide-react";
 import { SiGithub as Github } from "react-icons/si";
 import { Section, SectionHeading } from "@/components/ui/section";
-import { Badge } from "@/components/ui/badge";
 import { PROJECTS, PROJECT_FILTERS } from "@/constants/projects";
 import type { Project } from "@/types";
 import { cn } from "@/lib/utils";
 import { EASE, fadeUp, viewportOnce } from "@/lib/motion";
-import { useSpotlight } from "@/hooks/use-spotlight";
-import { ProjectCover } from "./project-cover";
 import { ProjectModal } from "./project-modal";
 
 export function Projects() {
@@ -41,8 +38,7 @@ export function Projects() {
     <Section id="archive" className="pt-32 sm:pt-40 lg:pt-44">
       <div className="container-page">
         <SectionHeading
-          eyebrow="Archive"
-          title={`Every project, ${PROJECTS.length} of them.`}
+          title={`All ${PROJECTS.length} projects`}
           description="Each one maps to a public repository with a README you can follow. Search by name or by technology, and open a project for the full breakdown."
         />
 
@@ -62,7 +58,7 @@ export function Projects() {
                 onChange={(event) => setQuery(event.target.value)}
                 placeholder="Search projects, stacks, ideas…"
                 aria-label="Search projects"
-                className="border-line bg-surface/50 placeholder:text-ink-subtle focus:border-accent/60 h-12 w-full rounded-full border pr-4 pl-11 text-sm backdrop-blur-md transition-colors duration-300 outline-none"
+                className="border-line-strong bg-surface-2 placeholder:text-ink-subtle focus:border-accent h-12 w-full rounded-md border pr-4 pl-11 text-[15px] transition-colors duration-300 outline-none"
               />
               {query && (
                 <button
@@ -99,10 +95,10 @@ export function Projects() {
           </div>
         </motion.div>
 
-        <motion.ul layout className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
+        <motion.ul layout className="border-line-strong mt-10 border-t">
           <AnimatePresence mode="popLayout">
             {filtered.map((project) => (
-              <ProjectCard
+              <ProjectRow
                 key={project.slug}
                 project={project}
                 onOpen={() => setSelected(project)}
@@ -115,7 +111,7 @@ export function Projects() {
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
-            className="border-line mt-10 flex flex-col items-center gap-4 rounded-3xl border border-dashed px-6 py-20 text-center"
+            className="border-line mt-10 flex flex-col items-center gap-4 rounded-md border border-dashed px-6 py-20 text-center"
           >
             <p className="text-ink-muted text-sm">Nothing matches that combination.</p>
             {hasFilters && (
@@ -154,7 +150,7 @@ function FilterChip({
       onClick={onClick}
       aria-pressed={active}
       className={cn(
-        "relative shrink-0 rounded-full px-3.5 py-1.5 text-xs font-medium whitespace-nowrap transition-colors duration-300",
+        "relative shrink-0 rounded-md px-3 py-1.5 text-sm font-semibold whitespace-nowrap transition-colors duration-300",
         active ? "text-accent-ink" : "text-ink-muted hover:text-ink border-line border",
       )}
     >
@@ -162,7 +158,7 @@ function FilterChip({
         <motion.span
           layoutId="project-filter"
           transition={{ type: "spring", stiffness: 400, damping: 34 }}
-          className="bg-accent absolute inset-0 rounded-full"
+          className="bg-accent absolute inset-0 rounded-md"
         />
       )}
       <span className="relative z-10">{label}</span>
@@ -170,65 +166,39 @@ function FilterChip({
   );
 }
 
-function ProjectCard({ project, onOpen }: { project: Project; onOpen: () => void }) {
-  const { ref, onMouseMove } = useSpotlight<HTMLLIElement>();
-
+/** One timetable line: year, project, stack, and where to go next. */
+function ProjectRow({ project, onOpen }: { project: Project; onOpen: () => void }) {
   return (
     <motion.li
-      ref={ref}
-      onMouseMove={onMouseMove}
       layout
-      layoutId={`project-${project.slug}`}
-      initial={{ opacity: 0, scale: 0.95 }}
-      animate={{ opacity: 1, scale: 1 }}
-      exit={{ opacity: 0, scale: 0.95 }}
-      transition={{ duration: 0.4, ease: EASE }}
-      className="spotlight border-glow group border-line bg-surface/40 relative flex flex-col overflow-hidden rounded-3xl border backdrop-blur-xl transition-[transform,border-color,box-shadow] duration-500 ease-[var(--ease-out-expo)] hover:-translate-y-1.5 hover:shadow-[0_30px_80px_-45px_rgba(0,0,0,0.7)]"
+      initial={{ opacity: 0 }}
+      animate={{ opacity: 1 }}
+      exit={{ opacity: 0 }}
+      transition={{ duration: 0.25, ease: EASE }}
+      className="border-line grid gap-3 border-b py-7 md:grid-cols-[4.5rem_minmax(0,5fr)_minmax(0,4fr)_auto] md:items-start md:gap-8"
     >
-      <button
-        type="button"
-        onClick={onOpen}
-        aria-label={`Open details for ${project.title}`}
-        className="flex flex-1 flex-col text-left"
-      >
-        <motion.div layoutId={`cover-${project.slug}`} className="relative h-40 overflow-hidden">
-          <ProjectCover
-            project={project}
-            className="size-full transition-transform duration-700 ease-[var(--ease-out-expo)] group-hover:scale-[1.06]"
-          />
-          {project.featured && (
-            <span className="glass absolute top-3 left-3 rounded-full px-2.5 py-1 font-mono text-[10px] tracking-wider uppercase">
-              Featured
-            </span>
-          )}
-        </motion.div>
-
-        <div className="flex flex-1 flex-col gap-3 p-6">
-          <div className="flex items-start justify-between gap-3">
-            <h3 className="text-lg leading-tight font-semibold tracking-tight">{project.title}</h3>
-            <span className="text-ink-subtle shrink-0 font-mono text-xs">{project.year}</span>
-          </div>
-
-          <p className="text-ink-muted flex-1 text-sm leading-relaxed">{project.tagline}</p>
-
-          <div className="flex flex-wrap gap-1.5 pt-1">
-            {project.stack.slice(0, 4).map((tech) => (
-              <Badge key={tech}>{tech}</Badge>
-            ))}
-            {project.stack.length > 4 && (
-              <Badge variant="outline">+{project.stack.length - 4}</Badge>
-            )}
-          </div>
-        </div>
-      </button>
-
-      <div className="border-line flex items-center gap-1 border-t px-4 py-3">
+      <span className="text-ink-subtle pt-1 font-mono text-sm tabular-nums">{project.year}</span>
+      <div className="min-w-0">
+        <h3 className="text-3xl font-extrabold uppercase">
+          <button
+            type="button"
+            onClick={onOpen}
+            className="hover:text-accent text-left transition-colors"
+            aria-label={`Open details for ${project.title}`}
+          >
+            {project.title}
+          </button>
+        </h3>
+        <p className="text-ink-muted mt-2 max-w-[52ch] leading-relaxed">{project.tagline}</p>
+      </div>
+      <p className="text-ink-subtle pt-1 text-sm leading-relaxed">{project.stack.join(", ")}</p>
+      <div className="flex items-center gap-1 md:pt-0.5">
         {project.repo && (
           <a
             href={project.repo}
             target="_blank"
             rel="noopener noreferrer"
-            className="text-ink-muted hover:text-ink hover:bg-surface-2 inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-xs transition-colors"
+            className="text-ink-muted hover:text-ink hover:bg-surface-2 inline-flex items-center gap-1.5 rounded-md px-2.5 py-1.5 text-sm transition-colors"
           >
             <Github className="size-3.5" /> Code
           </a>
@@ -238,7 +208,7 @@ function ProjectCard({ project, onOpen }: { project: Project; onOpen: () => void
             href={project.demo}
             target="_blank"
             rel="noopener noreferrer"
-            className="text-ink-muted hover:text-ink hover:bg-surface-2 inline-flex items-center gap-1.5 rounded-full px-3 py-1.5 text-xs transition-colors"
+            className="text-ink-muted hover:text-ink hover:bg-surface-2 inline-flex items-center gap-1.5 rounded-md px-2.5 py-1.5 text-sm transition-colors"
           >
             <ExternalLink className="size-3.5" /> Live
           </a>
@@ -246,9 +216,9 @@ function ProjectCard({ project, onOpen }: { project: Project; onOpen: () => void
         <button
           type="button"
           onClick={onOpen}
-          className="text-accent ml-auto rounded-full px-3 py-1.5 text-xs font-medium"
+          className="text-accent rounded-md px-2.5 py-1.5 text-sm font-bold"
         >
-          Case study →
+          Details
         </button>
       </div>
     </motion.li>

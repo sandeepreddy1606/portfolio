@@ -31,7 +31,7 @@ export function Answer({ text, streaming }: { text: string; streaming: boolean }
 
   return (
     <div className="flex flex-col gap-4">
-      <div className="prose-serif flex flex-col gap-3 text-[1.0625rem] leading-relaxed">
+      <div className="prose-lead flex flex-col gap-3 text-[1.0625rem] leading-relaxed">
         {paragraphs.map((p, i) => (
           <p key={i} className="whitespace-pre-line">
             {p}

@@ -1,100 +1,78 @@
-"use client";
-
 import Link from "next/link";
-import { motion } from "framer-motion";
 import { ArrowUp } from "lucide-react";
 import { NAV_ITEMS, SITE, SOCIALS } from "@/constants/site";
-import { GridBackground } from "@/components/ui/backgrounds";
-import { fadeUp, stagger, viewportOnce } from "@/lib/motion";
-import { Magnetic } from "@/components/ui/magnetic";
 
+/**
+ * The end of the line: the instrument-face band that closes every page, with
+ * the same lever numbering as the top frame so a destination keeps its number.
+ */
 export function Footer() {
+  const year = new Date().getFullYear();
   return (
-    <footer className="border-line relative overflow-hidden border-t">
-      <GridBackground className="opacity-60" />
-
-      <div className="container-page relative z-10 py-16 sm:py-20">
-        <motion.div
-          variants={stagger(0.08)}
-          initial="hidden"
-          whileInView="visible"
-          viewport={viewportOnce}
-          className="grid gap-12 lg:grid-cols-[1.4fr_1fr_1fr]"
-        >
-          <motion.div variants={fadeUp} className="flex flex-col gap-5">
-            <Link href="/" className="flex items-center gap-2.5" aria-label={`${SITE.name} — home`}>
-              <span className="border-ink text-ink font-display grid size-9 place-items-center rounded-md border-[1.5px] text-[13px] font-bold">
+    <footer className="bg-surface-2 border-brass/40 border-t">
+      <div className="container-page py-16 sm:py-20">
+        <div className="grid gap-12 lg:grid-cols-[1.4fr_1fr_1fr]">
+          <div className="flex flex-col gap-5">
+            <Link href="/" className="flex items-center gap-3" aria-label={`${SITE.name} — home`}>
+              <span className="border-brass text-brass font-display grid size-9 place-items-center rounded-sm border-2 text-base font-extrabold">
                 {SITE.initials}
               </span>
-              <span className="text-sm font-semibold tracking-tight">{SITE.shortName}</span>
+              <span className="font-semibold">{SITE.name}</span>
             </Link>
-            <p className="text-ink-muted max-w-sm text-sm leading-relaxed">{SITE.tagline}</p>
-            <div className="flex items-center gap-2">
-              {SOCIALS.map((social) => (
-                <a
-                  key={social.label}
-                  href={social.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  aria-label={social.label}
-                  className="border-line bg-surface/50 text-ink-muted hover:text-ink hover:border-accent/50 grid size-10 place-items-center rounded-full border backdrop-blur-md transition-all duration-300 hover:-translate-y-0.5"
-                >
-                  <social.icon className="size-4" />
-                </a>
-              ))}
-            </div>
-          </motion.div>
+            <p className="text-ink-muted max-w-sm text-[15px] leading-relaxed">{SITE.tagline}</p>
+          </div>
 
-          <motion.nav variants={fadeUp} aria-label="Footer" className="flex flex-col gap-4">
-            <h2 className="text-ink-subtle text-sm font-normal">Navigate</h2>
-            <ul className="flex flex-col gap-2.5">
-              {NAV_ITEMS.map((item) => (
+          <nav aria-label="Footer">
+            <h2 className="text-ink-subtle font-sans text-sm font-semibold tracking-normal normal-case">
+              Levers
+            </h2>
+            <ul className="mt-4 flex flex-col gap-2.5">
+              {NAV_ITEMS.map((item, i) => (
                 <li key={item.href}>
                   <Link
                     href={item.href}
-                    className="text-ink-muted hover:text-ink text-sm transition-colors duration-200"
+                    className="text-ink-muted hover:text-ink text-[15px] transition-colors"
                   >
+                    <span className="text-brass mr-2 tabular-nums">{i + 1}</span>
                     {item.label}
                   </Link>
                 </li>
               ))}
             </ul>
-          </motion.nav>
+          </nav>
 
-          <motion.div variants={fadeUp} className="flex flex-col gap-4">
-            <h2 className="text-ink-subtle text-sm font-normal">Elsewhere</h2>
-            <ul className="flex flex-col gap-2.5">
-              {SOCIALS.map((social) => (
-                <li key={social.label}>
+          <div>
+            <h2 className="text-ink-subtle font-sans text-sm font-semibold tracking-normal normal-case">
+              Elsewhere
+            </h2>
+            <ul className="mt-4 flex flex-col gap-2.5">
+              {SOCIALS.map((s) => (
+                <li key={s.label}>
                   <a
-                    href={social.href}
-                    target="_blank"
+                    href={s.href}
+                    target={s.href.startsWith("http") ? "_blank" : undefined}
                     rel="noopener noreferrer"
-                    className="text-ink-muted hover:text-ink text-sm transition-colors duration-200"
+                    className="text-ink-muted hover:text-ink inline-flex items-center gap-2.5 text-[15px] transition-colors"
                   >
-                    {social.handle}
+                    <s.icon className="size-4" aria-hidden />
+                    {s.handle}
                   </a>
                 </li>
               ))}
             </ul>
-          </motion.div>
-        </motion.div>
+          </div>
+        </div>
 
-        <div className="border-line mt-14 flex flex-col-reverse items-center justify-between gap-6 border-t pt-8 sm:flex-row">
-          <p className="text-ink-subtle text-center text-xs sm:text-left">
-            © {new Date().getFullYear()} {SITE.name}. Built with Next.js, Tailwind and Framer
-            Motion.
+        <div className="border-line mt-14 flex flex-col gap-4 border-t pt-6 text-sm sm:flex-row sm:items-center sm:justify-between">
+          <p className="text-ink-subtle">
+            © {year} {SITE.name}. Built with Next.js.
           </p>
-
-          <Magnetic strength={0.3}>
-            <a
-              href="#hero"
-              className="border-line bg-surface/50 text-ink-muted hover:text-ink hover:border-accent/50 group inline-flex items-center gap-2 rounded-full border py-2 pr-4 pl-3 text-xs backdrop-blur-md transition-colors duration-300"
-            >
-              <ArrowUp className="size-3.5 transition-transform duration-300 group-hover:-translate-y-0.5" />
-              Back to top
-            </a>
-          </Magnetic>
+          <a
+            href="#main"
+            className="text-ink-muted hover:text-ink inline-flex items-center gap-2 transition-colors"
+          >
+            <ArrowUp className="size-4" aria-hidden /> Back to the top
+          </a>
         </div>
       </div>
     </footer>

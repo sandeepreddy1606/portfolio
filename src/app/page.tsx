@@ -1,5 +1,6 @@
 import dynamic from "next/dynamic";
 import { Hero } from "@/components/sections/hero";
+import { Register } from "@/components/sections/register";
 import { SelectedWork } from "@/components/sections/selected-work";
 import { Principles } from "@/components/sections/principles";
 import { ProofSection } from "@/components/sections/github";
@@ -15,14 +16,15 @@ const Testimonials = dynamic(() =>
 const Contact = dynamic(() => import("@/components/sections/contact").then((m) => m.Contact));
 
 /**
- * Six sections, in the order a reader decides: what he argues (hero), whether
- * the work backs it (work, principles), where it happened (experience), whether
- * it checks out (proof), and how to reach him (contact).
+ * The page alternates the panel (green) and enamel (cream) faces: the claim
+ * and its live proof, the register, the work, the rule book, the record, the
+ * evidence, and how to reach him.
  */
 export default function HomePage() {
   return (
     <>
       <Hero />
+      <Register />
       <SelectedWork />
       <Principles />
       <Experience />

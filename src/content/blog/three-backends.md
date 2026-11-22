@@ -19,7 +19,7 @@ What it costs you: nothing enforces structure. FastAPI will happily let you writ
 
 ## NestJS: when the business logic is the hard part
 
-BlogX has a public feed, a private dashboard, JWT access tokens with refresh rotation, role-based access control and rate limiting. Almost none of that is interesting computation — it is *rules about who can do what*, and there are a lot of them.
+BlogX has a public feed, a private dashboard, JWT access tokens with refresh rotation, role-based access control and rate limiting. Almost none of that is interesting computation — it is _rules about who can do what_, and there are a lot of them.
 
 This is exactly what NestJS is for. Guards, interceptors and modules give authorisation a place to live that is not scattered through route handlers. Combined with Prisma, the types run continuously from the database schema to the API response, and a wrong field name is a compile error rather than a 500 in production.
 

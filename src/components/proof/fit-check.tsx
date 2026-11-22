@@ -2,7 +2,6 @@
 
 import * as React from "react";
 import Link from "next/link";
-import { Check, Minus } from "lucide-react";
 import { checkFit, type FitResult } from "@/lib/fit";
 import { SITE } from "@/constants/site";
 
@@ -24,7 +23,7 @@ export function FitCheck() {
     : "";
 
   return (
-    <div className="border-line-strong bg-surface/60 rounded-xl border">
+    <div className="border-line-strong bg-elevated rounded-md border">
       <form
         className="flex flex-col gap-3 p-5 sm:p-6"
         onSubmit={(e) => {
@@ -32,7 +31,7 @@ export function FitCheck() {
           setResult(checkFit(jd));
         }}
       >
-        <label htmlFor="fit-jd" className="text-lg font-semibold">
+        <label htmlFor="fit-jd" className="font-display text-3xl font-extrabold uppercase">
           Check a role against this portfolio
         </label>
         <p id="fit-jd-help" className="text-ink-muted text-sm">
@@ -53,7 +52,7 @@ export function FitCheck() {
           <button
             type="submit"
             disabled={jd.trim().length < 20}
-            className="bg-accent text-accent-ink rounded-md px-4 py-2 text-sm font-medium transition-opacity disabled:opacity-40"
+            className="bg-accent text-accent-ink rounded-md px-4 py-2.5 text-sm font-bold transition-opacity disabled:opacity-40"
           >
             Check the fit
           </button>
@@ -91,7 +90,10 @@ export function FitCheck() {
               <ul className="mt-5 flex flex-col gap-3">
                 {result.matched.map((m) => (
                   <li key={m.name} className="flex gap-3 text-sm">
-                    <Check className="text-verify mt-0.5 size-4 shrink-0" aria-hidden />
+                    <span
+                      aria-hidden
+                      className="bg-lamp-green mt-1.5 size-2.5 shrink-0 rounded-full"
+                    />
                     <span className="min-w-0">
                       <span className="text-ink font-medium">{m.name}</span>
                       <span className="text-ink-subtle"> — </span>
@@ -115,7 +117,10 @@ export function FitCheck() {
                 ))}
                 {result.missing.map((name) => (
                   <li key={name} className="flex gap-3 text-sm">
-                    <Minus className="text-ink-subtle mt-0.5 size-4 shrink-0" aria-hidden />
+                    <span
+                      aria-hidden
+                      className="bg-lamp-red mt-1.5 size-2.5 shrink-0 rounded-full"
+                    />
                     <span className="text-ink-subtle">
                       {name} — not shown on this site. Worth asking about directly.
                     </span>

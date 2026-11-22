@@ -5,9 +5,8 @@ import { ViewTransition } from "react";
 import { ArrowLeft, ArrowRight, ArrowUpRight } from "lucide-react";
 import { CASE_STUDIES, getCaseStudy } from "@/constants/case-studies";
 import { SITE } from "@/constants/site";
-import { FlowDiagram } from "@/components/work/flow-diagram";
+import { Mimic } from "@/components/work/mimic";
 import { ParserSandbox } from "@/components/work/parser-sandbox";
-import { GridBackground } from "@/components/ui/backgrounds";
 
 type Params = { params: Promise<{ slug: string }> };
 
@@ -64,8 +63,6 @@ export default async function CaseStudyPage({ params }: Params) {
           type="application/ld+json"
           dangerouslySetInnerHTML={{ __html: JSON.stringify(ld) }}
         />
-        <GridBackground className="h-[70vh]" />
-
         <div className="container-page relative">
           <Link
             href="/#work"
@@ -81,35 +78,23 @@ export default async function CaseStudyPage({ params }: Params) {
               {study.status && <span className="text-verify">{study.status}</span>}
             </p>
             <ViewTransition name={`case-title-${study.slug}`} share="case-morph">
-              <h1
-                className="mt-3 w-fit text-[clamp(2.75rem,8vw,6rem)] leading-[0.92] font-semibold tracking-[-0.03em]"
-                style={{ fontVariationSettings: '"wdth" 78, "opsz" 96' }}
-              >
+              <h1 className="mt-3 w-fit text-[clamp(3.25rem,9vw,7rem)] leading-[0.86] font-extrabold uppercase">
                 {study.title}
               </h1>
             </ViewTransition>
-            <p className="prose-serif mt-6 max-w-[56ch] text-[1.375rem] sm:text-2xl">
+            <p className="prose-lead text-ink-muted mt-6 max-w-[56ch] text-xl sm:text-[1.375rem]">
               {study.thesis}
             </p>
           </header>
 
-          <dl className="border-line mt-12 grid gap-6 border-y py-6 sm:grid-cols-3">
-            {study.facts.map((f) => (
-              <div key={f.label}>
-                <dd className="font-display text-4xl font-semibold">{f.value}</dd>
-                <dt className="text-ink-muted mt-1 text-sm">{f.label}</dt>
-              </div>
-            ))}
-          </dl>
-
           <div className="mt-16 grid gap-16 lg:grid-cols-[minmax(0,1fr)_16rem] lg:gap-20">
             <div className="flex min-w-0 flex-col gap-16">
               <Block title="The problem">
-                <p className="prose-serif max-w-[64ch]">{study.problem}</p>
+                <p className="prose-lead max-w-[64ch]">{study.problem}</p>
               </Block>
 
               <Block title="Constraints">
-                <ul className="prose-serif flex max-w-[64ch] list-disc flex-col gap-2 pl-5">
+                <ul className="prose-lead flex max-w-[64ch] list-disc flex-col gap-2 pl-5">
                   {study.constraints.map((c) => (
                     <li key={c}>{c}</li>
                   ))}
@@ -117,7 +102,9 @@ export default async function CaseStudyPage({ params }: Params) {
               </Block>
 
               <Block title="How it flows">
-                <FlowDiagram nodes={study.flow} caption={study.flowCaption} />
+                <div className="border-brass/50 bg-surface-2 rounded-[14px] border p-5 sm:p-7">
+                  <Mimic nodes={study.flow} caption={study.flowCaption} />
+                </div>
               </Block>
 
               {study.sandbox && (
@@ -131,18 +118,47 @@ export default async function CaseStudyPage({ params }: Params) {
               )}
 
               <Block title="Decisions I'd defend">
-                <ul className="flex flex-col gap-8">
-                  {study.decisions.map((d) => (
-                    <li key={d.title} className="border-verify max-w-[64ch] border-l-2 pl-5">
-                      <h3 className="text-xl font-semibold">{d.title}</h3>
-                      <p className="prose-serif mt-2 text-[1.0625rem]">{d.body}</p>
-                    </li>
-                  ))}
-                </ul>
+                {/* An interlocking table: each guard, and why it holds. */}
+                <div className="enamel overflow-hidden rounded-md">
+                  <table className="w-full border-collapse text-left">
+                    <thead>
+                      <tr className="border-line-strong border-b-2">
+                        <th className="px-5 py-3 text-sm font-bold">Guard</th>
+                        <th className="hidden px-5 py-3 text-sm font-bold md:table-cell">
+                          Why it holds
+                        </th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      {study.decisions.map((d) => (
+                        <tr
+                          key={d.title}
+                          className="border-line border-b align-top last:border-b-0"
+                        >
+                          <td className="px-5 py-5 md:w-[38%]">
+                            <span className="flex gap-3">
+                              <span
+                                aria-hidden
+                                className="bg-lamp-green mt-1.5 size-2.5 shrink-0 rounded-full"
+                              />
+                              <span className="font-bold">{d.title}</span>
+                            </span>
+                            <p className="text-ink-muted mt-2 text-[15px] leading-relaxed md:hidden">
+                              {d.body}
+                            </p>
+                          </td>
+                          <td className="text-ink-muted hidden px-5 py-5 text-[15px] leading-relaxed md:table-cell">
+                            {d.body}
+                          </td>
+                        </tr>
+                      ))}
+                    </tbody>
+                  </table>
+                </div>
               </Block>
 
               <Block title="Where it landed">
-                <ul className="prose-serif flex max-w-[64ch] list-disc flex-col gap-2 pl-5">
+                <ul className="prose-lead flex max-w-[64ch] list-disc flex-col gap-2 pl-5">
                   {study.outcome.map((o) => (
                     <li key={o}>{o}</li>
                   ))}
@@ -152,7 +168,25 @@ export default async function CaseStudyPage({ params }: Params) {
 
             <aside className="flex flex-col gap-10 lg:sticky lg:top-28 lg:self-start">
               <div>
-                <h2 className="text-ink-subtle text-sm font-normal">Stack</h2>
+                <h2 className="text-ink-subtle font-sans text-sm font-semibold tracking-normal normal-case">
+                  Particulars
+                </h2>
+                <dl className="mt-3 flex flex-col gap-2">
+                  {study.facts.map((f) => (
+                    <div key={f.label} className="flex items-baseline gap-2 text-sm">
+                      <dt className="sr-only">{f.label}</dt>
+                      <dd className="text-ink font-mono font-semibold tabular-nums">{f.value}</dd>
+                      <span className="text-ink-muted" aria-hidden>
+                        {f.label}
+                      </span>
+                    </div>
+                  ))}
+                </dl>
+              </div>
+              <div>
+                <h2 className="text-ink-subtle font-sans text-sm font-semibold tracking-normal normal-case">
+                  Stack
+                </h2>
                 <ul className="mt-3 flex flex-wrap gap-1.5">
                   {study.stack.map((s) => (
                     <li
@@ -165,7 +199,9 @@ export default async function CaseStudyPage({ params }: Params) {
                 </ul>
               </div>
               <div>
-                <h2 className="text-ink-subtle text-sm font-normal">Links</h2>
+                <h2 className="text-ink-subtle font-sans text-sm font-semibold tracking-normal normal-case">
+                  Links
+                </h2>
                 <ul className="mt-3 flex flex-col gap-2">
                   {study.links.map((l) => (
                     <li key={l.href}>
@@ -194,7 +230,7 @@ export default async function CaseStudyPage({ params }: Params) {
               className="group flex flex-col gap-2"
             >
               <span className="text-ink-subtle text-sm">Next case study</span>
-              <span className="group-hover:text-accent inline-flex items-center gap-3 text-3xl font-semibold transition-colors">
+              <span className="font-display group-hover:text-accent inline-flex items-center gap-3 text-5xl font-extrabold uppercase transition-colors">
                 {next.title}
                 <ArrowRight className="size-6 transition-transform group-hover:translate-x-1" />
               </span>
@@ -212,7 +248,7 @@ export default async function CaseStudyPage({ params }: Params) {
 function Block({ title, children }: { title: string; children: React.ReactNode }) {
   return (
     <section>
-      <h2 className="mb-5 text-2xl font-semibold sm:text-3xl">{title}</h2>
+      <h2 className="mb-6 text-4xl font-extrabold uppercase sm:text-5xl">{title}</h2>
       {children}
     </section>
   );

@@ -20,7 +20,6 @@ export function Experience() {
     <Section id="experience">
       <div className="container-page">
         <SectionHeading
-          eyebrow="Experience"
           title="Where the work happened."
           description="Roles first, then the independent phases behind the projects — each anchored to real repositories and their history."
         />
@@ -46,7 +45,7 @@ export function Experience() {
                   {entry.organisation}
                   {entry.location ? `, ${entry.location}` : ""}
                 </p>
-                <p className="prose-serif mt-4 text-[1.0625rem]">{entry.summary}</p>
+                <p className="prose-lead mt-4 text-[1.0625rem]">{entry.summary}</p>
                 <ul className="text-ink-muted mt-4 flex list-disc flex-col gap-2 pl-5 text-[0.9375rem] leading-relaxed">
                   {entry.highlights.map((h) => (
                     <li key={h}>{h}</li>

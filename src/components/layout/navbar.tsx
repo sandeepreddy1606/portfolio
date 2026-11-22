@@ -10,7 +10,6 @@ import { EASE } from "@/lib/motion";
 import { NAV_ITEMS, SECTION_IDS, SITE, SOCIALS } from "@/constants/site";
 import { useScrollSpy } from "@/hooks/use-scroll-spy";
 import { useCommandPalette } from "@/components/providers/command-palette";
-import { ThemeToggle } from "./theme-toggle";
 import { Button } from "@/components/ui/button";
 
 export function Navbar() {
@@ -48,7 +47,7 @@ export function Navbar() {
     <>
       <a
         href="#main"
-        className="bg-accent text-accent-ink sr-only z-[95] rounded-full px-4 py-2 text-sm font-medium focus:not-sr-only focus:fixed focus:top-4 focus:left-4"
+        className="bg-accent text-accent-ink sr-only z-[95] rounded-md px-4 py-2 text-sm font-medium focus:not-sr-only focus:fixed focus:top-4 focus:left-4"
       >
         Skip to content
       </a>
@@ -62,9 +61,7 @@ export function Navbar() {
         <div
           className={cn(
             "transition-all duration-500 ease-[var(--ease-out-expo)]",
-            scrolled
-              ? "border-line bg-canvas/70 border-b backdrop-blur-xl backdrop-saturate-150"
-              : "border-b border-transparent",
+            scrolled ? "border-brass/40 bg-surface-2 border-b" : "border-b border-transparent",
           )}
         >
           <nav
@@ -76,7 +73,7 @@ export function Navbar() {
               className="group flex items-center gap-2.5"
               aria-label={`${SITE.name} — home`}
             >
-              <span className="border-ink text-ink font-display group-hover:border-accent group-hover:text-accent grid size-9 place-items-center rounded-md border-[1.5px] text-[13px] font-bold transition-colors duration-300">
+              <span className="border-brass text-brass font-display group-hover:text-accent group-hover:border-accent grid size-9 place-items-center rounded-sm border-2 text-base font-extrabold transition-colors duration-300">
                 {SITE.initials}
               </span>
               <span className="hidden text-sm font-semibold tracking-tight sm:block">
@@ -84,28 +81,36 @@ export function Navbar() {
               </span>
             </Link>
 
-            {/* Desktop nav with a shared-layout pill behind the active item. */}
-            <ul className="border-line bg-surface/40 hidden items-center gap-0.5 rounded-full border p-1 backdrop-blur-md xl:flex">
-              {NAV_ITEMS.map((item) => {
+            {/* Lever frame: each destination is a lever; the section you're
+                in shows its lever pulled over, lit amber. */}
+            <ul className="hidden items-end gap-1 xl:flex">
+              {NAV_ITEMS.map((item, i) => {
                 const active = isActive(item);
                 return (
                   <li key={item.href}>
                     <Link
                       href={item.href}
                       aria-current={active ? "page" : undefined}
-                      className={cn(
-                        "relative block rounded-full px-3.5 py-1.5 text-[13px] font-medium transition-colors duration-300",
-                        active ? "text-ink" : "text-ink-muted hover:text-ink",
-                      )}
+                      className="group flex flex-col items-center gap-1.5 px-3 py-1"
                     >
-                      {active && (
-                        <motion.span
-                          layoutId="nav-pill"
-                          transition={{ type: "spring", stiffness: 380, damping: 32 }}
-                          className="bg-surface-2 border-line absolute inset-0 rounded-full border shadow-[0_2px_10px_-4px_rgba(0,0,0,0.3)]"
-                        />
-                      )}
-                      <span className="relative z-10">{item.label}</span>
+                      <span
+                        aria-hidden
+                        className={cn(
+                          "h-4 w-1.5 origin-bottom rounded-full transition-[transform,background-color] duration-300 ease-[var(--ease-out-expo)]",
+                          active
+                            ? "bg-accent rotate-[24deg]"
+                            : "bg-ink/70 group-hover:bg-ink group-hover:rotate-[10deg]",
+                        )}
+                      />
+                      <span
+                        className={cn(
+                          "text-[13px] font-semibold whitespace-nowrap transition-colors",
+                          active ? "text-ink" : "text-ink-muted group-hover:text-ink",
+                        )}
+                      >
+                        <span className="text-brass mr-1 tabular-nums">{i + 1}</span>
+                        {item.label}
+                      </span>
                     </Link>
                   </li>
                 );
@@ -117,15 +122,13 @@ export function Navbar() {
                 type="button"
                 onClick={toggle}
                 aria-label="Open command palette"
-                className="border-line bg-surface/60 text-ink-subtle hover:text-ink hover:border-line-strong hidden items-center gap-2 rounded-full border py-1.5 pr-2 pl-3 text-xs backdrop-blur-md transition-colors duration-300 sm:flex"
+                className="border-line-strong text-ink-muted hover:text-ink hover:border-ink hidden items-center gap-2 rounded-md border py-1.5 pr-2 pl-3 text-xs transition-colors duration-300 sm:flex"
               >
                 <span>Search or ask</span>
-                <kbd className="border-line bg-surface flex items-center gap-0.5 rounded border px-1.5 py-0.5 font-mono text-[10px]">
+                <kbd className="border-line bg-surface-2 flex items-center gap-0.5 rounded border px-1.5 py-0.5 font-mono text-[10px]">
                   <CommandIcon className="size-2.5" />K
                 </kbd>
               </button>
-
-              <ThemeToggle />
 
               <Button asChild size="sm" variant="accent" className="hidden sm:inline-flex">
                 <Link href="/#contact">Get in touch</Link>
@@ -136,7 +139,7 @@ export function Navbar() {
                 onClick={() => setMenuOpen(true)}
                 aria-label="Open menu"
                 aria-expanded={menuOpen}
-                className="border-line bg-surface/60 text-ink grid size-9 place-items-center rounded-full border backdrop-blur-md xl:hidden"
+                className="border-line-strong text-ink grid size-9 place-items-center rounded-md border xl:hidden"
               >
                 <Menu className="size-4" />
               </button>
@@ -186,7 +189,7 @@ function MobileDrawer({
             animate={{ x: 0 }}
             exit={{ x: "100%" }}
             transition={{ type: "spring", stiffness: 300, damping: 34 }}
-            className="glass fixed inset-y-0 right-0 z-[86] flex w-[min(88vw,22rem)] flex-col xl:hidden"
+            className="bg-surface-2 border-brass/40 fixed inset-y-0 right-0 z-[86] flex w-[min(88vw,22rem)] flex-col border-l xl:hidden"
           >
             <div className="border-line flex h-16 items-center justify-between border-b px-6">
               <span className="text-ink-subtle text-sm">Menu</span>
@@ -194,7 +197,7 @@ function MobileDrawer({
                 type="button"
                 onClick={onClose}
                 aria-label="Close menu"
-                className="border-line bg-surface/60 grid size-9 place-items-center rounded-full border"
+                className="border-line-strong grid size-9 place-items-center rounded-md border"
               >
                 <X className="size-4" />
               </button>
@@ -213,7 +216,7 @@ function MobileDrawer({
                       href={item.href}
                       onClick={onClose}
                       className={cn(
-                        "flex items-center justify-between rounded-2xl px-4 py-3.5 text-base font-medium transition-colors",
+                        "flex items-center justify-between rounded-md px-4 py-3.5 text-base font-medium transition-colors",
                         isActive(item)
                           ? "bg-surface-2 text-ink"
                           : "text-ink-muted hover:bg-surface-2/60",
@@ -240,7 +243,7 @@ function MobileDrawer({
                     target="_blank"
                     rel="noopener noreferrer"
                     aria-label={social.label}
-                    className="border-line bg-surface/60 text-ink-muted hover:text-ink grid size-10 place-items-center rounded-full border transition-colors"
+                    className="border-line-strong text-ink-muted hover:text-ink grid size-10 place-items-center rounded-md border transition-colors"
                   >
                     <social.icon className="size-4" />
                   </a>

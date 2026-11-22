@@ -21,7 +21,7 @@ export function SpotlightCard({ className, glow = true, children, ...props }: Sp
       ref={ref}
       onMouseMove={onMouseMove}
       className={cn(
-        "spotlight group border-line bg-surface/50 relative overflow-hidden rounded-3xl border backdrop-blur-xl",
+        "spotlight group border-line bg-surface/50 relative overflow-hidden rounded-[14px] border",
         "transition-[transform,border-color,box-shadow] duration-500 ease-[var(--ease-out-expo)]",
         "hover:border-line-strong hover:shadow-[0_24px_70px_-40px_rgba(0,0,0,0.6)]",
         glow && "border-glow",

@@ -8,7 +8,6 @@ import type { Project } from "@/types";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { EASE } from "@/lib/motion";
-import { ProjectCover } from "./project-cover";
 
 /**
  * Expanded case study. Shares `layoutId` with the grid card so the cover and
@@ -50,23 +49,18 @@ export function ProjectModal({
             role="dialog"
             aria-modal="true"
             aria-labelledby={`project-title-${project.slug}`}
-            className="glass border-line-strong relative flex max-h-[88vh] w-full max-w-3xl flex-col overflow-hidden rounded-3xl shadow-[0_40px_120px_-40px_rgba(0,0,0,0.75)]"
+            className="enamel border-brass relative flex max-h-[88vh] w-full max-w-3xl flex-col overflow-hidden rounded-[14px] border-2 shadow-[0_40px_120px_-40px_rgba(0,0,0,0.75)]"
           >
-            <motion.div
-              layoutId={`cover-${project.slug}`}
-              className="relative h-40 shrink-0 sm:h-52"
-            >
-              <ProjectCover project={project} className="size-full" />
-              <div className="from-surface/90 absolute inset-0 bg-gradient-to-t to-transparent" />
+            <div className="flex shrink-0 justify-end px-4 pt-4">
               <button
                 type="button"
                 onClick={onClose}
                 aria-label="Close project details"
-                className="glass text-ink absolute top-4 right-4 grid size-9 place-items-center rounded-full"
+                className="border-line-strong hover:border-ink grid size-9 place-items-center rounded-md border transition-colors"
               >
                 <X className="size-4" />
               </button>
-            </motion.div>
+            </div>
 
             <div
               // Lenis must not hijack the wheel inside a scrollable overlay.
@@ -105,9 +99,7 @@ export function ProjectModal({
                   </div>
                 )}
 
-                <h4 className="text-ink-subtle mt-8 font-mono text-[11px] tracking-[0.2em] uppercase">
-                  What it does
-                </h4>
+                <h4 className="text-ink-subtle mt-8 text-sm font-semibold">What it does</h4>
                 <ul className="mt-4 grid gap-2.5 sm:grid-cols-2">
                   {project.features.map((feature) => (
                     <li
@@ -120,9 +112,7 @@ export function ProjectModal({
                   ))}
                 </ul>
 
-                <h4 className="text-ink-subtle mt-8 font-mono text-[11px] tracking-[0.2em] uppercase">
-                  Built with
-                </h4>
+                <h4 className="text-ink-subtle mt-8 text-sm font-semibold">Built with</h4>
                 <div className="mt-4 flex flex-wrap gap-1.5">
                   {project.stack.map((tech) => (
                     <Badge key={tech} variant="outline" size="md">

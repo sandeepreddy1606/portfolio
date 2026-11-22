@@ -11,7 +11,8 @@ export const springSnappy: Transition = { type: "spring", stiffness: 320, dampin
  * blur-and-slide, so the page reads as content arriving, not as an effect.
  */
 export const fadeUp: Variants = {
-  hidden: { opacity: 0, y: 8 },
+  // Visible by default: a reveal that fails to fire must never hide content.
+  hidden: { opacity: 1, y: 8 },
   visible: {
     opacity: 1,
     y: 0,

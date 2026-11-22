@@ -15,13 +15,13 @@ The obvious design pipes each message into a language model and asks for structu
 
 "Most of the time" is the problem. A parser that is 97% accurate across a hundred job posts sends three wrong applications — to the wrong address, for the wrong role, with the wrong answers. Those emails cannot be recalled. The failure is silent, it is addressed to a real person, and it is in my name.
 
-Accuracy is the wrong metric here. What matters is whether a failure is *recoverable*.
+Accuracy is the wrong metric here. What matters is whether a failure is _recoverable_.
 
 ## What the parser actually does
 
 The parser is regex and keyword heuristics. It extracts email addresses with a pattern. It finds Google Form links by matching the host. It classifies role seniority against a keyword list. When a post does not match cleanly, it does not guess — the message lands in the `manual` state and waits for me.
 
-The result is a system whose failure mode is *doing nothing*, which is exactly the failure mode I want.
+The result is a system whose failure mode is _doing nothing_, which is exactly the failure mode I want.
 
 ## The dashboard is the point
 
@@ -31,7 +31,7 @@ This is not a limitation I worked around. It is the feature. The agent's job is 
 
 ## Where a model would earn its place
 
-There are parts of this system where a model genuinely helps: drafting the cover-letter paragraph, summarising a long post into a one-line label, deciding whether a role is worth my time. Those are all *suggestions*, reviewed before they matter.
+There are parts of this system where a model genuinely helps: drafting the cover-letter paragraph, summarising a long post into a one-line label, deciding whether a role is worth my time. Those are all _suggestions_, reviewed before they matter.
 
 The rule I ended up with is simple, and it has held up across every agent I have built since:
 

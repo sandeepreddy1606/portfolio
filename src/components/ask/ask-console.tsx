@@ -128,31 +128,43 @@ export function AskConsole({ className }: { className?: string }) {
   }
 
   const lastAnswer = turns.at(-1);
+  // Pair the turns into register entries: question + its answer.
+  const entries: { q: string; a: string; last: boolean }[] = [];
+  for (let i = 0; i < turns.length; i += 2) {
+    entries.push({
+      q: turns[i].content,
+      a: turns[i + 1]?.content ?? "",
+      last: turns[i + 1] === lastAnswer,
+    });
+  }
+  const serial = (n: number) => String(n).padStart(3, "0");
 
   return (
-    <div
-      className={cn(
-        "border-line-strong bg-surface/80 relative rounded-xl border backdrop-blur-sm",
-        className,
-      )}
-    >
-      {turns.length > 0 && (
-        <div
-          className="border-line flex max-h-[min(60vh,28rem)] flex-col gap-6 overflow-y-auto border-b px-5 py-5 sm:px-6"
+    <div className={cn("border-line-strong bg-elevated rounded-md border", className)}>
+      {entries.length > 0 && (
+        <ol
+          className="max-h-[min(70vh,36rem)] overflow-y-auto"
           aria-live="polite"
           aria-busy={busy}
           data-lenis-prevent
         >
-          {turns.map((turn, i) =>
-            turn.role === "user" ? (
-              <p key={i} className="text-ink font-medium">
-                {turn.content}
-              </p>
-            ) : (
-              <Answer key={i} text={turn.content} streaming={busy && turn === lastAnswer} />
-            ),
-          )}
-        </div>
+          {entries.map((entry, i) => (
+            <li
+              key={i}
+              className="border-line grid grid-cols-[3rem_minmax(0,1fr)] gap-x-3 border-b px-4 py-5 sm:grid-cols-[4rem_minmax(0,1fr)] sm:px-6"
+            >
+              <span className="text-ink-subtle pt-0.5 font-mono text-xs tabular-nums">
+                {serial(i + 1)}
+              </span>
+              <div className="min-w-0">
+                <p className="text-ink font-semibold">{entry.q}</p>
+                <div className="mt-3">
+                  <Answer text={entry.a} streaming={busy && entry.last} />
+                </div>
+              </div>
+            </li>
+          ))}
+        </ol>
       )}
 
       <form
@@ -161,61 +173,70 @@ export function AskConsole({ className }: { className?: string }) {
           e.preventDefault();
           void ask(draft);
         }}
-        className="flex items-end gap-3 px-4 py-3 sm:px-5"
+        className="grid grid-cols-[3rem_minmax(0,1fr)] items-start gap-x-3 px-4 py-4 sm:grid-cols-[4rem_minmax(0,1fr)] sm:px-6"
       >
-        <label htmlFor="ask-input" className="sr-only">
-          Ask a question about Sandeep&apos;s work
-        </label>
-        <textarea
-          ref={inputRef}
-          id="ask-input"
-          rows={1}
-          value={draft}
-          maxLength={500}
-          onChange={(e) => setDraft(e.target.value)}
-          onKeyDown={(e) => {
-            if (e.key === "Enter" && !e.shiftKey) {
-              e.preventDefault();
-              void ask(draft);
+        <span className="text-ink-subtle pt-3 font-mono text-xs tabular-nums" aria-hidden>
+          {serial(entries.length + 1)}
+        </span>
+        <div className="flex min-w-0 items-end gap-2">
+          <label htmlFor="ask-input" className="sr-only">
+            Ask a question about Sandeep&apos;s work
+          </label>
+          <textarea
+            ref={inputRef}
+            id="ask-input"
+            rows={1}
+            value={draft}
+            maxLength={500}
+            onChange={(e) => setDraft(e.target.value)}
+            onKeyDown={(e) => {
+              if (e.key === "Enter" && !e.shiftKey) {
+                e.preventDefault();
+                void ask(draft);
+              }
+            }}
+            placeholder={
+              entries.length ? "Write a follow-up question" : "Write a question about my work"
             }
-          }}
-          placeholder={turns.length ? "Ask a follow-up" : "Ask anything about my work"}
-          className="placeholder:text-ink-subtle field-sizing-content max-h-40 min-h-11 flex-1 resize-none bg-transparent py-2.5 text-base outline-none"
-        />
-        {turns.length > 0 && (
+            className="border-line-strong placeholder:text-ink-subtle focus-visible:border-ink field-sizing-content max-h-40 min-h-11 min-w-0 flex-1 resize-none border-b bg-transparent py-2.5 text-base outline-none"
+          />
+          {entries.length > 0 && (
+            <button
+              type="button"
+              onClick={reset}
+              aria-label="Start a new page in the register"
+              className="text-ink-subtle hover:text-ink grid size-10 shrink-0 place-items-center rounded-md transition-colors"
+            >
+              <RotateCcw className="size-4" />
+            </button>
+          )}
           <button
-            type="button"
-            onClick={reset}
-            aria-label="Start a new conversation"
-            className="text-ink-subtle hover:text-ink grid size-10 shrink-0 place-items-center rounded-md transition-colors"
+            type="submit"
+            disabled={busy || !draft.trim()}
+            className="bg-accent text-accent-ink inline-flex h-10 shrink-0 items-center gap-1.5 rounded-md px-3.5 text-sm font-bold transition-opacity disabled:opacity-40"
           >
-            <RotateCcw className="size-4" />
+            <ArrowUp className="size-4" /> Ask
           </button>
-        )}
-        <button
-          type="submit"
-          disabled={busy || !draft.trim()}
-          aria-label="Ask"
-          className="bg-accent text-accent-ink grid size-10 shrink-0 place-items-center rounded-md transition-opacity disabled:opacity-40"
-        >
-          <ArrowUp className="size-4" />
-        </button>
+        </div>
       </form>
 
-      {turns.length === 0 && (
-        <ul className="flex flex-wrap gap-2 px-4 pb-4 sm:px-5" aria-label="Suggested questions">
-          {SUGGESTIONS.map((s) => (
-            <li key={s}>
-              <button
-                type="button"
-                onClick={() => void ask(s)}
-                className="border-line text-ink-muted hover:text-ink hover:border-line-strong rounded-md border px-3 py-1.5 text-left text-sm transition-colors"
-              >
-                {s}
-              </button>
-            </li>
-          ))}
-        </ul>
+      {entries.length === 0 && (
+        <div className="border-line border-t px-4 py-4 sm:px-6">
+          <p className="text-ink-subtle text-sm">Try one of these</p>
+          <ul className="mt-3 flex flex-wrap gap-2">
+            {SUGGESTIONS.map((s) => (
+              <li key={s}>
+                <button
+                  type="button"
+                  onClick={() => void ask(s)}
+                  className="border-line-strong text-ink-muted hover:text-ink hover:border-ink rounded-md border px-3 py-1.5 text-left text-sm transition-colors"
+                >
+                  {s}
+                </button>
+              </li>
+            ))}
+          </ul>
+        </div>
       )}
     </div>
   );

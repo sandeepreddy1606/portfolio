@@ -5,12 +5,11 @@
 /* Design tokens                                                       */
 /* ------------------------------------------------------------------ */
 
-@theme {
-  /* Bricolage carries headlines and UI; Newsreader carries long-form prose;
-     Geist Mono is reserved for diagrams and code, never for decoration. */
-  --font-sans: var(--font-bricolage), ui-sans-serif, system-ui, sans-serif;
-  --font-display: var(--font-bricolage), ui-sans-serif, system-ui, sans-serif;
-  --font-serif: var(--font-newsreader), ui-serif, Georgia, serif;
+@theme inline {
+  /* Big Shoulders is signal-box signage: condensed, upright, painted on enamel.
+     Public Sans does the reading. Geist Mono is only for code, counts and times. */
+  --font-sans: var(--font-public), ui-sans-serif, system-ui, sans-serif;
+  --font-display: var(--font-shoulders), var(--font-public), sans-serif;
   --font-mono: var(--font-geist-mono), ui-monospace, SFMono-Regular, monospace;
 
   --color-canvas: var(--canvas);
@@ -22,14 +21,20 @@
   --color-ink: var(--ink);
   --color-ink-muted: var(--ink-muted);
   --color-ink-subtle: var(--ink-subtle);
-  /* Two accents, each with one meaning:
-     signal (amber)  — something that acts: a call to action, an irreversible step
-     verify (teal)   — something checked: a guard, a passing state, evidence */
+  /* Lamp semantics, the same everywhere on the site:
+     accent (amber)  — occupied: something is acting, or the action you can take
+     verify (green)  — cleared: a guard passed, a claim with evidence
+     danger (red)    — held at danger: a guard that stops the flow */
   --color-accent: var(--accent);
   --color-accent-soft: var(--accent-soft);
   --color-accent-ink: var(--accent-ink);
   --color-verify: var(--verify);
   --color-verify-soft: var(--verify-soft);
+  --color-danger: var(--danger);
+  --color-brass: var(--brass);
+  --color-lamp-red: #e3402d;
+  --color-lamp-amber: #f4b731;
+  --color-lamp-green: #4cc27a;
   /* Legacy aliases so older components resolve into the new palette. */
   --color-iris: var(--verify);
   --color-cyan: var(--verify);
@@ -46,72 +51,53 @@
   --animate-spin-slow: spin 6s linear infinite;
 }
 
-/* Light — cool drafting paper. Base definition so nothing depends on a media query alone. */
-:root {
-  --canvas: #edf1f3;
-  --surface: #f7f9fa;
-  --surface-2: #e3e9ed;
-  --elevated: #ffffff;
-  --line: #c9d4db;
-  --line-strong: #a9b8c2;
-  --ink: #10202c;
-  --ink-muted: #3f5466;
-  --ink-subtle: #556a7a;
-  --accent: #8a5600;
-  --accent-soft: rgb(138 86 0 / 0.1);
-  --accent-ink: #fffaf0;
-  --verify: #12705d;
-  --verify-soft: rgb(18 112 93 / 0.1);
-
-  --grid-line: rgb(16 32 44 / 0.06);
-
-  color-scheme: light;
-}
-
-/* Dark — drafting ink. The primary experience when the user has no explicit choice… */
-@media (prefers-color-scheme: dark) {
-  :root:not([data-theme="light"]) {
-    --canvas: #0f1b26;
-    --surface: #132331;
-    --surface-2: #192c3c;
-    --elevated: #1d3346;
-    --line: rgb(160 190 210 / 0.14);
-    --line-strong: rgb(160 190 210 / 0.26);
-    --ink: #e8eef1;
-    --ink-muted: #a6b6c2;
-    --ink-subtle: #7a8f9f;
-    --accent: #f0b44c;
-    --accent-soft: rgb(240 180 76 / 0.12);
-    --accent-ink: #1c1304;
-    --verify: #62cbb1;
-    --verify-soft: rgb(98 203 177 / 0.12);
-
-    --grid-line: rgb(160 190 210 / 0.055);
-
-    color-scheme: dark;
-  }
-}
-
-/* …and again when they explicitly pick dark, so the toggle wins both ways. */
-:root[data-theme="dark"] {
-  --canvas: #0f1b26;
-  --surface: #132331;
-  --surface-2: #192c3c;
-  --elevated: #1d3346;
-  --line: rgb(160 190 210 / 0.14);
-  --line-strong: rgb(160 190 210 / 0.26);
-  --ink: #e8eef1;
-  --ink-muted: #a6b6c2;
-  --ink-subtle: #7a8f9f;
-  --accent: #f0b44c;
-  --accent-soft: rgb(240 180 76 / 0.12);
-  --accent-ink: #1c1304;
-  --verify: #62cbb1;
-  --verify-soft: rgb(98 203 177 / 0.12);
-
-  --grid-line: rgb(160 190 210 / 0.055);
+/* The panel: painted signal-box green. The site's ground. One material, no
+   light/dark switch — the world decides, and both faces are below. */
+:root,
+.panel {
+  --canvas: #2c3b35;
+  --surface: #26342e;
+  --surface-2: #1f2a25;
+  --elevated: #34453e;
+  --line: rgb(236 231 214 / 0.16);
+  --line-strong: rgb(236 231 214 / 0.32);
+  --ink: #ece7d6;
+  --ink-muted: #b8b4a6;
+  --ink-subtle: #a9a99b;
+  --accent: #f4b731;
+  --accent-soft: rgb(244 183 49 / 0.14);
+  --accent-ink: #1b1405;
+  --verify: #4cc27a;
+  --verify-soft: rgb(76 194 122 / 0.14);
+  --danger: #ff7a63;
+  --brass: #c9a66b;
 
   color-scheme: dark;
+}
+
+/* Enamel: the cream plates — rule book, timetable, register. Same tokens,
+   inverted, so any component works on either face. */
+.enamel {
+  --canvas: #ece7d6;
+  --surface: #e4dec9;
+  --surface-2: #d9d2bb;
+  --elevated: #f5f1e4;
+  --line: rgb(31 42 37 / 0.16);
+  --line-strong: rgb(31 42 37 / 0.36);
+  --ink: #1f2a25;
+  --ink-muted: #4a5550;
+  --ink-subtle: #56605a;
+  --accent: #8a5a00;
+  --accent-soft: rgb(138 90 0 / 0.1);
+  --accent-ink: #fffaf0;
+  --verify: #1d6b40;
+  --verify-soft: rgb(29 107 64 / 0.1);
+  --danger: #a8321f;
+  --brass: #7d5f2c;
+
+  color-scheme: light;
+  background-color: var(--canvas);
+  color: var(--ink);
 }
 
 /* ------------------------------------------------------------------ */
@@ -166,8 +152,8 @@
   h3,
   h4 {
     font-family: var(--font-display);
-    letter-spacing: -0.025em;
-    font-variation-settings: "opsz" 96;
+    letter-spacing: -0.005em;
+    line-height: 0.92;
     text-wrap: balance;
   }
 
@@ -338,11 +324,11 @@
 /* Drafting details                                                    */
 /* ------------------------------------------------------------------ */
 
-/* Long-form prose: serif, slightly looser leading than the sans UI. */
-@utility prose-serif {
-  font-family: var(--font-serif);
-  font-size: 1.1875rem;
-  line-height: 1.65;
+/* Lead paragraphs and long-form reading. */
+@utility prose-lead {
+  font-family: var(--font-sans);
+  font-size: 1.125rem;
+  line-height: 1.7;
   color: var(--ink-muted);
   & strong {
     color: var(--ink);
