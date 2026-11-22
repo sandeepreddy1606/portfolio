@@ -15,7 +15,7 @@ export const SITE = {
   shortName: "Sandeep Reddy",
   initials: "SR",
   role: "Full-Stack & AI Engineer",
-  location: "India",
+  location: "Chennai, India",
   timezone: "Asia/Kolkata",
   email: "bsreddy1606@gmail.com",
   phone: "+91 96661 31184",
@@ -39,7 +39,7 @@ export const SITE = {
   pitch: "I build AI systems you can trust to act.",
   tagline: "Full-stack engineer building AI systems you can trust to act.",
   description:
-    "Full-stack and AI engineer building production systems across LLM applications, autonomous agents, computer vision and cross-platform apps — with Next.js, FastAPI, NestJS, Spring Boot and Flutter.",
+    "Software engineer building backend services and AI systems: Java and Spring Boot in production at BeetLoop Global Solutions, founder of Velobite, and ML work in Python — with a deterministic check in front of every irreversible action.",
   keywords: [
     "Sandeep Reddy Bijavemula",
     "Full Stack Developer",

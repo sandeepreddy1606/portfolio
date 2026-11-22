@@ -17,7 +17,9 @@ export function AchievementList({ className }: { className?: string }) {
           key={item.id}
           className="border-line grid gap-2 border-b py-6 md:grid-cols-[9rem_minmax(0,4fr)_minmax(0,6fr)] md:gap-8"
         >
-          <p className="text-ink-subtle font-mono text-sm tabular-nums">{item.date}</p>
+          <p className="text-ink-subtle font-mono text-sm tabular-nums">
+            {item.date || (item.kind === "certification" ? "Certified" : "")}
+          </p>
           <div>
             <h4 className="font-sans text-lg leading-snug font-bold tracking-normal normal-case">
               {item.href ? (

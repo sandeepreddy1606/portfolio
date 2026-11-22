@@ -50,7 +50,7 @@ export function ProofSection() {
           </Suspense>
         </div>
 
-        <h3 className="mt-20 text-4xl font-extrabold uppercase">Achievements</h3>
+        <h3 className="mt-20 text-4xl font-extrabold uppercase">Achievements and certifications</h3>
         <AchievementList className="mt-8" />
       </div>
     </Section>

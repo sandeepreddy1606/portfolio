@@ -29,8 +29,8 @@ export function Hero() {
               style={{ animationDelay: "120ms" }}
             >
               Like a railway interlocking: the clever part proposes, a deterministic guard decides,
-              and anything that can&apos;t be undone waits for a person. Full-stack engineer across
-              Next.js, FastAPI, NestJS and Spring Boot, currently building Velobite.
+              and anything that can&apos;t be undone waits for a person. Full Stack & AI/ML
+              Developer at BeetLoop Global Solutions in Chennai, and founder of Velobite.
             </p>
 
             <div className="mt-9 flex flex-wrap items-center gap-x-6 gap-y-3 text-sm">

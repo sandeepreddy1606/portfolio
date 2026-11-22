@@ -58,7 +58,7 @@ export const CASE_STUDIES: CaseStudy[] = [
     title: "Velobite",
     thesis:
       "A food-delivery platform built as four products with four backends, so a restaurant release can never break a courier's app.",
-    role: "Co-founder & engineer",
+    role: "Founder",
     period: "Jul 2026 — present",
     status: "In active development",
     stack: [
@@ -80,7 +80,7 @@ export const CASE_STUDIES: CaseStudy[] = [
     problem:
       "Diners, restaurant owners, couriers and operators need very different things from the same orders. One API serving all four ends up shaped for none of them, and one deploy pipeline means every release risks every audience. On top of that, the platform hands a stranger's phone number to a courier — so identity has to be right before anything else is.",
     constraints: [
-      "Two engineers, so every service has to be understandable by whoever is on call.",
+      "A small founding team, so every service has to be understandable by whoever is on call.",
       "Phone number (E.164) is the identity. Email is collected but never verified at sign-up.",
       "Tests must run on any laptop and in CI without a Docker daemon.",
     ],
@@ -120,7 +120,9 @@ export const CASE_STUDIES: CaseStudy[] = [
       "Test suite runs against an embedded Postgres the build downloads itself — no Docker daemon required.",
       "Organisation split into customer, restaurant, delivery-partner and admin surfaces, each with its own frontend and backend repository.",
     ],
-    links: [{ label: "Velobite on GitHub", href: "https://github.com/velobite" }],
+    links: [
+      { label: "Velobite on GitHub (repositories private)", href: "https://github.com/velobite" },
+    ],
   },
   {
     slug: "auto-apply",
@@ -129,11 +131,20 @@ export const CASE_STUDIES: CaseStudy[] = [
       "An agent that reads job posts and applies on my behalf — with no language model anywhere in the decision path.",
     role: "Solo build",
     period: "2026",
-    stack: ["Python 3.11", "FastAPI", "Telethon", "SQLite", "React 18", "Vite", "Docker"],
+    stack: [
+      "Next.js 16",
+      "React 19",
+      "TypeScript",
+      "Node.js",
+      "MTProto",
+      "nodemailer",
+      "PostgreSQL",
+      "SQLite",
+    ],
     facts: [
       { value: "0", label: "LLM calls in the decision path" },
       { value: "5", label: "terminal states for every message" },
-      { value: "1", label: "process serves API and dashboard" },
+      { value: "1", label: "process runs UI, API, listener and scanner" },
     ],
     problem:
       "Job posts arrive in private Telegram channels faster than anyone can read them. Some give an HR email, some link a Google Form. Applying is mechanical — but it sends real email and submits real forms in my name, so a wrong action is not a bad answer on a screen, it is a message I cannot take back.",
@@ -143,7 +154,7 @@ export const CASE_STUDIES: CaseStudy[] = [
       "One command must set up and run the whole system.",
     ],
     flow: [
-      { id: "tg", label: "Telegram channels", kind: "source", note: "Telethon user client" },
+      { id: "tg", label: "Telegram channels", kind: "source", note: "MTProto user client" },
       { id: "parse", label: "Rule-based parser", kind: "step", note: "regex + keyword heuristics" },
       { id: "review", label: "Review queue", kind: "guard", note: "human confirms or corrects" },
       { id: "act", label: "Email or form submit", kind: "action", note: "SMTP · Google Forms" },
@@ -170,8 +181,8 @@ export const CASE_STUDIES: CaseStudy[] = [
         body: "Google Form links are fetched, matched against the saved profile and submitted directly, so the agent covers both of the ways posts ask people to apply.",
       },
       {
-        title: "One bootstrap script",
-        body: "It provisions the virtual environment, builds the React bundle and serves both from a single FastAPI process — no second server to forget to start.",
+        title: "One process, no second server",
+        body: "Next.js serves the dashboard and the API, and its instrumentation hook starts the Telegram listener and the career-page scan once per server process — so there is no worker to forget to start, and storage switches from local SQLite to Postgres with one environment variable.",
       },
     ],
     outcome: [
@@ -248,11 +259,19 @@ export const CASE_STUDIES: CaseStudy[] = [
     thesis:
       "Type a topic, get a course — because the model fills a fixed schema instead of writing free-form prose.",
     role: "Solo build",
-    period: "2025",
-    stack: ["Gemini API", "FastAPI", "React", "MongoDB", "Tailwind CSS", "JWT"],
+    period: "2025 — 2026",
+    stack: [
+      "FastAPI",
+      "MongoDB",
+      "React",
+      "Gemini API",
+      "YouTube Data API",
+      "GitHub Actions",
+      "Docker",
+    ],
     facts: [
-      { value: "4", label: "artefacts generated per course" },
-      { value: "1", label: "output contract the model must fill" },
+      { value: "hours → seconds", label: "to author a course" },
+      { value: "−40%", label: "release cycle time with CI/CD on GitHub Actions" },
     ],
     problem:
       "A language model will happily write three paragraphs about any topic. A course needs more than that: ordered lessons, runnable examples, supporting material and a way to check understanding — and all of it has to render and grade without a human tidying it up.",
@@ -265,7 +284,7 @@ export const CASE_STUDIES: CaseStudy[] = [
       { id: "topic", label: "Topic prompt", kind: "source" },
       { id: "gen", label: "Gemini generation", kind: "step", note: "structured output" },
       { id: "schema", label: "Course schema", kind: "guard", note: "lessons · code · quiz" },
-      { id: "yt", label: "Video enrichment", kind: "step", note: "matched per lesson" },
+      { id: "yt", label: "Video enrichment", kind: "step", note: "YouTube Data API, summarised" },
       { id: "save", label: "Saved course", kind: "store", note: "MongoDB, per user" },
     ],
     flowCaption:

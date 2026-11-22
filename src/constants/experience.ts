@@ -1,42 +1,47 @@
 import type { TimelineEntry } from "@/types";
 
 /**
- * Career timeline.
+ * Career record, newest first. Roles, programme and education come from the
+ * résumé Sandeep supplied (sandeep_software_developer.pdf); Velobite from the
+ * founder's own account and the velobite organisation; the last entry from
+ * the public GitHub history.
  *
- * Every entry below is reconstructed from the public GitHub history
- * (repository creation dates, languages and READMEs) because LinkedIn blocks
- * automated reads. Add verified employment and education entries here — the
- * `kind` field is what drives the marker style, so a new "role" or "education"
- * item slots in without touching the component.
- *
- * Template:
- *   {
- *     id: "acme-2026",
- *     period: "Jan 2026 — Present",
- *     title: "Software Engineer",
- *     organisation: "Acme Corp",
- *     kind: "role",
- *     location: "Hyderabad, India",
- *     summary: "One line on the mandate.",
- *     highlights: ["Impact statement with a number in it."],
- *     stack: ["Next.js", "PostgreSQL"],
- *   },
+ * The first entry renders as the full-width "season ticket" and the last as
+ * the "platform ticket", so keep the current role first and the origin last.
  */
 export const TIMELINE: TimelineEntry[] = [
   {
+    id: "beetloop-dev",
+    period: "Apr 2026 — Present",
+    title: "Full Stack & AI/ML Developer",
+    organisation: "BeetLoop Global Solutions Pvt Ltd",
+    kind: "role",
+    location: "Chennai",
+    summary:
+      "Backend features and REST APIs for a production cloud service in Java and Spring Boot — built, tested, shipped and run in production.",
+    highlights: [
+      "Design, implement, test and maintain backend features and RESTful APIs in Java and Spring Boot, with unit tests and peer code review on every change.",
+      "Containerise services with Docker and deploy through CI/CD pipelines, cutting release cycle time and reducing deployment-related defects by 50%.",
+      "Monitor service health in live environments and investigate production incidents from logs and metrics, shipping fixes that cut average request processing time.",
+      "Apply security and access-control practice across endpoints: credential management, input validation and role-based authorisation.",
+      "Work with product owners, front-end developers and QA in Agile/Scrum — design discussions, sprint planning and technical documentation for new services.",
+    ],
+    stack: ["Java", "Spring Boot", "REST APIs", "Docker", "CI/CD", "Unit testing"],
+  },
+  {
     id: "velobite-2026",
     period: "Jul 2026 — Present",
-    title: "Co-founder & Engineer — Velobite",
+    title: "Founder — Velobite",
     organisation: "Velobite (early-stage startup)",
     kind: "role",
     summary:
-      "Building a food-delivery platform as four separate products with their own backends — customer, restaurant, delivery partner and admin — across an eight-repository organisation with a two-person engineering team.",
+      "Founding a food-delivery platform built as four separate products with their own backends — customer, restaurant, delivery partner and admin.",
     highlights: [
       "Designed and built the authentication service in Spring Boot 3.4 and Java 17: ten endpoints, Postgres with Flyway migrations, JWT sessions and OTP verification over E.164 phone numbers.",
       "Made the account non-existent until its code is verified — sign-up parks hashed details in a verifications table, so an unverified number can never reach a courier.",
-      "Closed account enumeration on password reset by issuing a decoy verification id for unknown identifiers, and put failed-attempt counters in their own REQUIRES_NEW transaction so lockouts survive the rollback that rejection triggers.",
-      "Replaced client-supplied Google profiles with server-side ID token verification against Google's signing keys, removing a path that would have let anyone claim any email address.",
-      "Wrote the suite against an embedded Postgres the build downloads itself, so tests need no Docker daemon.",
+      "Closed account enumeration on password reset with a decoy verification id for unknown identifiers, and put failed-attempt counters in their own REQUIRES_NEW transaction so lockouts survive the rollback.",
+      "Replaced client-supplied Google profiles with server-side ID token verification against Google's signing keys.",
+      "Wrote the test suite against an embedded Postgres the build downloads itself, so tests need no Docker daemon.",
     ],
     stack: [
       "Java 17",
@@ -50,79 +55,37 @@ export const TIMELINE: TimelineEntry[] = [
     ],
   },
   {
-    id: "agents-2026",
-    period: "Jul 2026 — Present",
-    title: "Autonomous agents & applied automation",
-    organisation: "Independent",
-    kind: "milestone",
+    id: "beetloop-intern",
+    period: "Mar 2026 — Apr 2026",
+    title: "Full Stack & AI/ML Developer Intern",
+    organisation: "BeetLoop Global Solutions Pvt Ltd",
+    kind: "role",
+    location: "Chennai",
     summary:
-      "Building agents that take real actions in the world rather than just producing text, with a hard rule that anything irreversible runs on deterministic logic.",
+      "React front ends on Spring Boot REST endpoints, and LLM APIs behind an internal service layer — the internship that became the full-time role.",
     highlights: [
-      "Shipped Auto Apply: a Telegram-sourced job-application agent that parses posts with pure regex and keyword heuristics, then sends templated SMTP applications or programmatically fills and submits Google Forms.",
-      "Designed a human-in-the-loop review dashboard with five terminal states — review, applied, failed, manual, skipped — so no application leaves without an audit trail.",
-      "Packaged the whole system behind a single bootstrap script that provisions the venv, builds the React bundle and serves both from one process.",
+      "Built responsive React components backed by Spring Boot REST endpoints, through Git branching workflows and peer-reviewed pull requests.",
+      "Integrated third-party LLM APIs behind an internal service layer with input validation, error handling and structured logging, automating data workflows and reducing manual processing effort by 35%.",
+      "Wrote unit tests for new service methods and reproduced reported defects locally, contributing fixes that shipped in the production release.",
     ],
-    stack: ["Python", "FastAPI", "Telethon", "React", "SQLite", "Docker"],
+    stack: ["React", "Spring Boot", "LLM APIs", "Git", "Unit testing"],
   },
   {
-    id: "platform-2026",
-    period: "Feb 2026 — Jun 2026",
-    title: "Full-stack platform engineering",
-    organisation: "Independent",
-    kind: "milestone",
+    id: "hirola-2025",
+    period: "May 2025 — Jun 2025",
+    title: "Artificial Intelligence Intern",
+    organisation: "Hirola InfoTech Solutions Pvt Ltd",
+    kind: "role",
+    location: "Bengaluru",
     summary:
-      "Moving from feature builds to platform concerns: authentication, authorisation, rate limiting and observability as first-class requirements.",
+      "Python data pipelines and classical ML services — classification and clustering — delivered as tested components with documented interfaces.",
     highlights: [
-      "Built BlogX end to end — Next.js 15 frontend on Vercel, NestJS API on Railway, Prisma against serverless Postgres on Neon.",
-      "Implemented JWT access plus refresh-token rotation with role-based access control separating the public feed from the private dashboard.",
-      "Added request rate limiting and structured logging so production failures are diagnosable rather than guessable.",
+      "Built modular Python data-processing pipelines with automated preprocessing and validation, reaching prediction accuracy above 98% and cutting manual data preparation time by 35%.",
+      "Delivered classification and clustering services (SVM, logistic regression, K-Means) as testable components, cutting error rates by 50% and doubling training throughput.",
+      "Built interactive dashboards for pipeline monitoring and tuning, raising system efficiency to 80% and cutting compute cost by 20%.",
+      "Translated requirements into technical designs with product managers and data engineers.",
     ],
-    stack: ["Next.js 15", "NestJS", "Prisma", "PostgreSQL", "TypeScript", "Docker"],
-  },
-  {
-    id: "genai-2025",
-    period: "Oct 2025 — Jan 2026",
-    title: "Generative AI application development",
-    organisation: "Independent",
-    kind: "milestone",
-    summary:
-      "A run of four LLM products, each testing a different integration pattern — structured generation, document synthesis, transcript reasoning and multilingual output.",
-    highlights: [
-      "AI Mini-Course Generator: turns any topic into structured lessons, runnable code examples, curated video suggestions and a scored quiz.",
-      "AI Document Assistant: section-level generation and refinement that exports real .docx and .pptx files, with Firestore keeping the full refinement history.",
-      "YouTube Summarizer Bot: transcript extraction with contextual follow-up questions and answers in English, Hindi, Kannada and Tamil.",
-    ],
-    stack: ["Gemini API", "FastAPI", "React", "MongoDB", "Firebase", "Telegram Bot API"],
-  },
-  {
-    id: "mobile-2025",
-    period: "Jul 2025 — Sep 2025",
-    title: "Cross-platform product suite",
-    organisation: "Independent",
-    kind: "milestone",
-    summary:
-      "Three Flutter applications sharing one Firebase backend, covering every side of a food-delivery marketplace.",
-    highlights: [
-      "Built the customer ordering app, the delivery-partner app and the admin panel as separate clients on a shared data model.",
-      "Handled the realtime coordination problem — order state has to stay consistent across three apps watching the same documents.",
-      "Roughly 890 KB of Dart across the suite, with shared auth and messaging built on Firebase.",
-    ],
-    stack: ["Flutter", "Dart", "Firebase", "Cloud Firestore", "FCM"],
-  },
-  {
-    id: "ml-2025",
-    period: "Feb 2025 — Jul 2025",
-    title: "Applied ML, computer vision & NLP",
-    organisation: "Independent",
-    kind: "milestone",
-    summary:
-      "Foundational work on the model side — recognition, classification and speech — evaluated properly rather than demoed on happy paths.",
-    highlights: [
-      "Built a face recognition system with a registration flow, an embedding store and evaluation against LFW verification pairs.",
-      "Trained a toxic-message classifier and shipped a local Whisper transcription pipeline with GPU detection and fallback.",
-      "Developed a symptom-driven diagnosis engine in PHP/MySQL spanning ten body regions with full admin CRUD and user feedback.",
-    ],
-    stack: ["Python", "OpenCV", "PyTorch", "Whisper", "scikit-learn", "PHP", "MySQL"],
+    stack: ["Python", "scikit-learn", "Pandas", "NumPy", "SVM", "K-Means"],
   },
   {
     id: "jpmc-2024",
@@ -140,6 +103,19 @@ export const TIMELINE: TimelineEntry[] = [
     stack: ["Python", "React", "TypeScript", "Perspective"],
   },
   {
+    id: "vit-btech",
+    period: "2022 — Present",
+    title: "B.Tech, Computer Science and Engineering",
+    organisation: "Vellore Institute of Technology, Chennai",
+    kind: "education",
+    summary:
+      "Undergraduate degree in computer science, alongside the internships and the full-time role above.",
+    highlights: [
+      "Coursework: Data Structures & Algorithms, Operating Systems, Computer Networks, DBMS, Object-Oriented Programming, Software Engineering, Cloud Computing.",
+    ],
+    stack: ["DSA", "Operating Systems", "Networks", "DBMS", "OOP", "Cloud Computing"],
+  },
+  {
     id: "start-2023",
     period: "Oct 2023",
     title: "Started building in public",
@@ -148,8 +124,8 @@ export const TIMELINE: TimelineEntry[] = [
     summary:
       "First public commit. Twenty-four repositories later the pattern is consistent: build the whole thing, ship it, then write down how it works.",
     highlights: [
-      "24 public repositories spanning Python, TypeScript, JavaScript, Dart, Java and PHP.",
-      "Every substantial project carries a README with setup instructions someone else can actually follow.",
+      "Public repositories across Python, TypeScript, JavaScript, Dart, Java and PHP.",
+      "Every substantial project carries a README with setup instructions someone else can follow.",
     ],
     stack: ["Git", "GitHub"],
   },

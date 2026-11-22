@@ -25,12 +25,16 @@ export function JsonLd() {
           "@type": "CollegeOrUniversity",
           name: SITE.university,
         },
-        worksFor: {
-          "@type": "Organization",
-          name: VENTURE.name,
-          url: VENTURE.orgUrl,
-          description: VENTURE.tagline,
-        },
+        worksFor: [
+          { "@type": "Organization", name: "BeetLoop Global Solutions Pvt Ltd" },
+          {
+            "@type": "Organization",
+            name: VENTURE.name,
+            url: VENTURE.orgUrl,
+            description: VENTURE.tagline,
+            founder: { "@id": `${SITE.url}/#person` },
+          },
+        ],
         sameAs: SOCIALS.filter((s) => !s.href.startsWith("mailto:")).map((s) => s.href),
         knowsAbout: [
           "Full-Stack Development",

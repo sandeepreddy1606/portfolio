@@ -1,6 +1,6 @@
 ---
 title: "Three backends, one year: what FastAPI, NestJS and Spring Boot each taught me"
-description: "I shipped production services in Python, TypeScript and Java within twelve months. They are not interchangeable, and the differences are not about syntax."
+description: "I shipped services in Python, TypeScript and Java within twelve months. They are not interchangeable, and the differences are not about syntax."
 date: "2026-03-14"
 tags: ["Backend", "FastAPI", "NestJS", "Spring Boot"]
 ---

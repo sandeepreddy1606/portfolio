@@ -72,7 +72,7 @@ export function SelectedWork() {
                     {study.facts.map((f) => (
                       <div key={f.label} className="flex items-baseline gap-2">
                         <dt className="sr-only">{f.label}</dt>
-                        <dd className="text-ink w-10 shrink-0 font-mono font-semibold tabular-nums">
+                        <dd className="text-ink min-w-10 shrink-0 font-mono font-semibold whitespace-nowrap tabular-nums">
                           {f.value}
                         </dd>
                         <span className="text-ink-muted" aria-hidden>

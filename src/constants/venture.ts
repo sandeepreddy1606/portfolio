@@ -18,7 +18,7 @@ export const VENTURE: Venture = {
   period: "Jul 2026 — Present",
   org: "velobite",
   orgUrl: "https://github.com/velobite",
-  teamSize: "2 engineers",
+  teamSize: "Small founding team",
   repoCount: 8,
 
   surfaces: [
@@ -109,11 +109,3 @@ export const VENTURE: Venture = {
     },
   ],
 };
-
-/** Headline numbers for the section's stat strip. */
-export const VENTURE_STATS = [
-  { value: 8, label: "Services in the org" },
-  { value: 4, label: "Product surfaces" },
-  { value: 10, label: "Auth endpoints" },
-  { value: 2, label: "Engineers" },
-];

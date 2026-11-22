@@ -21,7 +21,7 @@ const CLASS: Record<TimelineEntry["kind"], { label: string; band: string }> = {
   role: { label: "Role", band: "bg-lamp-amber text-[#1b1405]" },
   milestone: { label: "Independent", band: "bg-lamp-green text-[#06170d]" },
   program: { label: "Program", band: "bg-[#c9a66b] text-[#1f1607]" },
-  education: { label: "Education", band: "bg-[#ece7d6] text-[#1f2a25]" },
+  education: { label: "Education", band: "bg-[#1f2a25] text-[#ece7d6]" },
 };
 
 /** Semicircle notches where the stub tears off, cut from both edges. */
@@ -143,7 +143,9 @@ function Ticket({
             onClick={() => setOpen((o) => !o)}
             className="text-ink hover:text-accent inline-flex items-center gap-1.5 text-sm font-bold transition-colors"
           >
-            {open ? "Turn back over" : `Turn over · ${entry.highlights.length} highlights`}
+            {open
+              ? "Turn back over"
+              : `Turn over · ${entry.highlights.length} ${entry.highlights.length === 1 ? "highlight" : "highlights"}`}
             <ChevronDown
               className={cn("size-4 transition-transform duration-300", open && "rotate-180")}
               aria-hidden
