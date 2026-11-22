@@ -54,8 +54,8 @@ Colour carries meaning, the same everywhere:
 
 - **Mimic diagram** (`components/work/mimic.tsx`): every system is drawn as
   track. Guards are signal heads (red until passed), and the action's stretch
-  lights amber. `holdAt` stops the train for the visitor's approval; the hero
-  uses it.
+  lights amber. `holdAt` can stop the train for the visitor's approval
+  (currently unused; the hero no longer carries a panel).
 - **Lever frame**: the navigation. Numbered levers; the current section's
   lever is pulled over and lit amber. The footer repeats the numbers.
 - **Register**: the Ask assistant as numbered ledger entries.
@@ -75,7 +75,8 @@ Colour carries meaning, the same everywhere:
   one-sided accent bars on boxes.
 - Radii: 14px for plates and panels, 6px for controls, round only for lamps
   and the portrait.
-- Motion: one authored moment per view (the train running to the signal).
+- Motion: one authored moment per view (the hero headline's entrance; the
+  trains running in the Work diagrams).
   Content is visible by default; reveals only shift position slightly.
   Reduced motion skips the run entirely.
 - Numbers on the page are real and static. Nothing counts up from zero.

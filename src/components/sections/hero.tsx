@@ -1,20 +1,15 @@
 import { Suspense } from "react";
 import { Download } from "lucide-react";
 import { SITE, SOCIALS } from "@/constants/site";
-import { getCaseStudy } from "@/constants/case-studies";
 import { ProfileImage } from "@/components/ui/avatar";
 import { CopyEmail } from "@/components/ui/copy-email";
-import { Mimic } from "@/components/work/mimic";
 import { NowStrip, NowStripSkeleton } from "./now-strip";
 
 /**
- * First viewport: the claim in signage type, and the proof directly under it —
- * Auto Apply on a signal-box panel, stopped at danger until the visitor pulls
- * the lever. The visitor plays the human in the loop the headline promises.
+ * First viewport: the claim in signage type, the one-paragraph explanation,
+ * and the ways to act on it. The systems themselves are drawn in Work below.
  */
 export function Hero() {
-  const autoApply = getCaseStudy("auto-apply")!;
-
   return (
     <section id="hero" className="relative pt-24 pb-16 sm:pt-28 sm:pb-20">
       <div className="container-page">
@@ -33,8 +28,8 @@ export function Hero() {
               style={{ animationDelay: "120ms" }}
             >
               Like a railway interlocking: the clever part proposes, a deterministic guard decides,
-              and anything that can&apos;t be undone waits for a person. The panel below is my
-              job-application agent. You&apos;re the signalman.
+              and anything that can&apos;t be undone waits for a person. Full-stack engineer across
+              Next.js, FastAPI, NestJS and Spring Boot, currently building Velobite.
             </p>
           </div>
 
@@ -52,17 +47,7 @@ export function Hero() {
           </aside>
         </div>
 
-        <div
-          className="rise border-brass/50 bg-surface-2 mt-12 rounded-[14px] border p-5 sm:p-7"
-          style={{ animationDelay: "260ms" }}
-        >
-          <p className="border-brass/60 text-brass font-display mb-5 inline-block rounded-sm border-2 px-3 py-1 text-lg font-bold uppercase">
-            Auto Apply — live panel
-          </p>
-          <Mimic nodes={autoApply.flow} holdAt="review" />
-        </div>
-
-        <div className="mt-8 flex flex-wrap items-center gap-x-6 gap-y-3 text-sm">
+        <div className="mt-10 flex flex-wrap items-center gap-x-6 gap-y-3 text-sm">
           <a
             href="#register"
             className="bg-accent text-accent-ink rounded-md px-4 py-2.5 font-bold transition-[filter] hover:brightness-110"
