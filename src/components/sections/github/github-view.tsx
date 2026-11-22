@@ -43,7 +43,9 @@ export function GithubView({ stats }: { stats: GithubStats }) {
       <div className="grid gap-6 lg:grid-cols-[1fr_1.3fr]">
         <motion.div variants={fadeUp}>
           <SpotlightCard className="flex h-full flex-col p-6 sm:p-7">
-            <h3 className="text-sm font-semibold tracking-tight">Language distribution</h3>
+            <h3 className="font-sans text-sm font-semibold tracking-normal">
+              Language distribution
+            </h3>
             <p className="text-ink-subtle mt-1 text-xs">
               Share of source across owned repositories.
             </p>
@@ -80,7 +82,7 @@ export function GithubView({ stats }: { stats: GithubStats }) {
 
         <motion.div variants={fadeUp}>
           <SpotlightCard className="flex h-full flex-col p-6 sm:p-7">
-            <h3 className="text-sm font-semibold tracking-tight">Recent activity</h3>
+            <h3 className="font-sans text-sm font-semibold tracking-normal">Recent activity</h3>
             <p className="text-ink-subtle mt-1 text-xs">Most recently pushed repositories.</p>
 
             <ul className="mt-5 flex flex-1 flex-col">

@@ -75,13 +75,17 @@ export function Contact() {
           >
             <motion.div variants={slideInLeft}>
               <SpotlightCard className="p-6 sm:p-7">
-                <span className="border-line bg-surface-2 inline-flex items-center gap-2 rounded-full border px-3 py-1.5 text-xs">
-                  <span className="relative flex size-2">
-                    <span className="absolute inline-flex size-full animate-ping rounded-full bg-emerald-500 opacity-60" />
-                    <span className="relative inline-flex size-2 rounded-full bg-emerald-500" />
+                {/* Availability as a signal: green means the line is open. */}
+                <p className="flex items-center gap-3 text-sm font-semibold">
+                  <span
+                    className="border-ink bg-surface-2 flex flex-col gap-0.5 rounded-[4px] border px-1 py-1"
+                    aria-hidden
+                  >
+                    <span className="bg-lamp-red/15 size-2 rounded-full" />
+                    <span className="bg-lamp-green size-2 rounded-full shadow-[0_0_8px_2px_rgb(76_194_122/0.5)]" />
                   </span>
-                  <span className="text-ink-muted">{SITE.availability}</span>
-                </span>
+                  {SITE.availability}
+                </p>
 
                 <p className="text-ink-muted mt-5 text-sm leading-relaxed">
                   The fastest route is the form — it lands in my inbox directly. If you would rather
@@ -99,7 +103,7 @@ export function Contact() {
                     <span className="block truncate font-mono text-sm">{SITE.email}</span>
                   </span>
                   {copied ? (
-                    <Check className="size-4 shrink-0 text-emerald-500" />
+                    <Check className="text-verify size-4 shrink-0" />
                   ) : (
                     <Copy className="text-ink-subtle group-hover:text-ink size-4 shrink-0 transition-colors" />
                   )}
@@ -125,7 +129,9 @@ export function Contact() {
 
             <motion.div variants={slideInLeft}>
               <SpotlightCard glow={false} className="p-6">
-                <h3 className="text-ink-subtle text-sm font-semibold">Elsewhere</h3>
+                <h3 className="text-ink-subtle font-sans text-sm font-semibold tracking-normal">
+                  Elsewhere
+                </h3>
                 <ul className="mt-4 flex flex-col gap-1">
                   {SOCIALS.map((social) => (
                     <li key={social.label}>
@@ -133,7 +139,7 @@ export function Contact() {
                         href={social.href}
                         target="_blank"
                         rel="noopener noreferrer"
-                        className="hover:bg-surface-2 -mx-3 flex items-center gap-3 rounded-xl px-3 py-2.5 transition-colors"
+                        className="hover:bg-surface-2 -mx-3 flex items-center gap-3 rounded-md px-3 py-2.5 transition-colors"
                       >
                         <social.icon className="text-ink-muted size-4" />
                         <span className="text-sm">{social.label}</span>
@@ -154,7 +160,8 @@ export function Contact() {
             whileInView="visible"
             viewport={viewportOnce}
           >
-            <SpotlightCard className="relative p-6 sm:p-8">
+            <SpotlightCard className="enamel relative p-6 sm:p-8">
+              <h3 className="mb-6 text-3xl font-extrabold uppercase">Send a message</h3>
               <form onSubmit={handleSubmit(onSubmit)} noValidate className="flex flex-col gap-5">
                 <div className="grid gap-5 sm:grid-cols-2">
                   <Field label="Name" error={errors.name?.message}>
@@ -230,7 +237,7 @@ export function Contact() {
                         animate={{ opacity: 1, x: 0 }}
                         exit={{ opacity: 0 }}
                         transition={{ duration: 0.4, ease: EASE }}
-                        className="flex items-center gap-2 text-sm text-emerald-500"
+                        className="text-verify flex items-center gap-2 text-sm"
                       >
                         <Check className="size-4" /> Sent — thank you.
                       </motion.p>

@@ -32,7 +32,7 @@ export function LeetcodeView({ stats }: { stats: LeetcodeStats }) {
           <div className="flex flex-wrap items-center justify-between gap-3">
             <div className="flex items-center gap-2.5">
               <SiLeetcode className="text-accent size-4" />
-              <h3 className="text-sm font-semibold tracking-tight">Problem solving</h3>
+              <h3 className="font-sans text-sm font-semibold tracking-normal">Problem solving</h3>
             </div>
           </div>
 
@@ -76,7 +76,9 @@ export function LeetcodeView({ stats }: { stats: LeetcodeStats }) {
             ))}
           </ul>
 
-          <h4 className="text-ink-subtle mt-8 text-sm font-semibold">Strongest topics</h4>
+          <h4 className="text-ink-subtle mt-8 font-sans text-sm font-semibold tracking-normal">
+            Strongest topics
+          </h4>
           <ul className="mt-4 flex flex-1 flex-wrap content-start gap-1.5">
             {stats.topics.map((topic) => (
               <li key={topic.name}>
@@ -98,7 +100,7 @@ export function LeetcodeView({ stats }: { stats: LeetcodeStats }) {
 
       <motion.div variants={fadeUp}>
         <SpotlightCard className="flex h-full flex-col p-6 sm:p-7">
-          <h3 className="text-sm font-semibold tracking-tight">Solved by language</h3>
+          <h3 className="font-sans text-sm font-semibold tracking-normal">Solved by language</h3>
           <p className="text-ink-subtle mt-1 text-xs">Where the algorithm work actually happens.</p>
 
           <ul className="mt-6 flex flex-col gap-4">
@@ -120,7 +122,9 @@ export function LeetcodeView({ stats }: { stats: LeetcodeStats }) {
 
           {stats.badges.length > 0 && (
             <>
-              <h4 className="text-ink-subtle mt-8 text-sm font-semibold">Badges</h4>
+              <h4 className="text-ink-subtle mt-8 font-sans text-sm font-semibold tracking-normal">
+                Badges
+              </h4>
               <ul className="mt-4 flex flex-1 flex-col gap-2.5">
                 {stats.badges.map((badge) => (
                   <li

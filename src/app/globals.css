@@ -402,3 +402,28 @@
 @utility rise {
   animation: rise 700ms cubic-bezier(0.16, 1, 0.3, 1) both;
 }
+
+/* ------------------------------------------------------------------ */
+/* Hero portrait entrance: the figure rises into place and the amber   */
+/* ring around the lamp draws itself once — the signal clearing.       */
+/* ------------------------------------------------------------------ */
+
+@keyframes portrait-rise {
+  from {
+    opacity: 0;
+    transform: translateY(5%);
+  }
+}
+@keyframes ring-draw {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+.portrait-rise {
+  animation: portrait-rise 900ms 150ms cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+.portrait-ring {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  animation: ring-draw 1400ms 450ms cubic-bezier(0.65, 0, 0.35, 1) forwards;
+}

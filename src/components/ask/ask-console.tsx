@@ -140,7 +140,25 @@ export function AskConsole({ className }: { className?: string }) {
   const serial = (n: number) => String(n).padStart(3, "0");
 
   return (
-    <div className={cn("border-line-strong bg-elevated rounded-md border", className)}>
+    <div
+      className={cn(
+        "border-line-strong bg-elevated relative overflow-hidden rounded-md border shadow-[0_18px_34px_-26px_rgb(0_0_0/0.6)]",
+        className,
+      )}
+    >
+      {/* The ledger's red margin rule, between the serial and the entry. */}
+      <span
+        aria-hidden
+        className="pointer-events-none absolute inset-y-0 left-[4.375rem] w-px bg-[#b3261e]/45 sm:left-[5.875rem]"
+      />
+      {/* Column heads, as printed at the top of every register page. */}
+      <div
+        aria-hidden
+        className="border-line-strong text-ink-subtle grid grid-cols-[3rem_minmax(0,1fr)] gap-x-3 border-b px-4 py-2.5 text-xs font-semibold sm:grid-cols-[4rem_minmax(0,1fr)] sm:px-6"
+      >
+        <span>No.</span>
+        <span className="pl-1">Question, and the answer entered against it</span>
+      </div>
       {entries.length > 0 && (
         <ol
           className="max-h-[min(70vh,36rem)] overflow-y-auto"
@@ -221,7 +239,7 @@ export function AskConsole({ className }: { className?: string }) {
       </form>
 
       {entries.length === 0 && (
-        <div className="border-line border-t px-4 py-4 sm:px-6">
+        <div className="border-line border-t py-4 pr-4 pl-[5.125rem] sm:pr-6 sm:pl-[6.625rem]">
           <p className="text-ink-subtle text-sm">Try one of these</p>
           <ul className="mt-3 flex flex-wrap gap-2">
             {SUGGESTIONS.map((s) => (

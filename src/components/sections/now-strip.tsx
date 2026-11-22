@@ -23,7 +23,7 @@ export async function NowStrip() {
   const latest = github?.repos[0];
 
   return (
-    <dl className="grid min-w-0 gap-3 text-sm">
+    <dl className="border-line grid min-w-0 grid-cols-2 gap-x-6 gap-y-4 border-t pt-6 text-sm sm:grid-cols-4">
       <Row label="Building">
         <Link href="/work/velobite" className="text-ink hover:text-accent transition-colors">
           Velobite
@@ -75,7 +75,10 @@ function Row({ label, children }: { label: string; children: React.ReactNode }) 
 
 export function NowStripSkeleton() {
   return (
-    <div className="grid w-full gap-3" aria-hidden>
+    <div
+      className="border-line grid w-full grid-cols-2 gap-x-6 gap-y-4 border-t pt-6 sm:grid-cols-4"
+      aria-hidden
+    >
       {[0, 1, 2, 3].map((i) => (
         <div key={i} className="bg-surface-2 h-9 animate-pulse rounded" />
       ))}

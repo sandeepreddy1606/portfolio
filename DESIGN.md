@@ -60,6 +60,20 @@ Colour carries meaning, the same everywhere:
   section the train follows the scroll and dwells at each station, longest at
   guards; on case studies it runs once. `holdAt` stops it at a guard until the
   visitor pulls the lever (Auto Apply in the Work section).
+- **Portrait as a signal lamp** (`hero-portrait.tsx`): `public/portrait-cutout.png`
+  is cut from `profile.png` with an OpenCV GrabCut matte and traced with a
+  6px white outline. It stands on a dark lamp disc with a brass rim; the body
+  is clipped to the disc, the head breaks out above it. An amber ring draws
+  itself once on load. No generated imagery.
+- **Register**: the Ask assistant as a ledger page — column heads, numbered
+  entries, the red margin rule — with three lamp-coded promises beside it.
+- **Rule book**: pinned heading, enamel number plates with brass rings; the
+  rule nearest the middle of the screen has its plate lit.
+- **Instrument plates** (`ui/card.tsx`): every card is a solid plate with a
+  firm edge and a brass edge on hover. Small headings inside use Public Sans;
+  Big Shoulders is only for large signage.
+- **End of the line**: the footer opens with the rail running into a buffer
+  stop with red lamps.
 - **Lever frame**: the navigation. Numbered levers; the current section's
   lever is pulled over and lit amber. The footer repeats the numbers.
 - **Register**: the Ask assistant as numbered ledger entries.
