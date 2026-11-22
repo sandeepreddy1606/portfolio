@@ -4,14 +4,12 @@ import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "@/lib/utils";
 
 const buttonVariants = cva(
-  "relative inline-flex shrink-0 items-center justify-center gap-2 whitespace-nowrap rounded-full font-medium transition-all duration-300 ease-[var(--ease-out-expo)] disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0",
+  "relative inline-flex shrink-0 items-center justify-center gap-2 whitespace-nowrap rounded-md font-medium transition-all duration-300 ease-[var(--ease-out-expo)] disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:shrink-0",
   {
     variants: {
       variant: {
-        primary:
-          "bg-ink text-canvas shadow-[0_1px_2px_rgba(0,0,0,0.18)] hover:shadow-[0_8px_28px_-8px_var(--accent)] hover:brightness-110 active:scale-[0.98]",
-        accent:
-          "bg-accent text-accent-ink shadow-[0_8px_30px_-12px_var(--accent)] hover:shadow-[0_12px_40px_-10px_var(--accent)] hover:brightness-110 active:scale-[0.98]",
+        primary: "bg-ink text-canvas hover:brightness-110 active:scale-[0.98]",
+        accent: "bg-accent text-accent-ink hover:brightness-110 active:scale-[0.98]",
         outline:
           "border border-line-strong bg-surface/40 backdrop-blur-md hover:border-accent/60 hover:bg-surface active:scale-[0.98]",
         ghost: "hover:bg-surface-2 text-ink-muted hover:text-ink active:scale-[0.98]",

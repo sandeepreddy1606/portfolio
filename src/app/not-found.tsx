@@ -1,13 +1,12 @@
 import Link from "next/link";
 import { ArrowLeft, Compass } from "lucide-react";
 import { Button } from "@/components/ui/button";
-import { AuroraBackground, GridBackground } from "@/components/ui/backgrounds";
+import { GridBackground } from "@/components/ui/backgrounds";
 import { NAV_ITEMS } from "@/constants/site";
 
 export default function NotFound() {
   return (
     <div className="relative grid min-h-[100svh] place-items-center overflow-hidden px-5 py-32">
-      <AuroraBackground />
       <GridBackground />
 
       <div className="relative z-10 flex max-w-lg flex-col items-center text-center">

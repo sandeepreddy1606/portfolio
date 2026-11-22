@@ -46,3 +46,13 @@ next-env.d.ts
 
 # build info
 tsconfig.tsbuildinfo
+
+# Agent skills are local tooling, not part of the site. skills-lock.json records
+# each one (source + hash); reinstall them all with:
+#   npx -y skills add pbakaus/impeccable --skill impeccable --agent claude-code
+#   npx -y skills add leonxlnx/taste-skill --agent claude-code
+#   npx -y skills add https://github.com/vercel-labs/agent-skills --skill vercel-react-view-transitions --agent claude-code
+.claude/skills/
+.agents/
+# Impeccable writes review captures and build state here.
+.impeccable/

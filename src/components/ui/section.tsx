@@ -15,7 +15,7 @@ export function Section({ id, className, children, ...props }: SectionProps) {
     <section
       id={id}
       // scroll-mt clears the fixed navbar when jumping to an anchor.
-      className={cn("relative scroll-mt-24 py-24 sm:py-32 lg:py-40", className)}
+      className={cn("relative scroll-mt-24 py-20 sm:py-28", className)}
       {...props}
     >
       {children}
@@ -50,29 +50,22 @@ export function SectionHeading({
         className,
       )}
     >
-      <motion.div variants={fadeUp} className="flex items-center gap-3">
-        <span className="bg-accent size-1.5 rounded-full" aria-hidden />
-        <span className="text-ink-muted font-mono text-[11px] tracking-[0.22em] uppercase">
-          {eyebrow}
-        </span>
-        <span
-          className="via-line h-px w-12 bg-gradient-to-r from-transparent to-transparent"
-          aria-hidden
-        />
-      </motion.div>
+      {/* The eyebrow is the section's name in the navigation, so a reader who
+          jumped here from the nav sees the word they clicked. */}
+      <motion.p variants={fadeUp} className="text-ink-subtle flex items-center gap-3 text-sm">
+        <span className="bg-accent h-px w-6" aria-hidden />
+        {eyebrow}
+      </motion.p>
 
       <motion.h2
         variants={fadeUp}
-        className="max-w-3xl text-4xl leading-[1.05] font-semibold sm:text-5xl lg:text-6xl"
+        className="max-w-3xl text-[clamp(2rem,5vw,3.5rem)] leading-[1.02] font-semibold"
       >
         {title}
       </motion.h2>
 
       {description && (
-        <motion.p
-          variants={fadeUp}
-          className="text-ink-muted max-w-2xl text-base leading-relaxed sm:text-lg"
-        >
+        <motion.p variants={fadeUp} className="prose-serif max-w-[62ch]">
           {description}
         </motion.p>
       )}

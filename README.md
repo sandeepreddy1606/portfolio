@@ -131,6 +131,27 @@ submissions silently, escapes all HTML, and sends through [Resend](https://resen
 Without `RESEND_API_KEY` it returns a `503` and a message telling visitors to email directly — the
 form is never silently broken. The `to` address defaults to `SITE.email`.
 
+## Ask assistant
+
+`POST /api/ask` answers visitor questions about the work. The whole portfolio (built from the
+constants in `src/constants`, see `src/lib/knowledge.ts`) goes into a cached system prompt — no
+vector store, so retrieval can't pick the wrong chunk. Answers cite entries as `[[work:slug]]`,
+which the client renders as links.
+
+- `ANTHROPIC_API_KEY` — enables the assistant. Without it, the route answers from a deterministic
+  keyword search and says so.
+- `ASK_MODEL` — optional, defaults to `claude-opus-5-5`. `claude-haiku-5-5` is far cheaper and is
+  usually enough for short Q&A over a fixed corpus.
+
+Set a monthly spend limit on the API key: the in-route rate limit is per serverless instance and
+caps bursts, not total spend.
+
+## Fit check
+
+The Proof section's fit check matches a pasted job description against evidence on the site
+(`src/lib/fit.ts`). It runs in the browser and never uses a model, so it reports only what a
+project or role actually mentions, and lists the requirements it could not find.
+
 ## Deployment
 
 Push to GitHub, import into [Vercel](https://vercel.com/new), and add the environment variables from

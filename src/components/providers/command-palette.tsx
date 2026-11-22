@@ -12,12 +12,18 @@ import {
   Laptop,
   Mail,
   Moon,
+  MessageSquare,
   PenLine,
   Sun,
   type LucideIcon,
 } from "lucide-react";
 import { toast } from "sonner";
 import { NAV_ITEMS, SITE, SOCIALS } from "@/constants/site";
+import { CASE_STUDIES } from "@/constants/case-studies";
+import { askAboutWork } from "@/components/ask/ask-console";
+
+const GROUP =
+  "[&_[cmdk-group-heading]]:text-ink-subtle [&_[cmdk-group-heading]]:px-3 [&_[cmdk-group-heading]]:py-2 [&_[cmdk-group-heading]]:text-xs";
 
 type CommandPaletteContextValue = {
   open: boolean;
@@ -93,6 +99,7 @@ function CommandPalette() {
   const { open, setOpen } = useCommandPalette();
   const router = useRouter();
   const { setTheme } = useTheme();
+  const [search, setSearch] = React.useState("");
 
   const run = React.useCallback(
     (action: () => void) => {
@@ -115,7 +122,9 @@ function CommandPalette() {
     >
       <div className="glass border-line-strong overflow-hidden rounded-2xl shadow-[0_32px_90px_-30px_rgba(0,0,0,0.65)]">
         <Command.Input
-          placeholder="Jump to a section, open a link, switch theme…"
+          value={search}
+          onValueChange={setSearch}
+          placeholder="Ask a question, or jump to a page…"
           className="placeholder:text-ink-subtle border-line w-full border-b bg-transparent px-5 py-4 text-sm outline-none"
         />
         <Command.List className="max-h-[min(24rem,55vh)] scrollbar-none overflow-y-auto p-2">
@@ -123,10 +132,37 @@ function CommandPalette() {
             No results.
           </Command.Empty>
 
-          <Command.Group
-            heading="Navigate"
-            className="[&_[cmdk-group-heading]]:text-ink-subtle [&_[cmdk-group-heading]]:px-3 [&_[cmdk-group-heading]]:py-2 [&_[cmdk-group-heading]]:font-mono [&_[cmdk-group-heading]]:text-[10px] [&_[cmdk-group-heading]]:tracking-[0.18em] [&_[cmdk-group-heading]]:uppercase"
-          >
+          {search.trim().length > 2 && (
+            <Command.Group heading="Ask" forceMount className={GROUP}>
+              <Command.Item
+                value={`ask ${search}`}
+                forceMount
+                onSelect={() =>
+                  run(() => {
+                    askAboutWork(search.trim(), () => router.push("/#hero"));
+                    setSearch("");
+                  })
+                }
+                className="text-ink-muted data-[selected=true]:bg-surface-2 data-[selected=true]:text-ink flex cursor-pointer items-center gap-3 rounded-xl px-3 py-2.5 text-sm transition-colors select-none"
+              >
+                <MessageSquare className="text-accent size-4" />
+                <span className="flex-1 truncate">Ask: {search.trim()}</span>
+              </Command.Item>
+            </Command.Group>
+          )}
+
+          <Command.Group heading="Case studies" className={GROUP}>
+            {CASE_STUDIES.map((c) => (
+              <Item
+                key={c.slug}
+                icon={FileText}
+                label={c.title}
+                onSelect={() => run(() => router.push(`/work/${c.slug}`))}
+              />
+            ))}
+          </Command.Group>
+
+          <Command.Group heading="Navigate" className={GROUP}>
             <Item icon={Home} label="Home" onSelect={() => run(() => router.push("/"))} />
             {NAV_ITEMS.map((item) => (
               <Item
@@ -138,10 +174,7 @@ function CommandPalette() {
             ))}
           </Command.Group>
 
-          <Command.Group
-            heading="Actions"
-            className="[&_[cmdk-group-heading]]:text-ink-subtle [&_[cmdk-group-heading]]:px-3 [&_[cmdk-group-heading]]:py-2 [&_[cmdk-group-heading]]:font-mono [&_[cmdk-group-heading]]:text-[10px] [&_[cmdk-group-heading]]:tracking-[0.18em] [&_[cmdk-group-heading]]:uppercase"
-          >
+          <Command.Group heading="Actions" className={GROUP}>
             <Item
               icon={Copy}
               label="Copy email address"
@@ -165,10 +198,7 @@ function CommandPalette() {
             />
           </Command.Group>
 
-          <Command.Group
-            heading="Links"
-            className="[&_[cmdk-group-heading]]:text-ink-subtle [&_[cmdk-group-heading]]:px-3 [&_[cmdk-group-heading]]:py-2 [&_[cmdk-group-heading]]:font-mono [&_[cmdk-group-heading]]:text-[10px] [&_[cmdk-group-heading]]:tracking-[0.18em] [&_[cmdk-group-heading]]:uppercase"
-          >
+          <Command.Group heading="Links" className={GROUP}>
             {SOCIALS.map((social) => (
               <Item
                 key={social.label}
@@ -180,10 +210,7 @@ function CommandPalette() {
             ))}
           </Command.Group>
 
-          <Command.Group
-            heading="Theme"
-            className="[&_[cmdk-group-heading]]:text-ink-subtle [&_[cmdk-group-heading]]:px-3 [&_[cmdk-group-heading]]:py-2 [&_[cmdk-group-heading]]:font-mono [&_[cmdk-group-heading]]:text-[10px] [&_[cmdk-group-heading]]:tracking-[0.18em] [&_[cmdk-group-heading]]:uppercase"
-          >
+          <Command.Group heading="Theme" className={GROUP}>
             <Item icon={Moon} label="Dark theme" onSelect={() => run(() => setTheme("dark"))} />
             <Item icon={Sun} label="Light theme" onSelect={() => run(() => setTheme("light"))} />
             <Item
@@ -194,9 +221,9 @@ function CommandPalette() {
           </Command.Group>
         </Command.List>
 
-        <div className="border-line text-ink-subtle flex items-center justify-between border-t px-4 py-2.5 font-mono text-[10px]">
-          <span>↑↓ navigate · ↵ select</span>
-          <span>esc to close</span>
+        <div className="border-line text-ink-subtle flex items-center justify-between border-t px-4 py-2.5 text-xs">
+          <span>Arrow keys to move, Enter to select</span>
+          <span>Esc to close</span>
         </div>
       </div>
     </Command.Dialog>

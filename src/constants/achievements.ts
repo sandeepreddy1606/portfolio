@@ -22,7 +22,7 @@ export const ACHIEVEMENTS: Achievement[] = [
     date: "Oct 2025",
     kind: "award",
     description:
-      "Awarded for solving problems on 100 separate days in a single year — earned alongside the 50 Days badge in June. 194 problems solved to date, weighted toward medium and hard.",
+      "Awarded for solving problems on 100 separate days in a single year — earned alongside the 50 Days badge in June. Most of the practice is in Java, with a steady share of medium problems.",
     href: `https://leetcode.com/u/${SITE.leetcodeUsername}/`,
   },
   {

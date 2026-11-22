@@ -76,7 +76,7 @@ export function Navbar() {
               className="group flex items-center gap-2.5"
               aria-label={`${SITE.name} — home`}
             >
-              <span className="from-accent to-iris text-accent-ink font-display grid size-9 place-items-center rounded-xl bg-gradient-to-br text-[13px] font-bold shadow-[0_6px_20px_-8px_var(--accent)] transition-transform duration-500 ease-[var(--ease-out-expo)] group-hover:scale-105 group-hover:rotate-[-6deg]">
+              <span className="border-ink text-ink font-display group-hover:border-accent group-hover:text-accent grid size-9 place-items-center rounded-md border-[1.5px] text-[13px] font-bold transition-colors duration-300">
                 {SITE.initials}
               </span>
               <span className="hidden text-sm font-semibold tracking-tight sm:block">
@@ -119,7 +119,7 @@ export function Navbar() {
                 aria-label="Open command palette"
                 className="border-line bg-surface/60 text-ink-subtle hover:text-ink hover:border-line-strong hidden items-center gap-2 rounded-full border py-1.5 pr-2 pl-3 text-xs backdrop-blur-md transition-colors duration-300 sm:flex"
               >
-                <span>Search</span>
+                <span>Search or ask</span>
                 <kbd className="border-line bg-surface flex items-center gap-0.5 rounded border px-1.5 py-0.5 font-mono text-[10px]">
                   <CommandIcon className="size-2.5" />K
                 </kbd>
@@ -189,9 +189,7 @@ function MobileDrawer({
             className="glass fixed inset-y-0 right-0 z-[86] flex w-[min(88vw,22rem)] flex-col xl:hidden"
           >
             <div className="border-line flex h-16 items-center justify-between border-b px-6">
-              <span className="text-ink-subtle font-mono text-[11px] tracking-[0.2em] uppercase">
-                Menu
-              </span>
+              <span className="text-ink-subtle text-sm">Menu</span>
               <button
                 type="button"
                 onClick={onClose}
@@ -222,9 +220,6 @@ function MobileDrawer({
                       )}
                     >
                       {item.label}
-                      <span className="text-ink-subtle font-mono text-[10px]">
-                        {String(index + 1).padStart(2, "0")}
-                      </span>
                     </Link>
                   </motion.li>
                 ))}

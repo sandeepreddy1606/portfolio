@@ -1,27 +1,29 @@
 import type { Metadata, Viewport } from "next";
-import { Geist, Geist_Mono, Space_Grotesk } from "next/font/google";
+import { Bricolage_Grotesque, Geist_Mono, Newsreader } from "next/font/google";
 import { Toaster } from "sonner";
 import { SITE } from "@/constants/site";
 import { ThemeProvider } from "@/components/providers/theme-provider";
 import { LenisProvider } from "@/components/providers/lenis-provider";
 import { CommandPaletteProvider } from "@/components/providers/command-palette";
-import { CustomCursor } from "@/components/providers/cursor";
 import { Navbar } from "@/components/layout/navbar";
 import { Footer } from "@/components/layout/footer";
-import { ScrollProgress } from "@/components/layout/scroll-progress";
-import { PageLoader } from "@/components/layout/page-loader";
-import { NoiseOverlay } from "@/components/ui/backgrounds";
 import { JsonLd } from "@/components/seo/json-ld";
 import "./globals.css";
 
-const geistSans = Geist({ variable: "--font-geist-sans", subsets: ["latin"], display: "swap" });
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
+const bricolage = Bricolage_Grotesque({
+  variable: "--font-bricolage",
   subsets: ["latin"],
   display: "swap",
+  axes: ["opsz", "wdth"],
 });
-const spaceGrotesk = Space_Grotesk({
-  variable: "--font-space-grotesk",
+const newsreader = Newsreader({
+  variable: "--font-newsreader",
+  subsets: ["latin"],
+  display: "swap",
+  style: ["normal", "italic"],
+});
+const geistMono = Geist_Mono({
+  variable: "--font-geist-mono",
   subsets: ["latin"],
   display: "swap",
 });
@@ -60,8 +62,8 @@ export const metadata: Metadata = {
 
 export const viewport: Viewport = {
   themeColor: [
-    { media: "(prefers-color-scheme: light)", color: "#fafafa" },
-    { media: "(prefers-color-scheme: dark)", color: "#111318" },
+    { media: "(prefers-color-scheme: light)", color: "#edf1f3" },
+    { media: "(prefers-color-scheme: dark)", color: "#0f1b26" },
   ],
   width: "device-width",
   initialScale: 1,
@@ -72,7 +74,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <html
       lang="en"
       suppressHydrationWarning
-      className={`${geistSans.variable} ${geistMono.variable} ${spaceGrotesk.variable}`}
+      className={`${bricolage.variable} ${newsreader.variable} ${geistMono.variable}`}
     >
       <body className="antialiased">
         <ThemeProvider
@@ -84,10 +86,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <CommandPaletteProvider>
             <LenisProvider>
               <JsonLd />
-              <PageLoader />
-              <NoiseOverlay />
-              <CustomCursor />
-              <ScrollProgress />
               <Navbar />
               <main id="main">{children}</main>
               <Footer />

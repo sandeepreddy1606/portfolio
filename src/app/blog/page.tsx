@@ -5,7 +5,7 @@ import { getAllPosts } from "@/lib/blog";
 import { SITE } from "@/constants/site";
 import { Badge } from "@/components/ui/badge";
 import { Reveal } from "@/components/ui/section";
-import { AuroraBackground, GridBackground } from "@/components/ui/backgrounds";
+import { GridBackground } from "@/components/ui/backgrounds";
 import { formatDate } from "@/lib/utils";
 
 export const metadata: Metadata = {
@@ -24,7 +24,6 @@ export default async function BlogIndexPage() {
 
   return (
     <div className="relative">
-      <AuroraBackground className="h-[60vh] opacity-60" />
       <GridBackground className="h-[60vh]" />
 
       <div className="container-page relative z-10 pt-36 pb-24 sm:pt-44 sm:pb-32">

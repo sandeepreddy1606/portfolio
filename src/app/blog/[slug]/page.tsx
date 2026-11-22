@@ -5,7 +5,6 @@ import { ArrowLeft } from "lucide-react";
 import { getAllPosts, getPost } from "@/lib/blog";
 import { SITE } from "@/constants/site";
 import { Badge } from "@/components/ui/badge";
-import { AuroraBackground } from "@/components/ui/backgrounds";
 import { formatDate } from "@/lib/utils";
 
 type Params = { params: Promise<{ slug: string }> };
@@ -59,7 +58,6 @@ export default async function BlogPostPage({ params }: Params) {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(articleLd) }}
       />
-      <AuroraBackground className="h-[50vh] opacity-50" />
 
       <article className="relative z-10 mx-auto w-full max-w-3xl px-5 pt-36 pb-24 sm:px-8 sm:pt-44 sm:pb-32">
         <Link

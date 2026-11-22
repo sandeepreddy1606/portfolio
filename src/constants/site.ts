@@ -35,7 +35,9 @@ export const SITE = {
    * optimisation handles opaque photos more efficiently.
    */
   avatar: "/profile.jpg",
-  tagline: "I build products where the interface and the intelligence are the same craft.",
+  /** The one-line argument of the whole site. */
+  pitch: "I build AI systems you can trust to act.",
+  tagline: "Full-stack engineer building AI systems you can trust to act.",
   description:
     "Full-stack and AI engineer building production systems across LLM applications, autonomous agents, computer vision and cross-platform apps — with Next.js, FastAPI, NestJS, Spring Boot and Flutter.",
   keywords: [
@@ -80,13 +82,10 @@ export const SOCIALS: SocialLink[] = [
 ];
 
 export const NAV_ITEMS: NavItem[] = [
-  { label: "About", href: "/#about", sectionId: "about" },
-  { label: "Skills", href: "/#skills", sectionId: "skills" },
-  { label: "Experience", href: "/#experience", sectionId: "experience" },
-  { label: "Venture", href: "/#venture", sectionId: "venture" },
   { label: "Work", href: "/#work", sectionId: "work" },
-  { label: "AI", href: "/#ai", sectionId: "ai" },
-  { label: "Activity", href: "/#activity", sectionId: "activity" },
+  { label: "How I build", href: "/#principles", sectionId: "principles" },
+  { label: "Experience", href: "/#experience", sectionId: "experience" },
+  { label: "Proof", href: "/#proof", sectionId: "proof" },
   { label: "Writing", href: "/blog" },
   { label: "Contact", href: "/#contact", sectionId: "contact" },
 ];
@@ -94,14 +93,9 @@ export const NAV_ITEMS: NavItem[] = [
 /** Ids observed by the scroll-spy, in document order. */
 export const SECTION_IDS = [
   "hero",
-  "about",
-  "skills",
-  "experience",
-  "venture",
   "work",
-  "ai",
-  "stack",
-  "activity",
-  "achievements",
+  "principles",
+  "experience",
+  "proof",
   "contact",
 ] as const;

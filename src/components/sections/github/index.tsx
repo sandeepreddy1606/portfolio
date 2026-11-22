@@ -3,6 +3,8 @@ import { Section, SectionHeading } from "@/components/ui/section";
 import { getGithubStats } from "@/lib/github";
 import { getLeetcodeStats } from "@/lib/leetcode";
 import { GithubFallback, GithubSkeleton, GithubView } from "./github-view";
+import { FitCheck } from "@/components/proof/fit-check";
+import { AchievementList } from "@/components/sections/achievements";
 import { LeetcodeFallback, LeetcodeSkeleton, LeetcodeView } from "./leetcode-view";
 
 /** Server components — neither fetch reaches the client bundle. */
@@ -18,19 +20,28 @@ async function LeetcodeData() {
   return <LeetcodeView stats={stats} />;
 }
 
-export function ActivitySection() {
+/**
+ * Proof — the part of the page a sceptical reader checks. The fit check comes
+ * first because it answers the recruiter's real question; the live panels and
+ * achievements are the evidence behind it.
+ */
+export function ProofSection() {
   return (
-    <Section id="activity" className="bg-surface/20 border-line border-y">
+    <Section id="proof" className="bg-surface/40 border-line border-y">
       <div className="container-page">
         <SectionHeading
-          eyebrow="Activity"
-          title="What I'm building, and what I'm practising."
-          description="Both panels are pulled live — GitHub for shipped work, LeetCode for the algorithm reps behind it — and revalidated hourly. This is the profile as it stands right now, not as it stood at deploy time."
+          eyebrow="Proof"
+          title="Check the claims."
+          description="Paste a job description to see which requirements have evidence here. Below it: GitHub and LeetCode, pulled live and refreshed hourly, and the achievements behind them."
         />
 
-        {/* Two independent Suspense boundaries: a slow or failing LeetCode
+        <div className="mt-14 max-w-3xl">
+          <FitCheck />
+        </div>
+
+        {/* Independent Suspense boundaries: a slow or failing LeetCode
             request must not hold back the GitHub panel, or vice versa. */}
-        <div className="mt-14 flex flex-col gap-6">
+        <div className="mt-16 flex flex-col gap-6">
           <Suspense fallback={<GithubSkeleton />}>
             <GithubData />
           </Suspense>
@@ -39,6 +50,9 @@ export function ActivitySection() {
             <LeetcodeData />
           </Suspense>
         </div>
+
+        <h3 className="mt-20 text-2xl font-semibold">Achievements</h3>
+        <AchievementList className="mt-8" />
       </div>
     </Section>
   );

@@ -38,7 +38,16 @@ export const TIMELINE: TimelineEntry[] = [
       "Replaced client-supplied Google profiles with server-side ID token verification against Google's signing keys, removing a path that would have let anyone claim any email address.",
       "Wrote the suite against an embedded Postgres the build downloads itself, so tests need no Docker daemon.",
     ],
-    stack: ["Java 17", "Spring Boot 3.4", "Spring Security", "PostgreSQL", "Flyway", "JWT", "TypeScript", "Docker"],
+    stack: [
+      "Java 17",
+      "Spring Boot 3.4",
+      "Spring Security",
+      "PostgreSQL",
+      "Flyway",
+      "JWT",
+      "TypeScript",
+      "Docker",
+    ],
   },
   {
     id: "agents-2026",

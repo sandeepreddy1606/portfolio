@@ -6,14 +6,16 @@ export const EASE = [0.16, 1, 0.3, 1] as const;
 export const springSoft: Transition = { type: "spring", stiffness: 140, damping: 20, mass: 0.6 };
 export const springSnappy: Transition = { type: "spring", stiffness: 320, damping: 30 };
 
-/** Standard scroll-reveal: used by every section wrapper. */
+/**
+ * Standard scroll-reveal. Deliberately quiet — a short settle rather than a
+ * blur-and-slide, so the page reads as content arriving, not as an effect.
+ */
 export const fadeUp: Variants = {
-  hidden: { opacity: 0, y: 24, filter: "blur(6px)" },
+  hidden: { opacity: 0, y: 8 },
   visible: {
     opacity: 1,
     y: 0,
-    filter: "blur(0px)",
-    transition: { duration: 0.7, ease: EASE },
+    transition: { duration: 0.5, ease: EASE },
   },
 };
 

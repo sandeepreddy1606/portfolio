@@ -4,14 +4,13 @@ import Link from "next/link";
 import { motion } from "framer-motion";
 import { ArrowUp } from "lucide-react";
 import { NAV_ITEMS, SITE, SOCIALS } from "@/constants/site";
-import { AuroraBackground, GridBackground } from "@/components/ui/backgrounds";
+import { GridBackground } from "@/components/ui/backgrounds";
 import { fadeUp, stagger, viewportOnce } from "@/lib/motion";
 import { Magnetic } from "@/components/ui/magnetic";
 
 export function Footer() {
   return (
     <footer className="border-line relative overflow-hidden border-t">
-      <AuroraBackground className="opacity-50" />
       <GridBackground className="opacity-60" />
 
       <div className="container-page relative z-10 py-16 sm:py-20">
@@ -24,7 +23,7 @@ export function Footer() {
         >
           <motion.div variants={fadeUp} className="flex flex-col gap-5">
             <Link href="/" className="flex items-center gap-2.5" aria-label={`${SITE.name} — home`}>
-              <span className="from-accent to-iris text-accent-ink font-display grid size-9 place-items-center rounded-xl bg-gradient-to-br text-[13px] font-bold">
+              <span className="border-ink text-ink font-display grid size-9 place-items-center rounded-md border-[1.5px] text-[13px] font-bold">
                 {SITE.initials}
               </span>
               <span className="text-sm font-semibold tracking-tight">{SITE.shortName}</span>
@@ -47,9 +46,7 @@ export function Footer() {
           </motion.div>
 
           <motion.nav variants={fadeUp} aria-label="Footer" className="flex flex-col gap-4">
-            <h2 className="text-ink-subtle font-mono text-[11px] tracking-[0.2em] uppercase">
-              Navigate
-            </h2>
+            <h2 className="text-ink-subtle text-sm font-normal">Navigate</h2>
             <ul className="flex flex-col gap-2.5">
               {NAV_ITEMS.map((item) => (
                 <li key={item.href}>
@@ -65,9 +62,7 @@ export function Footer() {
           </motion.nav>
 
           <motion.div variants={fadeUp} className="flex flex-col gap-4">
-            <h2 className="text-ink-subtle font-mono text-[11px] tracking-[0.2em] uppercase">
-              Elsewhere
-            </h2>
+            <h2 className="text-ink-subtle text-sm font-normal">Elsewhere</h2>
             <ul className="flex flex-col gap-2.5">
               {SOCIALS.map((social) => (
                 <li key={social.label}>
@@ -101,13 +96,6 @@ export function Footer() {
             </a>
           </Magnetic>
         </div>
-      </div>
-
-      {/* Oversized wordmark bleeding off the bottom edge. */}
-      <div aria-hidden className="pointer-events-none relative z-0 -mb-[0.18em] select-none">
-        <p className="font-display from-ink/[0.07] to-ink/0 bg-gradient-to-b bg-clip-text text-center text-[18vw] leading-[0.8] font-bold tracking-tighter text-transparent">
-          {SITE.shortName}
-        </p>
       </div>
     </footer>
   );

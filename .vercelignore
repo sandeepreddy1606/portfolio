@@ -1,0 +1,4 @@
+# Agent tooling is for local development only; never upload it with a deploy.
+.claude
+.agents
+skills-lock.json

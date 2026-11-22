@@ -38,12 +38,12 @@ export function Projects() {
   const hasFilters = query !== "" || activeTech !== null;
 
   return (
-    <Section id="work">
+    <Section id="archive" className="pt-32 sm:pt-40 lg:pt-44">
       <div className="container-page">
         <SectionHeading
-          eyebrow="Selected work"
-          title="Twelve projects. Every one of them runs."
-          description="Each card maps to a public repository with a README you can follow. Open one for the full breakdown."
+          eyebrow="Archive"
+          title={`Every project, ${PROJECTS.length} of them.`}
+          description="Each one maps to a public repository with a README you can follow. Search by name or by technology, and open a project for the full breakdown."
         />
 
         <motion.div
