@@ -9,19 +9,25 @@ import { SITE } from "@/constants/site";
  * Asset: public/portrait-cutout.png (1136px) — public/profile.png upscaled 2x
  * with Real-ESRGAN realesr-general-x4v3 (4x, area-downsampled to 2x, blended
  * 85/15 with bicubic to keep skin texture), cut out with an OpenCV GrabCut
- * matte seeded by hand, then a 12px white outline dilated from that matte.
+ * matte seeded by hand, graded inside the matte only (skin-anchored white
+ * balance, levels, CLAHE on L, midtone lift and soft fill on skin,
+ * skin-protected vibrance, clarity and fine sharpening on L), then a 12px
+ * white outline dilated from that matte.
  * No generated imagery: every pixel comes from the original photo.
  *
  * Geometry (fractions of the square box): disc diameter 0.8, centred at
  * (0.5, 0.6). The lower layer is clipped to the disc so it hides the original
  * photo's circular crop; the upper layer shows only the top 44% of the box,
  * where the matte leaves just the head, so the head reads in front of the rim.
+ * The figure is scaled 1.14 about (50%, 65%) inside both layers, so the head
+ * rises further above the rim; the upper clip extends past the box to keep
+ * the top of the hair.
  */
 const CUTOUT = "/portrait-cutout.png";
 
 export function HeroPortrait() {
   return (
-    <figure className="relative mx-auto aspect-square w-full max-w-[19rem] sm:max-w-[23rem] lg:max-w-none">
+    <figure className="relative mx-auto aspect-square w-full max-w-[21rem] sm:max-w-[25rem] lg:max-w-none">
       {/* Lamp disc: brass rim, dark housing, a warm lamp glow from below. */}
       <div
         aria-hidden
@@ -61,22 +67,25 @@ export function HeroPortrait() {
           alt=""
           fill
           priority
-          sizes="(max-width: 1024px) 23rem, 26rem"
+          sizes="(max-width: 1024px) 25rem, 32rem"
           quality={90}
-          className="object-contain"
+          className="origin-[50%_65%] scale-[1.14] object-contain"
         />
       </div>
 
       {/* Layer 2: the head, free of the disc, in front of the rim. */}
-      <div className="portrait-rise absolute inset-0" style={{ clipPath: "inset(0 0 56% 0)" }}>
+      <div
+        className="portrait-rise absolute inset-0"
+        style={{ clipPath: "inset(-12% -12% 56% -12%)" }}
+      >
         <Image
           src={CUTOUT}
           alt={`Portrait of ${SITE.name}`}
           fill
           priority
-          sizes="(max-width: 1024px) 23rem, 26rem"
+          sizes="(max-width: 1024px) 25rem, 32rem"
           quality={90}
-          className="object-contain"
+          className="origin-[50%_65%] scale-[1.14] object-contain"
         />
       </div>
     </figure>

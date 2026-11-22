@@ -14,7 +14,7 @@ export function Hero() {
   return (
     <section id="hero" className="relative pt-24 pb-14 sm:pt-28 sm:pb-16">
       <div className="container-page">
-        <div className="grid items-center gap-8 lg:grid-cols-[minmax(0,1fr)_minmax(0,25rem)] lg:gap-12">
+        <div className="grid items-center gap-8 lg:grid-cols-[minmax(0,1fr)_minmax(0,28rem)] lg:gap-12">
           <div className="min-w-0">
             <h1 className="flex flex-col gap-4">
               <span className="text-ink-muted font-sans text-lg font-medium tracking-normal normal-case">
