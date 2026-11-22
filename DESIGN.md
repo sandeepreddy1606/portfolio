@@ -53,9 +53,13 @@ Colour carries meaning, the same everywhere:
 ## Components
 
 - **Mimic diagram** (`components/work/mimic.tsx`): every system is drawn as
-  track. Guards are signal heads (red until passed), and the action's stretch
-  lights amber. `holdAt` can stop the train for the visitor's approval
-  (currently unused; the hero no longer carries a panel).
+  rail on sleepers with a train (amber locomotive, headlamp) that runs it.
+  Guards are signal heads, red until the train passes; the stretch into the
+  action lights amber; station labels brighten as the train reaches them. A
+  train-describer readout above the track names where it is. In the Work
+  section the train follows the scroll and dwells at each station, longest at
+  guards; on case studies it runs once. `holdAt` stops it at a guard until the
+  visitor pulls the lever (Auto Apply in the Work section).
 - **Lever frame**: the navigation. Numbered levers; the current section's
   lever is pulled over and lit amber. The footer repeats the numbers.
 - **Register**: the Ask assistant as numbered ledger entries.

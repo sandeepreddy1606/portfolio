@@ -4,6 +4,7 @@ import * as React from "react";
 import {
   animate,
   motion,
+  transform,
   useMotionValue,
   useMotionValueEvent,
   useReducedMotion,
@@ -38,12 +39,21 @@ type Props = {
   /** Node id of a guard the train must wait at for the visitor's approval (run mode). */
   holdAt?: string;
   caption?: string;
+  /** Show the train-describer readout above the track. */
+  describer?: boolean;
   className?: string;
 };
 
 const STEP_S = 0.55;
 
-export function Mimic({ nodes, mode = "run", holdAt, caption, className }: Props) {
+export function Mimic({
+  nodes,
+  mode = "run",
+  holdAt,
+  caption,
+  describer = true,
+  className,
+}: Props) {
   const reduce = useReducedMotion();
   const figureRef = React.useRef<HTMLElement>(null);
   const slotRefs = React.useRef<(HTMLSpanElement | null)[]>([]);
@@ -99,17 +109,61 @@ export function Mimic({ nodes, mode = "run", holdAt, caption, className }: Props
   /* ---------------- scrub mode ---------------- */
   const { scrollYProgress } = useScroll({
     target: figureRef,
-    offset: ["start 90%", "end 35%"],
+    offset: ["start 90%", "end 30%"],
   });
+
+  // Scroll → route position, with a dwell at every station: a short stop at
+  // ordinary stations and a longer one at guards, so the train is visibly
+  // checked before it clears.
+  const keyframes = React.useMemo(() => {
+    const input = [0];
+    const output = [-1];
+    let acc = 0;
+    nodes.forEach((n, i) => {
+      acc += 1;
+      input.push(acc);
+      output.push(i);
+      acc += n.kind === "guard" ? 0.9 : 0.25;
+      input.push(acc);
+      output.push(i);
+    });
+    return { input: input.map((x) => x / acc), output };
+  }, [nodes]);
+
+  const tweening = React.useRef(false);
+  const scrubTarget = React.useCallback(
+    (v: number) => {
+      if (reduce) return holdIndex > 0 && !approved ? holdIndex - 1 : last;
+      const p = transform(v, keyframes.input, keyframes.output);
+      // Held at danger: the train waits just short of the signal.
+      return holdIndex > 0 && !approved ? Math.min(p, holdIndex - 0.35) : p;
+    },
+    [reduce, keyframes, holdIndex, approved, last],
+  );
   useMotionValueEvent(scrollYProgress, "change", (v) => {
-    if (mode !== "scrub") return;
-    progress.set(reduce ? last : -1 + v * (last + 1));
+    if (mode !== "scrub" || tweening.current) return;
+    progress.set(scrubTarget(v));
   });
   React.useEffect(() => {
-    if (mode !== "scrub") return;
+    if (mode !== "scrub" || tweening.current) return;
     // Place the train for the current scroll position on mount, before any scroll event.
-    progress.set(reduce ? last : -1 + scrollYProgress.get() * (last + 1));
-  }, [mode, reduce, last, progress, scrollYProgress]);
+    progress.set(scrubTarget(scrollYProgress.get()));
+  }, [mode, scrubTarget, progress, scrollYProgress]);
+
+  const approve = () => {
+    setApproved(true);
+    if (mode !== "scrub") return;
+    // Release the train smoothly to wherever the scroll says it should be.
+    const target = transform(scrollYProgress.get(), keyframes.input, keyframes.output);
+    tweening.current = true;
+    animate(progress, Math.max(target, holdIndex), {
+      duration: reduce ? 0 : 0.8,
+      ease: [0.45, 0, 0.25, 1],
+      onComplete: () => {
+        tweening.current = false;
+      },
+    });
+  };
 
   /* ---------------- station geometry ---------------- */
   const [centers, setCenters] = React.useState<{ x: number; y: number }[]>([]);
@@ -133,7 +187,7 @@ export function Mimic({ nodes, mode = "run", holdAt, caption, className }: Props
     return () => ro.disconnect();
   }, [nodes.length]);
 
-  const held = mode === "run" && holdIndex > 0 && !approved && pos >= holdIndex - 1;
+  const held = holdIndex > 0 && !approved && pos >= holdIndex - 1;
   const done = pos >= last;
   const vertical =
     centers.length > 1 &&
@@ -141,6 +195,21 @@ export function Mimic({ nodes, mode = "run", holdAt, caption, className }: Props
 
   return (
     <figure ref={figureRef} className={cn("relative min-w-0", className)}>
+      {describer && (
+        // Train describer: the signal box's readout of where the train is.
+        <p className="mb-4 flex items-center justify-between gap-4 rounded-md bg-[#141b18] px-3 py-2 font-mono text-xs uppercase">
+          <span className="text-lamp-amber shrink-0 tabular-nums">
+            {pos < 0 ? "Approaching" : `Station ${Math.min(pos, last) + 1} of ${nodes.length}`}
+          </span>
+          <span className={cn("truncate text-right", held ? "text-danger" : "text-ink")}>
+            {pos < 0
+              ? `Next: ${nodes[0].label}`
+              : held
+                ? `Held at danger · ${nodes[holdIndex].label}`
+                : `${nodes[Math.min(pos, last)].label}${nodes[Math.min(pos, last)].kind === "guard" ? " · cleared" : ""}`}
+          </span>
+        </p>
+      )}
       <ol
         className="relative flex flex-col md:flex-row md:items-start"
         aria-label={`Data flow: ${nodes.map((n) => n.label).join(", then ")}`}
@@ -171,11 +240,15 @@ export function Mimic({ nodes, mode = "run", holdAt, caption, className }: Props
                   amber={nodes[i + 1]?.kind === "action" && pos > i}
                 />
               </div>
-              <div className="min-w-0 py-3 pl-4 md:px-2 md:text-center">
+              <div className="min-w-0 self-center py-3 pl-4 md:self-auto md:px-2 md:text-center">
                 <p
                   className={cn(
                     "text-[15px] leading-snug font-semibold transition-colors duration-300",
-                    node.kind === "action" && "text-accent",
+                    node.kind === "action"
+                      ? "text-accent"
+                      : reached
+                        ? "text-ink"
+                        : "text-ink-muted",
                   )}
                 >
                   {node.label}
@@ -193,17 +266,18 @@ export function Mimic({ nodes, mode = "run", holdAt, caption, className }: Props
         <Train progress={progress} centers={centers} vertical={vertical} />
       )}
 
-      {mode === "run" && holdAt && (
+      {holdAt && (
         <div className="border-line mt-4 flex flex-wrap items-center gap-3 border-t pt-4">
           <button
             type="button"
             disabled={!held}
-            onClick={() => setApproved(true)}
+            onClick={approve}
             className="bg-lamp-green rounded-md px-4 py-2.5 text-sm font-bold text-[#06170d] transition-opacity disabled:opacity-30"
           >
             Pull lever: approve
           </button>
-          {done && (
+          {/* Replay only makes sense when time drives the train, not the scroll. */}
+          {done && mode === "run" && (
             <button
               type="button"
               onClick={() => {
@@ -217,7 +291,9 @@ export function Mimic({ nodes, mode = "run", holdAt, caption, className }: Props
             </button>
           )}
           <p className="text-ink-muted text-sm" aria-live="polite">
-            {pos < 0 && "Waiting for a post."}
+            {pos < 0 &&
+              (mode === "scrub" ? "Scroll to bring a post down the line." : "Waiting for a post.")}
+            {pos >= 0 && !held && !approved && "Parsing with rules — no model in the path."}
             {held && "Held at danger. Nothing is sent until a person approves."}
             {approved && !done && pos >= 0 && "Route set by a person. Sending."}
             {done && approved && "Sent, and logged as applied."}

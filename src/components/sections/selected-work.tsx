@@ -67,6 +67,23 @@ export function SelectedWork() {
                     </h3>
                   </ViewTransition>
                   <p className="prose-lead text-ink-muted mt-4 max-w-[48ch]">{study.thesis}</p>
+                  {/* The particulars a recruiter scans for: counts, then stack. */}
+                  <dl className="mt-5 flex flex-col gap-1 text-sm">
+                    {study.facts.map((f) => (
+                      <div key={f.label} className="flex items-baseline gap-2">
+                        <dt className="sr-only">{f.label}</dt>
+                        <dd className="text-ink w-10 shrink-0 font-mono font-semibold tabular-nums">
+                          {f.value}
+                        </dd>
+                        <span className="text-ink-muted" aria-hidden>
+                          {f.label}
+                        </span>
+                      </div>
+                    ))}
+                  </dl>
+                  <p className="text-ink-subtle mt-4 font-mono text-xs leading-relaxed">
+                    {study.stack.join(" · ")}
+                  </p>
                   <Link
                     href={`/work/${study.slug}`}
                     transitionTypes={["nav-forward"]}
@@ -76,8 +93,14 @@ export function SelectedWork() {
                     <ArrowRight className="size-4 transition-transform group-hover/link:translate-x-1" />
                   </Link>
                 </div>
-                <div className="bg-surface-2 border-line group-hover:border-brass/60 hidden min-w-0 self-center rounded-[14px] border p-5 transition-colors duration-300 md:block">
-                  <Mimic nodes={study.flow} mode="scrub" caption={study.flowCaption} />
+                <div className="bg-surface-2 border-line group-hover:border-brass/60 min-w-0 self-center rounded-[14px] border p-4 transition-colors duration-300 sm:p-5">
+                  <Mimic
+                    nodes={study.flow}
+                    mode="scrub"
+                    caption={study.flowCaption}
+                    // Auto Apply is the one route a visitor gets to signal.
+                    holdAt={study.slug === "auto-apply" ? "review" : undefined}
+                  />
                 </div>
               </article>
             </li>
