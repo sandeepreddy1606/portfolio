@@ -146,6 +146,18 @@ which the client renders as links.
 Set a monthly spend limit on the API key: the in-route rate limit is per serverless instance and
 caps bursts, not total spend.
 
+## Visitor counter
+
+The footer shows how many people have visited and the reader's own visitor
+number (`POST /api/visits`, `src/lib/visits.ts`). A first visit increments the
+visitor count and stores the number in a cookie that holds nothing else; later
+sessions only add a page view. Crawlers and preview bots are not counted.
+
+Storage is Upstash Redis over its REST API (atomic `INCR`). Connect it in
+Vercel under Storage → Upstash for Redis, which adds `KV_REST_API_URL` and
+`KV_REST_API_TOKEN`; `UPSTASH_REDIS_REST_URL` / `UPSTASH_REDIS_REST_TOKEN`
+also work. Until then the counter stays hidden.
+
 ## Fit check
 
 The Proof section's fit check matches a pasted job description against evidence on the site

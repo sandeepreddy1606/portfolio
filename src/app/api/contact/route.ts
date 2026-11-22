@@ -86,7 +86,8 @@ export async function POST(request: Request) {
       from: process.env.CONTACT_FROM_EMAIL ?? "Portfolio <onboarding@resend.dev>",
       to: process.env.CONTACT_TO_EMAIL ?? SITE.email,
       replyTo: email,
-      subject: `[Portfolio] ${subject}`,
+      // No line breaks in a header value.
+      subject: `[Portfolio] ${subject.replace(/[\r\n]+/g, " ")}`,
       text: `${name} <${email}>\n\n${message}`,
       html: `
         <div style="font-family:ui-sans-serif,system-ui,sans-serif;max-width:600px;line-height:1.6">

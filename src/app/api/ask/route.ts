@@ -26,7 +26,9 @@ const bodySchema = z.object({
     .array(
       z.object({
         role: z.enum(["user", "assistant"]),
-        content: z.string().min(1).max(4000),
+        // Empty strings are allowed through and filtered below: an aborted
+        // answer earlier in the conversation must not sink the whole request.
+        content: z.string().max(4000),
       }),
     )
     .min(1)
@@ -120,7 +122,14 @@ export async function POST(request: Request) {
     );
   }
 
-  const messages = parsed.data.messages;
+  // Defensive: drop empty turns and any leading assistant turns, so the
+  // conversation always opens on a user message whatever the client sent.
+  const turns = parsed.data.messages.filter((m) => m.content.trim());
+  const firstUser = turns.findIndex((m) => m.role === "user");
+  const messages = firstUser === -1 ? [] : turns.slice(firstUser);
+  if (messages.length === 0 || messages[messages.length - 1].role !== "user") {
+    return new Response("Send a question to answer.", { status: 400, headers });
+  }
   const question = messages[messages.length - 1].content;
 
   if (!process.env.ANTHROPIC_API_KEY) {

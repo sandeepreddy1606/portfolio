@@ -14,6 +14,10 @@ const shoulders = Big_Shoulders({
   subsets: ["latin"],
   display: "swap",
   weight: ["600", "700", "800"],
+  // next/font has no metrics for Big Shoulders, so it cannot size-match a
+  // fallback; a condensed system face keeps the swap from reflowing much.
+  adjustFontFallback: false,
+  fallback: ["Arial Narrow", "Roboto Condensed", "sans-serif-condensed", "sans-serif"],
 });
 const publicSans = Public_Sans({
   variable: "--font-public",

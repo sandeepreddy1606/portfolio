@@ -134,7 +134,7 @@ function CommandPalette() {
                 forceMount
                 onSelect={() =>
                   run(() => {
-                    askAboutWork(search.trim(), () => router.push("/#hero"));
+                    askAboutWork(search.trim(), () => router.push("/#register"));
                     setSearch("");
                   })
                 }

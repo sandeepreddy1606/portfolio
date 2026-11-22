@@ -1,5 +1,6 @@
 import Link from "next/link";
 import { NAV_ITEMS, SITE, SOCIALS } from "@/constants/site";
+import { VisitorCounter } from "./visitor-counter";
 
 /**
  * The end of the line: the instrument-face band that closes every page, with
@@ -93,6 +94,7 @@ export function Footer() {
           <p className="text-ink-subtle">
             © {year} {SITE.name}. Built with Next.js.
           </p>
+          <VisitorCounter />
         </div>
       </div>
     </footer>

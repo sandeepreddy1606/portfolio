@@ -17,8 +17,12 @@ export const contactSchema = z.object({
     .trim()
     .min(20, "Tell me a bit more — 20 characters minimum.")
     .max(4000, "That's over the 4000 character limit."),
-  /** Honeypot: real users never see this field, so anything in it is a bot. */
-  website: z.string().max(0).optional(),
+  /**
+   * Honeypot: real users never see this field, so anything in it is a bot.
+   * Accepted by the schema on purpose — the route answers a filled honeypot
+   * with a silent success, so the bot learns nothing about the form.
+   */
+  website: z.string().max(500).optional(),
 });
 
 export type ContactSchema = z.infer<typeof contactSchema>;

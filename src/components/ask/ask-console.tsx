@@ -22,7 +22,7 @@ const PENDING_KEY = "ask:pending";
 export function askAboutWork(question: string, navigateHome: () => void) {
   if (document.getElementById("ask-input")) {
     window.dispatchEvent(new CustomEvent(ASK_EVENT, { detail: question }));
-    document.getElementById("hero")?.scrollIntoView({ behavior: "smooth" });
+    document.getElementById("register")?.scrollIntoView({ behavior: "smooth" });
     return;
   }
   try {
@@ -90,7 +90,12 @@ export function AskConsole({ className }: { className?: string }) {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         // Keep the request small: the last few turns are enough context.
-        body: JSON.stringify({ messages: history.slice(-6) }),
+        // Keep the request small, skip empty turns (an aborted answer), and
+        // send an odd number so the window always opens on a user message —
+        // the API rejects a conversation that starts with the assistant.
+        body: JSON.stringify({
+          messages: history.filter((t) => t.content.trim()).slice(-5),
+        }),
         signal: controller.signal,
       });
 
